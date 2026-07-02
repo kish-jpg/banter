@@ -165,3 +165,18 @@ None — no external accounts, API keys, or manual configuration needed for this
 ---
 *Phase: 01-foundation-privacy-boundary*
 *Completed: 2026-07-02*
+
+## Self-Check: PASSED
+
+- FOUND: `BanterShared/Package.swift`
+- FOUND: `BanterShared/Sources/BanterShared/Models/ConversationMessage.swift`
+- FOUND: `BanterShared/Sources/BanterShared/Models/ReplySuggestion.swift`
+- FOUND: `BanterShared/Sources/BanterShared/Models/SentimentEvent.swift`
+- FOUND: `BanterShared/Sources/BanterShared/AppGroupStore.swift`
+- FOUND: `BanterShared/Sources/BanterShared/NetworkDTOs.swift`
+- FOUND: `BanterShared/Tests/BanterSharedTests/AppGroupRoundTripTests.swift`
+- FOUND: `BanterShared/Tests/BanterSharedTests/NetworkBoundaryGuardTests.swift`
+- FOUND: commit `240e9d0` (Task 1)
+- FOUND: commit `9eea5a3` (Task 2)
+- FOUND: commit `a8dae17` (Task 3)
+- FOUND: commit `9ea2c4b` (SUMMARY docs commit)
