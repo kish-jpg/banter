@@ -5,15 +5,15 @@ milestone_name: milestone
 current_phase: 1
 current_phase_name: Foundation & Privacy Boundary
 status: executing
-stopped_at: Roadmap and state initialized; ready to plan Phase 1.
-last_updated: "2026-07-02T21:41:19.294Z"
+stopped_at: Completed 01-01-PLAN.md — git split + dedicated GitHub repo done, ready for 01-02
+last_updated: "2026-07-02T21:52:26.181Z"
 last_activity: 2026-07-02
 last_activity_desc: Phase 1 execution started
 progress:
   total_phases: 8
   completed_phases: 0
   total_plans: 4
-  completed_plans: 0
+  completed_plans: 1
   percent: 0
 ---
 
@@ -29,8 +29,8 @@ See: .planning/PROJECT.md (updated 2026-07-03)
 ## Current Position
 
 Phase: 1 (Foundation & Privacy Boundary) — EXECUTING
-Plan: 1 of 4
-Status: Executing Phase 1
+Plan: 2 of 4
+Status: Ready to execute
 Last activity: 2026-07-02 — Phase 1 execution started
 
 Progress: [░░░░░░░░░░] 0%
@@ -55,6 +55,7 @@ Progress: [░░░░░░░░░░] 0%
 - Trend: —
 
 *Updated after each plan completion*
+| Phase 01-foundation-privacy-boundary P01 | 4min | 2 tasks | 1 files |
 
 ## Accumulated Context
 
@@ -66,6 +67,8 @@ Recent decisions affecting current work:
 - [Roadmap]: Companion-app-first, keyboard-second — keyboard depends on the app's App Group data contract (Phase 5 after Phase 4).
 - [Roadmap]: Psychology allowlist/banlist artifact locked in Phase 3 *before* prompt engineering, to avoid schema-rework risk.
 - [Roadmap]: Privacy designed into the backend (Phases 1/3) and verified in a dedicated hardening pass (Phase 7).
+- [Phase 01-foundation-privacy-boundary]: Created kish-jpg/banter as PRIVATE despite 10x GitHub Actions macOS-runner minutes cost — commercial product with future proprietary backend logic
+- [Phase 01-foundation-privacy-boundary]: GSD .planning/ scaffolding committed into the new dedicated kish-jpg/banter repo alongside the code it describes, per RESEARCH.md Git Topology recommendation
 
 ### Pending Todos
 
@@ -88,6 +91,6 @@ Items acknowledged and carried forward from previous milestone close:
 
 ## Session Continuity
 
-Last session: 2026-07-03
-Stopped at: Roadmap and state initialized; ready to plan Phase 1.
+Last session: 2026-07-02T21:51:43.572Z
+Stopped at: Completed 01-01-PLAN.md — git split + dedicated GitHub repo done, ready for 01-02
 Resume file: None

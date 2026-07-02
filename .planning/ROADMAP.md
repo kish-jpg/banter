@@ -37,10 +37,10 @@ Decimal phases appear between their surrounding integers in numeric order.
   3. The network/send boundary only accepts structured text — there is no code path that transmits a raw image off-device.
   4. Shared model types (transcript, suggestion, sentiment event) are defined once and imported by both targets.
 
-**Plans**: 4 plans
+**Plans**: 1/4 plans executed
 **Wave 1**
 
-- [ ] 01-01-PLAN.md — Split banter/ into its own dedicated private GitHub repo + Xcode/SPM .gitignore (blocking CI prerequisite)
+- [x] 01-01-PLAN.md — Split banter/ into its own dedicated private GitHub repo + Xcode/SPM .gitignore (blocking CI prerequisite)
 - [ ] 01-02-PLAN.md — BanterShared package: 3 Codable models + AppGroupStore + structured-text-only NetworkDTOs, with round-trip + CAPT-04 guard tests (CAPT-04)
 
 **Wave 2** *(blocked on Wave 1 completion)*
@@ -166,7 +166,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 → 8
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Foundation & Privacy Boundary | 0/4 | Planned | - |
+| 1. Foundation & Privacy Boundary | 1/4 | In Progress|  |
 | 2. Screenshot Import & OCR Pipeline | 0/TBD | Not started | - |
 | 3. Backend LLM Orchestration | 0/TBD | Not started | - |
 | 4. Companion App UI & Paywall | 0/TBD | Not started | - |
