@@ -10,7 +10,7 @@
 - [ ] **CAPT-01**: User can upload a chat screenshot and have it parsed on-device (Vision OCR) into a structured transcript
 - [ ] **CAPT-02**: Parsed transcript attributes each message to user or match, and user can confirm/correct it before analysis
 - [ ] **CAPT-03**: User can paste conversation text as a fallback context path
-- [ ] **CAPT-04**: Raw screenshots never leave the device — only structured text is sent to the backend
+- [x] **CAPT-04**: Raw screenshots never leave the device — only structured text is sent to the backend
 
 ### Coaching
 
@@ -99,7 +99,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| CAPT-04 | Phase 1 | Pending |
+| CAPT-04 | Phase 1 | Complete |
 | CAPT-01 | Phase 2 | Pending |
 | CAPT-02 | Phase 2 | Pending |
 | CAPT-03 | Phase 2 | Pending |
@@ -133,6 +133,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | PRIV-03 | Phase 7 | Pending |
 
 **Coverage:**
+
 - v1 requirements: 32 total (header previously read "27" — miscount; list contains 32)
 - Mapped to phases: 32
 - Unmapped: 0 ✓
