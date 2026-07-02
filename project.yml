@@ -1,0 +1,37 @@
+name: Banter
+options:
+  bundleIdPrefix: com.banter
+packages:
+  BanterShared:
+    path: BanterShared
+targets:
+  BanterApp:
+    type: application
+    platform: iOS
+    deploymentTarget: "17.0"
+    sources:
+      - path: BanterApp
+    dependencies:
+      - package: BanterShared
+    entitlements:
+      path: BanterApp/BanterApp.entitlements
+      properties:
+        com.apple.security.application-groups:
+          - group.com.banter.shared
+    info:
+      path: BanterApp/Info.plist
+  BanterKeyboard:
+    type: app-extension
+    platform: iOS
+    deploymentTarget: "17.0"
+    sources:
+      - path: BanterKeyboard
+    dependencies:
+      - package: BanterShared
+    entitlements:
+      path: BanterKeyboard/BanterKeyboard.entitlements
+      properties:
+        com.apple.security.application-groups:
+          - group.com.banter.shared
+    info:
+      path: BanterKeyboard/Info.plist
