@@ -179,3 +179,14 @@ None — GitHub auth was pre-verified (`gh auth status`, logged in as `kish-jpg`
 ---
 *Phase: 01-foundation-privacy-boundary*
 *Completed: 2026-07-03*
+
+## Self-Check: PASSED
+
+- FOUND: `.github/workflows/ci.yml`
+- FOUND: `.planning/phases/01-foundation-privacy-boundary/01-04-SUMMARY.md`
+- FOUND: commit `de86908` (Task 1 — CI workflow)
+- FOUND: commit `9a224cf` (fix iteration 1)
+- FOUND: commit `c22408e` (fix iteration 2)
+- FOUND: commit `d1fcf44` (fix iteration 3 — reached green)
+- FOUND: commit `c91cce6` (SUMMARY docs commit)
+- FOUND: green CI run `28639232382` — https://github.com/kish-jpg/banter/actions/runs/28639232382
