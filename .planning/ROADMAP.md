@@ -15,7 +15,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 
 - [x] **Phase 1: Foundation & Privacy Boundary** - Shared package, App Group plumbing, and the on-device data boundary everything else builds on (completed 2026-07-03)
 - [x] **Phase 2: Screenshot Import & OCR Pipeline** - Vision OCR + speaker attribution + user-confirmable transcript, plus paste fallback (completed 2026-07-03)
-- [ ] **Phase 3: Backend LLM Orchestration** - Psychology taxonomy artifact, then schema-enforced tagged replies + sentiment in one anti-AI-tell call
+- [x] **Phase 3: Backend LLM Orchestration** - Psychology taxonomy artifact, then schema-enforced tagged replies + sentiment in one anti-AI-tell call (completed 2026-07-03)
 - [ ] **Phase 4: Companion App UI & Paywall** - Wispr-grade onboarding, suggestion cards, tone control, love-calculator timeline, and the freemium reverse trial
 - [ ] **Phase 5: Keyboard Extension** - Thin App Group reader that inserts cached suggestions in any chat app without Full Access
 - [ ] **Phase 6: Profile Engine, XP & Grading** - Personalization from a live user profile plus own-attempt grading and visible skill progression
@@ -97,7 +97,7 @@ Decimal phases appear between their surrounding integers in numeric order.
   3. Generated replies avoid AI tells (no em-dash triads / listy tells) and read in a natural texting voice.
   4. User can generate openers from a match-profile screenshot through the same gated pipeline.
 
-**Plans**: 2/3 plans executed
+**Plans**: 3/3 plans complete
 **Mode:** mvp
 
 **Wave 1**
@@ -110,7 +110,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 
 **Wave 3** *(blocked on Wave 2)*
 
-- [ ] 03-03-PLAN.md — coaching edge function wiring + opener path + shared deno↔swift contract fixture + ubuntu CI job + GEMINI_API_KEY tripwire + smoke script (COAC-07, CALC-01)
+- [x] 03-03-PLAN.md — coaching edge function wiring + opener path + shared deno↔swift contract fixture + ubuntu CI job + GEMINI_API_KEY tripwire + smoke script (COAC-07, CALC-01)
 
 ### Phase 4: Companion App UI & Paywall
 
@@ -198,7 +198,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 → 8
 |-------|----------------|--------|-----------|
 | 1. Foundation & Privacy Boundary | 4/4 | Complete    | 2026-07-03 |
 | 2. Screenshot Import & OCR Pipeline | 5/5 | Complete    | 2026-07-03 |
-| 3. Backend LLM Orchestration | 2/3 | In Progress|  |
+| 3. Backend LLM Orchestration | 3/3 | Complete   | 2026-07-03 |
 | 4. Companion App UI & Paywall | 0/TBD | Not started | - |
 | 5. Keyboard Extension | 0/TBD | Not started | - |
 | 6. Profile Engine, XP & Grading | 0/TBD | Not started | - |

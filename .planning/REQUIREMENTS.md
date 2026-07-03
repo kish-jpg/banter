@@ -14,17 +14,17 @@
 
 ### Coaching
 
-- [ ] **COAC-01**: User receives 3 suggested replies per analysis
+- [x] **COAC-01**: User receives 3 suggested replies per analysis
 - [ ] **COAC-02**: User can select a tone (playful, sincere, witty, direct) to steer suggestions
-- [ ] **COAC-03**: Every suggested reply carries a one-line psychology tag by default (zero extra taps)
+- [x] **COAC-03**: Every suggested reply carries a one-line psychology tag by default (zero extra taps)
 - [ ] **COAC-04**: User can tap a tag to expand a plain-English "why this works" explanation with framework citation
-- [ ] **COAC-05**: Suggestions match the user's texting voice and avoid AI tells (enforced at prompt level)
+- [x] **COAC-05**: Suggestions match the user's texting voice and avoid AI tells (enforced at prompt level)
 - [x] **COAC-06**: All coaching content is gated by an evidence-based framework allowlist (Gottman, attachment theory, Aron self-disclosure) and a PUA/coercive-technique banlist — maintained as a literal artifact
-- [ ] **COAC-07**: User can generate conversation openers from a match profile screenshot
+- [x] **COAC-07**: User can generate conversation openers from a match profile screenshot
 
 ### Love Calculator
 
-- [ ] **CALC-01**: Each analyzed exchange is sentiment-scored (same structured LLM call as reply generation)
+- [x] **CALC-01**: Each analyzed exchange is sentiment-scored (same structured LLM call as reply generation)
 - [ ] **CALC-02**: User can view a per-conversation health score with a timeline of emotional factors
 - [ ] **CALC-03**: Insights are scoped per-conversation only — no persistent profile of the match
 
@@ -104,11 +104,11 @@ Which phases cover which requirements. Updated during roadmap creation.
 | CAPT-02 | Phase 2 | Complete |
 | CAPT-03 | Phase 2 | Complete |
 | COAC-06 | Phase 3 | Complete |
-| COAC-01 | Phase 3 | Pending |
-| COAC-03 | Phase 3 | Pending |
-| COAC-05 | Phase 3 | Pending |
-| COAC-07 | Phase 3 | Pending |
-| CALC-01 | Phase 3 | Pending |
+| COAC-01 | Phase 3 | Complete |
+| COAC-03 | Phase 3 | Complete |
+| COAC-05 | Phase 3 | Complete |
+| COAC-07 | Phase 3 | Complete |
+| CALC-01 | Phase 3 | Complete |
 | ONBD-01 | Phase 4 | Pending |
 | ONBD-02 | Phase 4 | Pending |
 | COAC-02 | Phase 4 | Pending |

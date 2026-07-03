@@ -4,9 +4,9 @@ milestone: v1.0
 milestone_name: milestone
 current_phase: 3
 current_phase_name: Backend LLM Orchestration
-status: executing
+status: verifying
 stopped_at: Completed 03-02-PLAN.md - prompt assembly + LLMProvider + GeminiAdapter, 23 Deno tests passing locally
-last_updated: "2026-07-03T21:23:37.170Z"
+last_updated: "2026-07-03T21:55:01.116Z"
 last_activity: 2026-07-03
 last_activity_desc: Phase 3 execution started
 progress:
@@ -30,7 +30,7 @@ See: .planning/PROJECT.md (updated 2026-07-03)
 
 Phase: 3 (Backend LLM Orchestration) — EXECUTING
 Plan: 3 of 3
-Status: Ready to execute
+Status: Phase complete — ready for verification
 Last activity: 2026-07-03 — Phase 3 execution started
 
 Progress: [██████████] 100%
@@ -66,6 +66,7 @@ Progress: [██████████] 100%
 | Phase 02-screenshot-import-ocr-pipeline P04 | 25min | 3 tasks | 15 files |
 | Phase 03-backend-llm-orchestration P01 | 12min | 2 tasks | 7 files |
 | Phase 03-backend-llm-orchestration P02 | 8min | 2 tasks | 6 files |
+| Phase 03-backend-llm-orchestration P03 | 50min | 3 tasks | 13 files |
 
 ## Accumulated Context
 
@@ -96,6 +97,9 @@ Recent decisions affecting current work:
 - [Phase 03-backend-llm-orchestration]: CoachingResponse.replies has NO confidence field, matching Swift ReplySuggestion.swift exactly; sentiment.factors is a fixed-key object, not Record<string, number>
 - [Phase 03-backend-llm-orchestration]: Anti-AI-tell directives in buildSystemInstruction describe banned constructions rather than quoting them literally, so promptAssembly.ts never trips validate.ts negative-grep checks
 - [Phase 03-backend-llm-orchestration]: requirements.mark-complete deferred to 03-03 for COAC-01/COAC-03/COAC-05/CALC-01 since 03-03 wires validate.ts into the actual HTTP response path
+- [Phase ?]: conversationId is client-minted; server echoes it back, no server-side minting (offline-first, stable for Phase 4 timeline)
+- [Phase ?]: Phase 3 is server-stateless: no SentimentEvent persistence; response carries aggregate sentiment only, event-timeline persistence deferred to Phase 4
+- [Phase ?]: docker compose restart does not reload docker-compose.yml environment block - smoke-coaching.sh uses up -d --force-recreate to pick up env changes
 
 ### Pending Todos
 
@@ -118,6 +122,6 @@ Items acknowledged and carried forward from previous milestone close:
 
 ## Session Continuity
 
-Last session: 2026-07-03T21:23:37.156Z
+Last session: 2026-07-03T21:54:30.976Z
 Stopped at: Completed 03-02-PLAN.md - prompt assembly + LLMProvider + GeminiAdapter, 23 Deno tests passing locally
 Resume file: None
