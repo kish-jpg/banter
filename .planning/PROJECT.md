@@ -77,6 +77,8 @@ The user gets instant relief (great replies, right now) while becoming a measura
 | Freemium sub; teaching tags free, depth paid | The differentiator hooks; volume + calculator monetize | — Pending |
 | Per-conversation match insights only | Ethics + App Store safety; avoids surveillance-dossier framing | — Pending |
 | Success = App Store launch + paying users | Commercial product from day one, not a portfolio piece | — Pending |
+| Self-hosted Supabase for dev/test (docker, `infra/supabase/`) | Zero cost while validating; managed hosting decision deferred to pre-launch | — Pending |
+| Gemini API first for LLM testing; provider-abstracted client | Free tier for testing; enables model-quality comparison (Claude/GPT/Gemini) before committing spend | — Pending |
 
 ## Evolution
 
