@@ -19,7 +19,7 @@ final class NetworkBoundaryGuardTests: XCTestCase {
 
         let source = try String(contentsOf: dtoFileURL, encoding: .utf8)
 
-        let forbidden = ["UIImage", ": Data", "[UInt8]", "CGImage"]
+        let forbidden = ["UIImage", "CGImage", "CIImage", "NSData", ": Data", "[Data]", "[UInt8]"]
         for token in forbidden {
             XCTAssertFalse(
                 source.contains(token),
