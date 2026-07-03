@@ -32,7 +32,7 @@ final class AppGroupRoundTripTests: XCTestCase {
         )
         AppGroupStore.write(event, forKey: "test_event")
         let read = AppGroupStore.read(SentimentEvent.self, forKey: "test_event")
-        XCTAssertEqual(read?.conversationId, event.conversationId)
+        XCTAssertEqual(read, event)
     }
 
     func testMissingKeyReturnsNil() {
