@@ -64,8 +64,25 @@ Decimal phases appear between their surrounding integers in numeric order.
   3. User can paste raw conversation text and get the same confirmable transcript as a fallback path.
   4. Nothing is sent for analysis until the user confirms the transcript.
 
-**Plans**: TBD
+**Plans**: 5 plans
 **UI hint**: yes
+
+**Wave 1**
+
+- [ ] 02-01-PLAN.md — iOS 18 bump (both config files) + Wave-0 Vision-in-simulator canary: OCRPipeline + RecognizedLine + one fixture PNG (CAPT-01)
+
+**Wave 2** *(blocked on Wave 1)*
+
+- [ ] 02-02-PLAN.md — BubbleAttributor: reading-order sort (bottom-left-origin fix) + x-alignment attribution (0.4 constant) + noise filter, with fixture-integration test (CAPT-01)
+- [ ] 02-03-PLAN.md — PasteTextParser: prefix-pattern + alternating fallback, ReDoS-safe against adversarial paste (CAPT-03)
+
+**Wave 3** *(blocked on Wave 2)*
+
+- [ ] 02-04-PLAN.md — SwiftUI slice: Banter design tokens + 3 screens (Import Entry, Parsing Progress, Confirm Transcript flip/edit/confirm) per 02-UI-SPEC.md (CAPT-01, CAPT-02, CAPT-03)
+
+**Wave 4** *(blocked on Wave 3)*
+
+- [ ] 02-05-PLAN.md — CI screenshot-artifact deliverable: BanterUITests XCUITest target + upload-artifact@v4, with human-verify checkpoint (CAPT-02)
 
 ### Phase 3: Backend LLM Orchestration
 
