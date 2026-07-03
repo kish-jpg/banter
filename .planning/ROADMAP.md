@@ -97,7 +97,20 @@ Decimal phases appear between their surrounding integers in numeric order.
   3. Generated replies avoid AI tells (no em-dash triads / listy tells) and read in a natural texting voice.
   4. User can generate openers from a match-profile screenshot through the same gated pipeline.
 
-**Plans**: TBD
+**Plans**: 3 plans
+**Mode:** mvp
+
+**Wave 1**
+
+- [ ] 03-01-PLAN.md — Psychology taxonomy artifact + post-generation validator gate, standalone Deno-tested (COAC-06)
+
+**Wave 2** *(blocked on Wave 1)*
+
+- [ ] 03-02-PLAN.md — Prompt assembly + LLMProvider interface + Gemini responseSchema + GeminiAdapter, mocked fetch (COAC-01, COAC-03, COAC-05, CALC-01)
+
+**Wave 3** *(blocked on Wave 2)*
+
+- [ ] 03-03-PLAN.md — coaching edge function wiring + opener path + shared deno↔swift contract fixture + ubuntu CI job + GEMINI_API_KEY tripwire + smoke script (COAC-07, CALC-01)
 
 ### Phase 4: Companion App UI & Paywall
 
@@ -185,7 +198,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 → 8
 |-------|----------------|--------|-----------|
 | 1. Foundation & Privacy Boundary | 4/4 | Complete    | 2026-07-03 |
 | 2. Screenshot Import & OCR Pipeline | 5/5 | Complete    | 2026-07-03 |
-| 3. Backend LLM Orchestration | 0/TBD | Not started | - |
+| 3. Backend LLM Orchestration | 0/3 | Not started | - |
 | 4. Companion App UI & Paywall | 0/TBD | Not started | - |
 | 5. Keyboard Extension | 0/TBD | Not started | - |
 | 6. Profile Engine, XP & Grading | 0/TBD | Not started | - |
