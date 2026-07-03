@@ -19,7 +19,7 @@
 - [ ] **COAC-03**: Every suggested reply carries a one-line psychology tag by default (zero extra taps)
 - [ ] **COAC-04**: User can tap a tag to expand a plain-English "why this works" explanation with framework citation
 - [ ] **COAC-05**: Suggestions match the user's texting voice and avoid AI tells (enforced at prompt level)
-- [ ] **COAC-06**: All coaching content is gated by an evidence-based framework allowlist (Gottman, attachment theory, Aron self-disclosure) and a PUA/coercive-technique banlist — maintained as a literal artifact
+- [x] **COAC-06**: All coaching content is gated by an evidence-based framework allowlist (Gottman, attachment theory, Aron self-disclosure) and a PUA/coercive-technique banlist — maintained as a literal artifact
 - [ ] **COAC-07**: User can generate conversation openers from a match profile screenshot
 
 ### Love Calculator
@@ -103,7 +103,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | CAPT-01 | Phase 2 | Complete |
 | CAPT-02 | Phase 2 | Complete |
 | CAPT-03 | Phase 2 | Complete |
-| COAC-06 | Phase 3 | Pending |
+| COAC-06 | Phase 3 | Complete |
 | COAC-01 | Phase 3 | Pending |
 | COAC-03 | Phase 3 | Pending |
 | COAC-05 | Phase 3 | Pending |

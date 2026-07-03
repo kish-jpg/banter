@@ -5,15 +5,15 @@ milestone_name: milestone
 current_phase: 3
 current_phase_name: Backend LLM Orchestration
 status: executing
-stopped_at: "Completed 02-05-PLAN.md - checkpoint resolved (3 CI screenshot defects fixed: dark mode, letterboxing, bottom-bar pinning), phase 2 complete (run 28657291388)"
-last_updated: "2026-07-03T21:03:18.117Z"
+stopped_at: Completed 03-01-PLAN.md - taxonomy artifact + validator, 12 Deno tests passing locally
+last_updated: "2026-07-03T21:11:29.504Z"
 last_activity: 2026-07-03
-last_activity_desc: Phase 2 complete, transitioned to Phase 3
+last_activity_desc: Phase 3 execution started
 progress:
   total_phases: 8
   completed_phases: 2
-  total_plans: 9
-  completed_plans: 9
+  total_plans: 12
+  completed_plans: 10
   percent: 25
 ---
 
@@ -24,14 +24,14 @@ progress:
 See: .planning/PROJECT.md (updated 2026-07-03)
 
 **Core value:** The user gets instant relief (great replies, right now) while becoming a measurably better texter over time — real skill transfer, backed by citable psychology.
-**Current focus:** Phase 2 — Screenshot Import & OCR Pipeline
+**Current focus:** Phase 3 — Backend LLM Orchestration
 
 ## Current Position
 
-Phase: 3 — Backend LLM Orchestration
-Plan: Not started
+Phase: 3 (Backend LLM Orchestration) — EXECUTING
+Plan: 2 of 3
 Status: Ready to execute
-Last activity: 2026-07-03 — Phase 2 complete, transitioned to Phase 3
+Last activity: 2026-07-03 — Phase 3 execution started
 
 Progress: [██████████] 100%
 
@@ -64,6 +64,7 @@ Progress: [██████████] 100%
 | Phase 02-screenshot-import-ocr-pipeline P02 | 12min | 2 tasks | 4 files |
 | Phase 02-screenshot-import-ocr-pipeline P03 | 8min | 1 tasks | 2 files |
 | Phase 02-screenshot-import-ocr-pipeline P04 | 25min | 3 tasks | 15 files |
+| Phase 03-backend-llm-orchestration P01 | 12min | 2 tasks | 7 files |
 
 ## Accumulated Context
 
@@ -89,6 +90,8 @@ Recent decisions affecting current work:
 - [Phase ?]: Added placeholder AppIcon.appiconset (1024x1024) - xcodebuild's actool defaults to --app-icon AppIcon and fails asset-catalog compile if none exists
 - [Phase ?]: Confirm & Continue and Start Over are pure local-state mutations, no network call, preserving CAPT-04 boundary until Phase 3
 - [Phase 02-screenshot-import-ocr-pipeline]: CI screenshot letterboxing (Task 3 checkpoint defect) was XCUIScreen.main.screenshot() whole-canvas capture, not an app layout bug - fixed by screenshotting app.windows.firstMatch instead; app-side .preferredColorScheme(.dark) and .safeAreaInset(edge: .bottom) fixes for dark-mode-default and bottom-bar pinning were also applied and are independently correct
+- [Phase ?]: Used Deno's with { type: "json" } import attribute directly (Deno 2.9.1 supports it natively, no readTextFile fallback needed)
+- [Phase ?]: validate.ts is provider-agnostic - takes a minimal structural type, never a Gemini-specific response type
 
 ### Pending Todos
 
@@ -111,6 +114,6 @@ Items acknowledged and carried forward from previous milestone close:
 
 ## Session Continuity
 
-Last session: 2026-07-03T11:32:32.222Z
-Stopped at: Completed 02-05-PLAN.md - checkpoint resolved (3 CI screenshot defects fixed: dark mode, letterboxing, bottom-bar pinning), phase 2 complete (run 28657291388)
+Last session: 2026-07-03T21:11:18.481Z
+Stopped at: Completed 03-01-PLAN.md - taxonomy artifact + validator, 12 Deno tests passing locally
 Resume file: None
