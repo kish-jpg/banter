@@ -16,6 +16,7 @@ final class ScreenshotArtifactTests: XCTestCase {
         // Import Entry: default launch, no seed arg, lands on .entry.
         let entryApp = XCUIApplication()
         entryApp.launch()
+        waitForLaunchAnimationToSettle(entryApp, matching: "Choose Screenshot")
         capture(entryApp, name: "00_import_entry")
         entryApp.terminate()
 
@@ -24,7 +25,20 @@ final class ScreenshotArtifactTests: XCTestCase {
         let confirmApp = XCUIApplication()
         confirmApp.launchArguments = ["--seed-sample-transcript"]
         confirmApp.launch()
+        waitForLaunchAnimationToSettle(confirmApp, matching: "Confirm & Continue")
         capture(confirmApp, name: "01_confirm_transcript")
+    }
+
+    /// `app.launch()` returns as soon as the app process starts — it does
+    /// NOT wait for the springboard-to-app open animation (the app's window
+    /// animating up from the home-screen icon) to finish. Capturing
+    /// immediately after launch() screenshots that transition mid-flight:
+    /// a rounded, shrunken card on a black backdrop, not the settled
+    /// full-screen UI. Waiting for a concrete post-launch element lets the
+    /// animation complete before XCUIScreen.main.screenshot() runs.
+    private func waitForLaunchAnimationToSettle(_ app: XCUIApplication, matching label: String) {
+        let element = app.buttons[label]
+        _ = element.waitForExistence(timeout: 10)
     }
 
     private func capture(_ app: XCUIApplication, name: String) {
