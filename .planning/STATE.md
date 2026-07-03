@@ -6,15 +6,15 @@ current_phase: 2
 current_phase_name: Screenshot Import & OCR Pipeline
 status: executing
 stopped_at: Completed 02-02-PLAN.md - BubbleAttributor CI-confirmed green on first push (run 28642226580)
-last_updated: "2026-07-03T06:18:55.476Z"
+last_updated: "2026-07-03T09:39:06.534Z"
 last_activity: 2026-07-03
 last_activity_desc: Completed 02-02-PLAN.md
 progress:
   total_phases: 8
   completed_phases: 1
   total_plans: 9
-  completed_plans: 6
-  percent: 67
+  completed_plans: 7
+  percent: 13
 ---
 
 # Project State
@@ -29,7 +29,7 @@ See: .planning/PROJECT.md (updated 2026-07-03)
 ## Current Position
 
 Phase: 2 (Screenshot Import & OCR Pipeline) — EXECUTING
-Plan: 3 of 5
+Plan: 4 of 5
 Status: Ready to execute
 Last activity: 2026-07-03 — Completed 02-02-PLAN.md
 
@@ -61,6 +61,7 @@ Progress: [███████░░░] 67%
 | Phase 01-foundation-privacy-boundary P04 | 20min | 2 tasks | 2 files |
 | Phase 02-screenshot-import-ocr-pipeline P01 | 15min | 2 tasks | 6 files |
 | Phase 02-screenshot-import-ocr-pipeline P02 | 12min | 2 tasks | 4 files |
+| Phase 02-screenshot-import-ocr-pipeline P03 | 8min | 1 tasks | 2 files |
 
 ## Accumulated Context
 
@@ -81,6 +82,7 @@ Recent decisions affecting current work:
 - [Phase ?]: CI-only discovery: BanterShared/Package.swift needs BOTH .iOS and .macOS platform floors when using OS-versioned APIs (Vision), because swift test --package-path compiles on the CI host's native macOS, not the iOS Simulator - added .macOS(.v15) alongside .iOS(.v18)
 - [Phase 02-screenshot-import-ocr-pipeline]: userSideXThreshold = 0.4 shipped as documented public constant with ponytail-deferral comment; real-screenshot tuning deferred, matches RESEARCH.md recommendation
 - [Phase 02-screenshot-import-ocr-pipeline]: Reading-order fix (descending boundingBox.origin.y sort) unit-tested against shuffled input to prove Pitfall 2 fix actually works, not just happy-path ordering
+- [Phase ?]: First distinct speaker name in paste text defaults to .match, not .user - matches RESEARCH.md Pattern 3/Assumptions A2; confirm screen (plan 04) corrects wrong guesses
 
 ### Pending Todos
 
@@ -103,6 +105,6 @@ Items acknowledged and carried forward from previous milestone close:
 
 ## Session Continuity
 
-Last session: 2026-07-03T06:18:55.476Z
+Last session: 2026-07-03T09:37:20.049Z
 Stopped at: Completed 02-02-PLAN.md - BubbleAttributor CI-confirmed green on first push (run 28642226580)
 Resume file: None
