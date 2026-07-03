@@ -36,12 +36,19 @@ public enum BubbleAttributor {
     /// Anchored, bounded regex only (no nested quantifiers) per the ReDoS
     /// mitigation in RESEARCH.md's Security Domain section.
     private static let timeOfDayPattern = #"^\d{1,2}:\d{2}\s?(AM|PM)?$"#
-    private static let deliveryStatusWords: Set<String> = ["Delivered", "Read", "Today", "Yesterday"]
+    private static let deliveryStatusWords: Set<String> = ["delivered", "read", "today", "yesterday"]
 
+    // ponytail: case-folded exact-match against a fixed word list is a known,
+    // accepted false-negative risk — a real one-word message that is exactly
+    // "Read"/"Today"/etc. is silently dropped with no recovery path (the user
+    // never sees it to correct it in Confirm). Upgrade path: only treat these
+    // as noise when position/reading-order context (e.g. no bubble alignment
+    // change) also indicates a status line, once real screenshots surface
+    // this as an actual false-negative rate worth the complexity.
     private static func isNoise(_ line: RecognizedLine) -> Bool {
         let trimmed = line.text.trimmingCharacters(in: .whitespacesAndNewlines)
         if trimmed.isEmpty { return true }
-        if deliveryStatusWords.contains(trimmed) { return true }
+        if deliveryStatusWords.contains(trimmed.lowercased()) { return true }
         if trimmed.range(of: timeOfDayPattern, options: .regularExpression) != nil { return true }
         return false
     }
