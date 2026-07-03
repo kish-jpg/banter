@@ -44,9 +44,15 @@ bash Backend/scripts/smoke-coaching.sh
 
 This copies `Backend/functions/coaching/` into
 `infra/supabase/docker/volumes/functions/coaching/` (the gitignored sync
-target), restarts the `functions` container, and POSTs a sample transcript to
-the running stack. Requires Docker Desktop running and the self-hosted
-Supabase stack already up (`infra/supabase/docker/docker-compose.yml`).
+target), recreates the `functions` container (`docker compose up -d
+--force-recreate functions` — a plain `restart` does NOT reload
+`docker-compose.yml`'s `environment:` block, so a bare restart would keep
+serving with a stale/missing `GEMINI_API_KEY`), and POSTs a sample transcript
+to the running stack. Requires Docker Desktop running and the self-hosted
+Supabase stack already up (`infra/supabase/docker/docker-compose.yml`), with
+`GEMINI_API_KEY` set in `infra/supabase/docker/.env` and forwarded to the
+`functions` service's `environment:` block (both gitignored, deploy-target
+only — never committed).
 
 ## Kong route (Open Question 1 — RESOLVED)
 

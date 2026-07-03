@@ -32,8 +32,8 @@ echo "Syncing Backend/functions/coaching/ -> $SYNC_TARGET (tracked source is aut
 mkdir -p "$SYNC_TARGET"
 cp -r "$REPO_ROOT/Backend/functions/coaching/." "$SYNC_TARGET/"
 
-echo "Restarting functions container to pick up the synced code..."
-(cd "$SUPABASE_DOCKER" && docker compose restart functions)
+echo "Recreating functions container to pick up the synced code and env changes..."
+(cd "$SUPABASE_DOCKER" && docker compose up -d --force-recreate functions)
 
 echo "Waiting for functions container to come back up..."
 sleep 3
