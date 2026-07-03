@@ -10,8 +10,12 @@ public enum PasteTextParser {
     private static let namePrefixPattern = #"^([\w\s]{1,20}):\s*(.+)$"#
 
     public static func parse(_ raw: String) -> [ConversationMessage] {
+        // split(separator: "\n") alone fails on CRLF input: Swift fuses
+        // "\r\n" into a single Character (extended grapheme cluster), so a
+        // lone "\n" separator never matches it. Split on any newline
+        // CharacterSet member instead, which handles \n, \r, and \r\n alike.
         let lines = raw
-            .split(separator: "\n", omittingEmptySubsequences: true)
+            .split(omittingEmptySubsequences: true, whereSeparator: { $0.unicodeScalars.allSatisfy { CharacterSet.newlines.contains($0) } })
             .map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }
             .filter { !$0.isEmpty }
 
