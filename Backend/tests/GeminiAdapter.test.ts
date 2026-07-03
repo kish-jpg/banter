@@ -80,7 +80,7 @@ Deno.test("outgoing request body carries responseMimeType application/json and m
   }
 });
 
-Deno.test("outgoing request carries the API key and a systemInstruction built from allowed tags", async () => {
+Deno.test("outgoing request carries the API key via x-goog-api-key header (WR-03), not the URL, and a systemInstruction built from allowed tags", async () => {
   const originalFetch = globalThis.fetch;
   const captured: any[] = [];
   try {
@@ -89,7 +89,8 @@ Deno.test("outgoing request carries the API key and a systemInstruction built fr
     await adapter.generateCoaching(sampleRequest, allowedTags);
 
     const urlStr = String(captured[0].url);
-    assertStringIncludes(urlStr, "key=test-api-key-123");
+    assert(!urlStr.includes("test-api-key-123"), "API key must not appear in the URL");
+    assertEquals(captured[0].init.headers["x-goog-api-key"], "test-api-key-123");
 
     const body = JSON.parse(captured[0].init.body as string);
     assertStringIncludes(body.systemInstruction.parts[0].text, allowedTags[0].tagName);

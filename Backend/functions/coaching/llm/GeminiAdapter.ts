@@ -22,9 +22,9 @@ export class GeminiAdapter implements LLMProvider {
     const systemInstruction = buildSystemInstruction(allowedTags, req.tone);
     const contents = [{ role: "user", parts: [{ text: formatTranscript(req.transcript) }] }];
 
-    const response = await fetch(`${GEMINI_URL}?key=${this.apiKey}`, {
+    const response = await fetch(GEMINI_URL, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: { "Content-Type": "application/json", "x-goog-api-key": this.apiKey },
       body: JSON.stringify({
         contents,
         systemInstruction: { parts: [{ text: systemInstruction }] },
@@ -55,9 +55,9 @@ export class GeminiAdapter implements LLMProvider {
       },
     ];
 
-    const response = await fetch(`${GEMINI_URL}?key=${this.apiKey}`, {
+    const response = await fetch(GEMINI_URL, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: { "Content-Type": "application/json", "x-goog-api-key": this.apiKey },
       body: JSON.stringify({
         contents,
         systemInstruction: { parts: [{ text: systemInstruction }] },
