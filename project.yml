@@ -35,3 +35,20 @@ targets:
           - group.com.banter.shared
     info:
       path: BanterKeyboard/Info.plist
+  BanterUITests:
+    type: bundle.ui-testing
+    platform: iOS
+    deploymentTarget: "18.0"
+    sources:
+      - path: BanterUITests
+    dependencies:
+      - target: BanterApp
+
+schemes:
+  BanterApp:
+    build:
+      targets:
+        BanterApp: all
+    test:
+      targets:
+        - BanterUITests
