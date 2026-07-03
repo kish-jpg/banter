@@ -13,7 +13,7 @@ Banter goes from empty Xcode project to App Store launch along a strict dependen
 
 Decimal phases appear between their surrounding integers in numeric order.
 
-- [ ] **Phase 1: Foundation & Privacy Boundary** - Shared package, App Group plumbing, and the on-device data boundary everything else builds on
+- [x] **Phase 1: Foundation & Privacy Boundary** - Shared package, App Group plumbing, and the on-device data boundary everything else builds on (completed 2026-07-03)
 - [ ] **Phase 2: Screenshot Import & OCR Pipeline** - Vision OCR + speaker attribution + user-confirmable transcript, plus paste fallback
 - [ ] **Phase 3: Backend LLM Orchestration** - Psychology taxonomy artifact, then schema-enforced tagged replies + sentiment in one anti-AI-tell call
 - [ ] **Phase 4: Companion App UI & Paywall** - Wispr-grade onboarding, suggestion cards, tone control, love-calculator timeline, and the freemium reverse trial
@@ -37,7 +37,7 @@ Decimal phases appear between their surrounding integers in numeric order.
   3. The network/send boundary only accepts structured text — there is no code path that transmits a raw image off-device.
   4. Shared model types (transcript, suggestion, sentiment event) are defined once and imported by both targets.
 
-**Plans**: 3/4 plans executed
+**Plans**: 4/4 plans complete
 **Wave 1**
 
 - [x] 01-01-PLAN.md — Split banter/ into its own dedicated private GitHub repo + Xcode/SPM .gitignore (blocking CI prerequisite)
@@ -49,7 +49,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 
 **Wave 3** *(blocked on Wave 2 completion)*
 
-- [ ] 01-04-PLAN.md — GitHub Actions macOS CI: generate project, build both targets signing-free on simulator, run both tests green (the phase gate)
+- [x] 01-04-PLAN.md — GitHub Actions macOS CI: generate project, build both targets signing-free on simulator, run both tests green (the phase gate)
 
 ### Phase 2: Screenshot Import & OCR Pipeline
 
@@ -166,7 +166,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 → 8
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Foundation & Privacy Boundary | 3/4 | In Progress|  |
+| 1. Foundation & Privacy Boundary | 4/4 | Complete   | 2026-07-03 |
 | 2. Screenshot Import & OCR Pipeline | 0/TBD | Not started | - |
 | 3. Backend LLM Orchestration | 0/TBD | Not started | - |
 | 4. Companion App UI & Paywall | 0/TBD | Not started | - |

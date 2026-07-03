@@ -4,17 +4,17 @@ milestone: v1.0
 milestone_name: milestone
 current_phase: 1
 current_phase_name: Foundation & Privacy Boundary
-status: executing
-stopped_at: Completed 01-03-PLAN.md — XcodeGen project.yml + BanterApp/BanterKeyboard targets done, ready for 01-04
-last_updated: "2026-07-03T04:40:02.998Z"
+status: verifying
+stopped_at: Completed 01-04-PLAN.md - CI workflow green (run 28639232382), Phase 1 complete
+last_updated: "2026-07-03T04:57:54.906Z"
 last_activity: 2026-07-02
 last_activity_desc: Phase 1 execution started
 progress:
   total_phases: 8
-  completed_phases: 0
+  completed_phases: 1
   total_plans: 4
-  completed_plans: 3
-  percent: 0
+  completed_plans: 4
+  percent: 13
 ---
 
 # Project State
@@ -30,7 +30,7 @@ See: .planning/PROJECT.md (updated 2026-07-03)
 
 Phase: 1 (Foundation & Privacy Boundary) — EXECUTING
 Plan: 4 of 4
-Status: Ready to execute
+Status: Phase complete — ready for verification
 Last activity: 2026-07-02 — Phase 1 execution started
 
 Progress: [░░░░░░░░░░] 0%
@@ -58,6 +58,7 @@ Progress: [░░░░░░░░░░] 0%
 | Phase 01-foundation-privacy-boundary P01 | 4min | 2 tasks | 1 files |
 | Phase 01-foundation-privacy-boundary P02 | 5min | 3 tasks | 8 files |
 | Phase 01-foundation-privacy-boundary P03 | 12min | 3 tasks | 8 files |
+| Phase 01-foundation-privacy-boundary P04 | 20min | 2 tasks | 2 files |
 
 ## Accumulated Context
 
@@ -72,6 +73,8 @@ Recent decisions affecting current work:
 - [Phase 01-foundation-privacy-boundary]: Created kish-jpg/banter as PRIVATE despite 10x GitHub Actions macOS-runner minutes cost — commercial product with future proprietary backend logic
 - [Phase 01-foundation-privacy-boundary]: GSD .planning/ scaffolding committed into the new dedicated kish-jpg/banter repo alongside the code it describes, per RESEARCH.md Git Topology recommendation
 - [Phase 01-foundation-privacy-boundary]: BanterShared source+tests authored together per task (no local Swift toolchain); grep-based acceptance criteria substituted for swift build/test, compile proof deferred to CI (plan 01-04)
+- [Phase ?]: [Phase 01-foundation-privacy-boundary]: XcodeGen cannot attach a local SPM package test target to an Xcode scheme's test action - BanterShared tested via swift test --package-path, not xcodebuild test -scheme
+- [Phase ?]: [Phase 01-foundation-privacy-boundary]: Phase 1 CI gate reached green on run 28639232382 - both targets build on iOS Simulator, App Group round-trip + CAPT-04 guard tests pass
 
 ### Pending Todos
 
@@ -94,6 +97,6 @@ Items acknowledged and carried forward from previous milestone close:
 
 ## Session Continuity
 
-Last session: 2026-07-03T04:40:02.988Z
-Stopped at: Completed 01-03-PLAN.md — XcodeGen project.yml + BanterApp/BanterKeyboard targets done, ready for 01-04
+Last session: 2026-07-03T04:57:54.895Z
+Stopped at: Completed 01-04-PLAN.md - CI workflow green (run 28639232382), Phase 1 complete
 Resume file: None
