@@ -124,6 +124,9 @@ struct ConfirmTranscriptView: View {
                 .clipShape(RoundedRectangle(cornerRadius: Banter.Radius.lg))
                 .accessibilityLabel("\(label): \(message.text)")
                 .onTapGesture {
+                    if let openIndex = editingIndex, openIndex != index {
+                        commitEdit(index: openIndex)
+                    }
                     editingText = message.text
                     editingIndex = index
                 }
