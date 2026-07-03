@@ -10,8 +10,9 @@ final class NetworkBoundaryGuardTests: XCTestCase {
         // Sources/BanterShared/NetworkDTOs.swift relative to it.
         let thisFile = URL(fileURLWithPath: #filePath)
         let dtoFileURL = thisFile
-            .deletingLastPathComponent() // BanterSharedTests/
-            .deletingLastPathComponent() // Tests/
+            .deletingLastPathComponent() // NetworkBoundaryGuardTests.swift -> BanterSharedTests/
+            .deletingLastPathComponent() // BanterSharedTests/ -> Tests/
+            .deletingLastPathComponent() // Tests/ -> BanterShared/ (package root)
             .appendingPathComponent("Sources")
             .appendingPathComponent("BanterShared")
             .appendingPathComponent("NetworkDTOs.swift")
