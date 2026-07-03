@@ -1,0 +1,48 @@
+import Foundation
+
+/// Turns raw OCR lines (plan 01's RecognizedLine) into an ordered,
+/// speaker-attributed transcript. Two hard pitfalls live here:
+/// - Vision's boundingBox origin is bottom-left, so reading order requires
+///   a descending sort by y, not ascending.
+/// - Noise lines (timestamps, delivery receipts) must never be forced into
+///   the transcript as fake messages.
+public enum BubbleAttributor {
+    /// x-position threshold (normalized 0...1, leading edge) below which a
+    /// line is attributed to the match (left column), else the user (right
+    /// column).
+    ///
+    /// ponytail: 0.4 is a reasonable default for a roughly-centered two-column
+    /// layout, not tuned against real screenshots yet. Upgrade path: replace
+    /// with a per-import calibrated threshold once real Tinder/Hinge/Bumble
+    /// screenshots are collected during execution and a wrong-attribution
+    /// rate is measurable.
+    public static let userSideXThreshold: CGFloat = 0.4
+
+    public static func attribute(_ lines: [RecognizedLine]) -> [ConversationMessage] {
+        // Pitfall 2: Vision's boundingBox origin is bottom-left, so the
+        // topmost line has the largest y. Sort descending for top-to-bottom
+        // reading order.
+        let sorted = lines.sorted { $0.boundingBox.origin.y > $1.boundingBox.origin.y }
+        let content = sorted.filter { !isNoise($0) }
+
+        var order = 0
+        return content.map { line in
+            let speaker: Speaker = line.boundingBox.origin.x < userSideXThreshold ? .match : .user
+            defer { order += 1 }
+            return ConversationMessage(speaker: speaker, text: line.text, order: order)
+        }
+    }
+
+    /// Anchored, bounded regex only (no nested quantifiers) per the ReDoS
+    /// mitigation in RESEARCH.md's Security Domain section.
+    private static let timeOfDayPattern = #"^\d{1,2}:\d{2}\s?(AM|PM)?$"#
+    private static let deliveryStatusWords: Set<String> = ["Delivered", "Read", "Today", "Yesterday"]
+
+    private static func isNoise(_ line: RecognizedLine) -> Bool {
+        let trimmed = line.text.trimmingCharacters(in: .whitespacesAndNewlines)
+        if trimmed.isEmpty { return true }
+        if deliveryStatusWords.contains(trimmed) { return true }
+        if trimmed.range(of: timeOfDayPattern, options: .regularExpression) != nil { return true }
+        return false
+    }
+}
