@@ -214,3 +214,22 @@ None — no external accounts, API keys, or manual configuration needed. PhotosU
 ---
 *Phase: 02-screenshot-import-ocr-pipeline*
 *Completed: 2026-07-03*
+
+## Self-Check: PASSED
+
+- FOUND: `BanterApp/DesignSystem/BanterTokens.swift`
+- FOUND: `BanterApp/DesignSystem/Assets.xcassets/AccentColor.colorset/Contents.json`
+- FOUND: `BanterApp/DesignSystem/Assets.xcassets/AppIcon.appiconset/icon-1024.png`
+- FOUND: `BanterApp/Import/ImportFlowModel.swift`
+- FOUND: `BanterApp/Import/ImportEntryView.swift`
+- FOUND: `BanterApp/Import/ParsingProgressView.swift`
+- FOUND: `BanterApp/Import/ConfirmTranscriptView.swift`
+- FOUND: `BanterApp/ContentView.swift`
+- FOUND: commit `c083823` (Task 1)
+- FOUND: commit `d410946` (Task 2)
+- FOUND: commit `2e2158d` (Task 3)
+- FOUND: commit `0867ba7` (fix 1)
+- FOUND: commit `72a33e7` (fix 2)
+- FOUND: commit `bc99a1c` (fix 3)
+- FOUND: commit `d22f59c` (SUMMARY)
+- FOUND: CI run 28653268129 — GREEN, all 3 build/test steps passed
