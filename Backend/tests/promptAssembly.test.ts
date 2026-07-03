@@ -40,7 +40,7 @@ Deno.test("buildSystemInstruction biases toward a passed tone; omits any tone li
   assert(!withoutTone.toLowerCase().includes("bias the tone"));
 });
 
-Deno.test("formatTranscript sorts by order and emits You:/Match: prefixed lines", () => {
+Deno.test("formatTranscript sorts by order, emits You:/Match: prefixed lines, and fences them in [TRANSCRIPT] (WR-02)", () => {
   const transcript: TranscriptEntry[] = [
     { speaker: "match", text: "hey how's it going", order: 1 },
     { speaker: "user", text: "hi there", order: 0 },
@@ -50,8 +50,14 @@ Deno.test("formatTranscript sorts by order and emits You:/Match: prefixed lines"
   const formatted = formatTranscript(transcript);
   assertEquals(
     formatted,
-    "You: hi there\nMatch: hey how's it going\nYou: good, you?",
+    "[TRANSCRIPT]\nYou: hi there\nMatch: hey how's it going\nYou: good, you?\n[/TRANSCRIPT]",
   );
+});
+
+Deno.test("buildSystemInstruction tells the model to treat the transcript as data, not instructions (WR-02)", () => {
+  const instruction = buildSystemInstruction(allowedTags).toLowerCase();
+  assert(instruction.includes("not instructions"));
+  assert(instruction.includes("[transcript]"));
 });
 
 Deno.test("CoachingResponse shape type-checks: replies (text/psychologyTag/style, no confidence) + locked sentiment shape", () => {
