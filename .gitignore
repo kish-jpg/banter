@@ -9,3 +9,4 @@ Banter.xcodeproj/
 # GSD research web-fetch cache (regeneratable, not source of truth)
 .planning/research/.cache/
 infra/supabase/
+.env.local
