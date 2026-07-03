@@ -26,7 +26,8 @@ findings:
   warning: 3
   info: 2
   total: 5
-status: issues_found
+status: clean
+resolved: 2026-07-03T05:13Z
 ---
 
 # Phase 1: Code Review Report
@@ -113,8 +114,19 @@ XCTAssertEqual(read, event)
 ```
 If the pinned formula genuinely becomes unavailable, that failure is itself useful signal (forces a deliberate re-pin) rather than a silent version bump.
 
+## Resolution
+
+All 5 findings fixed and verified green in CI (`gh run 28639952385`, commit `ab2115e`).
+
+- **WR-01** (`77c87ae`): CI now also greps the generated `Banter.xcodeproj/project.pbxproj` for `CODE_SIGN_ENTITLEMENTS` pointing at each target's entitlements file, in addition to the existing checked-in-plist grep. This actually exercises the XcodeGen generation output, closing the schema-drift gap named in T-01-11.
+- **WR-02** (`ad46f74`): Forbidden-token list in `NetworkBoundaryGuardTests.swift` broadened to `["UIImage", "CGImage", "CIImage", "NSData", ": Data", "[Data]", "[UInt8]"]`.
+- **WR-03** (`4a069cb`): `AppGroupStore.write`/`read` now call `assertionFailure` on suiteName resolution failure and encode/decode failure, loud in debug/CI, compiled out in release.
+- **IN-01** (`13285bd`): `testSentimentEventRoundTrips` now asserts full `XCTAssertEqual(read, event)` (SentimentEvent's default `Codable` round-trips `Date` via `TimeInterval`, no custom strategy, so full equality is safe), matching its sibling tests.
+- **IN-02** (`ab2115e`): Discovered during CI verification that `xcodegen@2.45.4` is not a real Homebrew formula alias — `brew install xcodegen@2.45.4` fails outright (no versioned bottle exists), which the old `|| brew install xcodegen` fallback was silently masking. Re-pinned by installing unversioned `xcodegen` then asserting `xcodegen version` resolves to exactly `2.45.4`, failing the step loudly on drift instead of silently drifting — preserves IN-02's intent given the versioned-formula approach was never actually viable on this runner's tap.
+
 ---
 
 _Reviewed: 2026-07-03T05:05:57Z_
 _Reviewer: Claude (gsd-code-reviewer)_
 _Depth: standard_
+_Resolved: 2026-07-03T05:13Z by Claude (gsd-code-fixer)_
