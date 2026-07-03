@@ -60,7 +60,7 @@ struct ImportEntryView: View {
                 }
             }
         }
-        .background(Banter.Colors.background)
+        .background(Banter.Colors.background.ignoresSafeArea())
         .onChange(of: selectedItem) { _, newItem in
             Task { await loadSelectedItem(newItem) }
         }

@@ -22,7 +22,7 @@ struct ParsingProgressView: View {
             Spacer()
         }
         .padding(.horizontal, Banter.Spacing.md)
-        .background(Banter.Colors.background)
+        .background(Banter.Colors.background.ignoresSafeArea())
     }
 
     private var progressContent: some View {
