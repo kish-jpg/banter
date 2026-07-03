@@ -1,0 +1,63 @@
+name: CI
+on: [push, pull_request]
+
+jobs:
+  build-and-test:
+    runs-on: macos-26
+    env:
+      SIMULATOR_DESTINATION: "platform=iOS Simulator,name=iPhone 17"
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Select Xcode
+        run: sudo xcode-select -s /Applications/Xcode_26.5.app
+
+      - name: Cache SPM
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/Library/Caches/org.swift.swiftpm
+            ~/Library/org.swift.swiftpm
+            .build
+          key: ${{ runner.os }}-spm-${{ hashFiles('**/Package.resolved') }}
+          restore-keys: |
+            ${{ runner.os }}-spm-
+
+      - name: Install XcodeGen
+        run: brew install xcodegen@2.45.4 || brew install xcodegen
+
+      - name: Generate project
+        run: xcodegen generate
+
+      - name: Assert App Group entitlement survived generation
+        run: |
+          for f in BanterApp/BanterApp.entitlements BanterKeyboard/BanterKeyboard.entitlements; do
+            if ! grep -q 'group.com.banter.shared' "$f"; then
+              echo "::error::App Group entitlement missing from $f after xcodegen generate"
+              exit 1
+            fi
+          done
+
+      - name: Build BanterApp (simulator)
+        run: |
+          xcodebuild build \
+            -project Banter.xcodeproj \
+            -scheme BanterApp \
+            -destination "$SIMULATOR_DESTINATION" \
+            CODE_SIGNING_ALLOWED=NO
+
+      - name: Test BanterShared (via BanterApp scheme)
+        run: |
+          xcodebuild test \
+            -project Banter.xcodeproj \
+            -scheme BanterApp \
+            -destination "$SIMULATOR_DESTINATION" \
+            CODE_SIGNING_ALLOWED=NO
+
+      - name: Build BanterKeyboard (simulator)
+        run: |
+          xcodebuild build \
+            -project Banter.xcodeproj \
+            -scheme BanterKeyboard \
+            -destination "$SIMULATOR_DESTINATION" \
+            CODE_SIGNING_ALLOWED=NO
