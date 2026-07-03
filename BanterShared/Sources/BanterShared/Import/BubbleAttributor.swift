@@ -19,10 +19,16 @@ public enum BubbleAttributor {
     public static let userSideXThreshold: CGFloat = 0.4
 
     public static func attribute(_ lines: [RecognizedLine]) -> [ConversationMessage] {
+        // Defensive: a NaN origin would make the sort comparator an invalid
+        // strict-weak-ordering (undefined behavior for sorted(by:)). Vision's
+        // contract guarantees finite 0...1 values, but drop anything that
+        // isn't rather than trust it blindly.
+        let finiteLines = lines.filter { $0.boundingBox.origin.y.isFinite && $0.boundingBox.origin.x.isFinite }
+
         // Pitfall 2: Vision's boundingBox origin is bottom-left, so the
         // topmost line has the largest y. Sort descending for top-to-bottom
         // reading order.
-        let sorted = lines.sorted { $0.boundingBox.origin.y > $1.boundingBox.origin.y }
+        let sorted = finiteLines.sorted { $0.boundingBox.origin.y > $1.boundingBox.origin.y }
         let content = sorted.filter { !isNoise($0) }
 
         var order = 0
