@@ -1,0 +1,29 @@
+{
+  "replies": [
+    {
+      "text": "haha okay you've officially sold me on the hiking trip",
+      "psychologyTag": "Turning toward a bid",
+      "style": "playful"
+    },
+    {
+      "text": "that actually makes a lot of sense, I get that feeling too",
+      "psychologyTag": "Reflective validation",
+      "style": "sincere"
+    },
+    {
+      "text": "what got you into that in the first place",
+      "psychologyTag": "Reciprocal self-disclosure",
+      "style": "direct"
+    }
+  ],
+  "sentiment": {
+    "score": 0.72,
+    "factors": {
+      "interest": 0.8,
+      "reciprocity": 0.65,
+      "warmth": 0.75,
+      "responsiveness": 0.7
+    },
+    "signal": "warming up, engaged and asking questions back"
+  }
+}
