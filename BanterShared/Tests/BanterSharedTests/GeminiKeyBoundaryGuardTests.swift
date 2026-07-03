@@ -20,6 +20,7 @@ final class GeminiKeyBoundaryGuardTests: XCTestCase {
         let scanRoots = [
             repoRoot.appendingPathComponent("BanterShared").appendingPathComponent("Sources"),
             repoRoot.appendingPathComponent("BanterApp"),
+            repoRoot.appendingPathComponent("BanterKeyboard"),
         ]
 
         let forbidden = ["GEMINI_API_KEY", "generativelanguage.googleapis.com"]
