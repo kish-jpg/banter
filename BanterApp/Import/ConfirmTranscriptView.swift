@@ -35,9 +35,9 @@ struct ConfirmTranscriptView: View {
     private var header: some View {
         VStack(alignment: .leading, spacing: Banter.Spacing.xs) {
             Text("Confirm your conversation")
-                .font(Banter.Type.heading)
+                .font(Banter.`Type`.heading)
             Text("Tap a name to fix who said what. Tap any message to edit it.")
-                .font(Banter.Type.label)
+                .font(Banter.`Type`.label)
                 .foregroundStyle(Banter.Colors.textSecondary)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
@@ -80,7 +80,7 @@ struct ConfirmTranscriptView: View {
             }
         } label: {
             Text(label)
-                .font(Banter.Type.label)
+                .font(Banter.`Type`.label)
                 .padding(.horizontal, Banter.Spacing.xs)
                 .padding(.vertical, Banter.Spacing.xs / 2)
                 .background(Banter.Colors.accent.opacity(0.15))
@@ -97,7 +97,7 @@ struct ConfirmTranscriptView: View {
         let label = message.speaker == .user ? "You" : "Match"
         if editingIndex == index {
             TextEditor(text: $editingText)
-                .font(Banter.Type.body)
+                .font(Banter.`Type`.body)
                 .foregroundStyle(Banter.Colors.textPrimary)
                 .padding(Banter.Spacing.sm)
                 .frame(minHeight: 44)
@@ -115,7 +115,7 @@ struct ConfirmTranscriptView: View {
                 .onSubmit { commitEdit(index: index) }
         } else {
             Text(message.text)
-                .font(Banter.Type.body)
+                .font(Banter.`Type`.body)
                 .foregroundStyle(Banter.Colors.textPrimary)
                 .padding(Banter.Spacing.sm)
                 .frame(minHeight: 44)
@@ -139,9 +139,9 @@ struct ConfirmTranscriptView: View {
         VStack(spacing: Banter.Spacing.md) {
             Spacer()
             Text("Couldn't find any messages")
-                .font(Banter.Type.heading)
+                .font(Banter.`Type`.heading)
             Text("Try a clearer screenshot of the full conversation, or paste the text instead.")
-                .font(Banter.Type.body)
+                .font(Banter.`Type`.body)
                 .foregroundStyle(Banter.Colors.textSecondary)
                 .multilineTextAlignment(.center)
                 .padding(.horizontal, Banter.Spacing.md)
@@ -149,7 +149,7 @@ struct ConfirmTranscriptView: View {
                 model.startOver()
             } label: {
                 Text("Try Another Screenshot")
-                    .font(Banter.Type.body)
+                    .font(Banter.`Type`.body)
                     .frame(maxWidth: .infinity)
                     .frame(minHeight: 44)
             }
@@ -173,7 +173,7 @@ struct ConfirmTranscriptView: View {
                     }
                 } label: {
                     Text("Start Over")
-                        .font(Banter.Type.body)
+                        .font(Banter.`Type`.body)
                         .foregroundStyle(Banter.Colors.destructive)
                         .frame(minHeight: 44)
                 }
@@ -184,7 +184,7 @@ struct ConfirmTranscriptView: View {
                     model.confirm()
                 } label: {
                     Text("Confirm & Continue")
-                        .font(Banter.Type.body)
+                        .font(Banter.`Type`.body)
                         .foregroundStyle(.white)
                         .frame(maxWidth: .infinity)
                         .frame(minHeight: 44)
@@ -201,7 +201,7 @@ struct ConfirmTranscriptView: View {
 
     private var clearedToast: some View {
         Text("Cleared. Undo")
-            .font(Banter.Type.label)
+            .font(Banter.`Type`.label)
             .padding(.horizontal, Banter.Spacing.md)
             .padding(.vertical, Banter.Spacing.sm)
             .background(Banter.Colors.surface)

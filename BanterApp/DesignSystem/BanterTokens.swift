@@ -25,7 +25,7 @@ enum Banter {
     /// Typography built on Dynamic Type text styles, never fixed point
     /// sizes — required for accessibility scaling (02-UI-SPEC.md
     /// "Typography", "Accessibility Checklist").
-    enum Type {
+    enum `Type` {
         static let display: Font = .largeTitle.weight(.bold)
         static let heading: Font = .title2.weight(.semibold)
         static let body: Font = .body

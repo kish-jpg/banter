@@ -34,10 +34,10 @@ struct ParsingProgressView: View {
                 .frame(width: 48, height: 48)
 
             Text(heading)
-                .font(Banter.Type.heading)
+                .font(Banter.`Type`.heading)
 
             Text("This stays on your device.")
-                .font(Banter.Type.label)
+                .font(Banter.`Type`.label)
                 .foregroundStyle(Banter.Colors.textSecondary)
                 .padding(.top, Banter.Spacing.sm)
         }
@@ -51,10 +51,10 @@ struct ParsingProgressView: View {
                 .accessibilityHidden(true)
 
             Text("Couldn't read that screenshot")
-                .font(Banter.Type.heading)
+                .font(Banter.`Type`.heading)
 
             Text("Make sure the chat text is clearly visible and try again, or paste the conversation as text.")
-                .font(Banter.Type.body)
+                .font(Banter.`Type`.body)
                 .foregroundStyle(Banter.Colors.textSecondary)
                 .multilineTextAlignment(.center)
 
@@ -62,7 +62,7 @@ struct ParsingProgressView: View {
                 onTryAgain()
             } label: {
                 Text("Try Again")
-                    .font(Banter.Type.body)
+                    .font(Banter.`Type`.body)
                     .frame(maxWidth: .infinity)
                     .frame(minHeight: 44)
             }
@@ -74,7 +74,7 @@ struct ParsingProgressView: View {
                 onPasteInstead()
             } label: {
                 Text("Paste Text Instead")
-                    .font(Banter.Type.body)
+                    .font(Banter.`Type`.body)
                     .foregroundStyle(Banter.Colors.accent)
                     .frame(minHeight: 44)
             }
