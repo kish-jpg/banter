@@ -47,4 +47,46 @@ final class OCRPipelineTests: XCTestCase {
             XCTAssertTrue((0...1).contains(line.boundingBox.height), "boundingBox.height out of 0...1: \(line.boundingBox)")
         }
     }
+
+    /// End-to-end proof that OCR + attribution compose correctly: a real
+    /// screenshot fixture containing a left message, a right message, and
+    /// timestamp/"Delivered" noise flows through OCRPipeline.recognize then
+    /// BubbleAttributor.attribute into a clean, correctly-attributed,
+    /// noise-free transcript.
+    func testFixtureThroughAttributionDropsNoiseAndAttributes() async throws {
+        let url = try XCTUnwrap(
+            Bundle.module.url(forResource: "timestamp_noise", withExtension: "png", subdirectory: "Fixtures")
+                ?? Bundle.module.url(forResource: "timestamp_noise", withExtension: "png"),
+            "Fixture timestamp_noise.png not found in Bundle.module"
+        )
+        let data = try Data(contentsOf: url)
+
+        #if canImport(UIKit)
+        let uiImage = try XCTUnwrap(UIImage(data: data))
+        let cgImage = try XCTUnwrap(uiImage.cgImage)
+        #else
+        let provider = try XCTUnwrap(CGDataProvider(data: data as CFData))
+        let cgImage = try XCTUnwrap(
+            CGImage(
+                pngDataProviderSource: provider,
+                decode: nil,
+                shouldInterpolate: true,
+                intent: .defaultIntent
+            )
+        )
+        #endif
+
+        let lines = try await OCRPipeline.recognize(in: cgImage)
+        let messages = BubbleAttributor.attribute(lines)
+
+        XCTAssertEqual(messages.count, 2, "Expected exactly 2 real messages, noise excluded. Got: \(messages.map(\.text))")
+
+        let texts = messages.map { $0.text.lowercased() }
+        XCTAssertFalse(texts.contains { $0.contains("2:14") }, "Timestamp noise leaked into transcript: \(texts)")
+        XCTAssertFalse(texts.contains { $0.contains("delivered") }, "Delivery-status noise leaked into transcript: \(texts)")
+
+        let bySpeaker = Dictionary(uniqueKeysWithValues: messages.map { ($0.speaker, $0.text.lowercased()) })
+        XCTAssertEqual(bySpeaker[.match]?.contains("hey"), true, "Left bubble should attribute to .match")
+        XCTAssertEqual(bySpeaker[.user]?.contains("sounds good"), true, "Right bubble should attribute to .user")
+    }
 }
