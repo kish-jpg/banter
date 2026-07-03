@@ -22,7 +22,37 @@ findings:
   warning: 4
   info: 2
   total: 7
-status: issues_found
+status: clean
+resolved: 2026-07-03T11:58:00Z
+resolutions:
+  - id: CR-01
+    status: fixed
+    commit: a26633e
+    note: "Wrapped --seed-sample-transcript launch-argument handling in #if DEBUG. CI's xcodebuild test (no -configuration flag) builds Debug by default, confirmed green post-fix — ScreenshotArtifactTests still reaches .confirm via the seeded transcript."
+  - id: WR-01
+    status: fixed
+    commit: b714a96
+    note: "Added State.entry(startInPasteMode:) and ImportFlowModel.pasteInsteadFromFailure(); ContentView/ImportEntryView now route the failure screen's Paste Text Instead CTA into paste mode instead of aliasing retryFromFailure()."
+  - id: WR-02
+    status: fixed
+    commit: ad3453e
+    note: "messageBubble's onTapGesture now commits any already-open row's edit via commitEdit(index:) before switching editingIndex to the newly-tapped row."
+  - id: WR-03
+    status: fixed
+    commits: [c116927, d34804a]
+    note: "Trim widened to .whitespacesAndNewlines (c116927), but CI caught a deeper issue the review guidance didn't surface: split(separator: \"\\n\") never matches CRLF input because Swift fuses \"\\r\\n\" into a single Character (extended grapheme cluster). Follow-up fix (d34804a) splits on CharacterSet.newlines membership instead, verified green by the new testWindowsLineEndingsDoNotLeakCarriageReturn regression test."
+  - id: WR-04
+    status: fixed
+    commit: 9eef081
+    note: "Case-folded deliveryStatusWords match (lowercased set + trimmed.lowercased() comparison) closes the differently-cased status-label leak. The one-word real-message false-negative risk (gap 2) is accepted and documented in a ponytail: comment with a named upgrade path (bubble-adjacency/position heuristic), per the review's own smallest-change guidance."
+  - id: IN-01
+    status: fixed
+    commit: 263ae39
+    note: "attribute(_:) now filters lines to finite x/y bounding-box origins before the descending-y sort, preventing an invalid strict-weak-ordering if Vision ever returned a non-finite value."
+  - id: IN-02
+    status: fixed
+    commit: d3bccc4
+    note: "Added BanterSharedTests coverage: testWindowsLineEndingsDoNotLeakCarriageReturn (WR-03), testNoiseWordMatchIsCaseInsensitive (WR-04), testNonFiniteBoundingBoxIsFilteredOut (IN-01). WR-01/WR-02 view-layer coverage skipped: ImportFlowModel/ConfirmTranscriptView have no XCTest-hosted target in this project (only BanterUITests), and the finding explicitly does not require new UI-test additions."
 ---
 
 # Phase 2: Code Review Report
@@ -30,7 +60,7 @@ status: issues_found
 **Reviewed:** 2026-07-03T11:45:30Z
 **Depth:** standard
 **Files Reviewed:** 13
-**Status:** issues_found
+**Status:** clean (all findings resolved 2026-07-03T11:58:00Z, CI green: https://github.com/kish-jpg/banter/actions/runs/28659005985)
 
 ## Summary
 
