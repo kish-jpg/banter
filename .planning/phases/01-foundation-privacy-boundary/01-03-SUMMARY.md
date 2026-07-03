@@ -163,3 +163,18 @@ None — no external accounts, API keys, or manual configuration needed for this
 ---
 *Phase: 01-foundation-privacy-boundary*
 *Completed: 2026-07-03*
+
+## Self-Check: PASSED
+
+- FOUND: `project.yml`
+- FOUND: `BanterApp/BanterApp.entitlements`
+- FOUND: `BanterApp/Info.plist`
+- FOUND: `BanterApp/BanterAppApp.swift`
+- FOUND: `BanterApp/ContentView.swift`
+- FOUND: `BanterKeyboard/BanterKeyboard.entitlements`
+- FOUND: `BanterKeyboard/Info.plist`
+- FOUND: `BanterKeyboard/KeyboardViewController.swift`
+- FOUND: commit `3464b6a` (Task 1)
+- FOUND: commit `bfb823a` (Task 2)
+- FOUND: commit `3170584` (Task 3)
+- FOUND: commit `311a465` (SUMMARY docs commit)
