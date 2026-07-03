@@ -31,10 +31,12 @@ final class ImportFlowModel {
     static let seedSampleTranscriptArgument = "--seed-sample-transcript"
 
     init(arguments: [String] = CommandLine.arguments) {
+        #if DEBUG
         if arguments.contains(Self.seedSampleTranscriptArgument) {
             transcript = Self.sampleTranscript
             state = .confirm
         }
+        #endif
     }
 
     // MARK: - Screenshot path
