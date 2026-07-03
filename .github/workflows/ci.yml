@@ -46,13 +46,8 @@ jobs:
             -destination "$SIMULATOR_DESTINATION" \
             CODE_SIGNING_ALLOWED=NO
 
-      - name: Test BanterShared (via BanterApp scheme)
-        run: |
-          xcodebuild test \
-            -project Banter.xcodeproj \
-            -scheme BanterApp \
-            -destination "$SIMULATOR_DESTINATION" \
-            CODE_SIGNING_ALLOWED=NO
+      - name: Test BanterShared
+        run: swift test --package-path BanterShared
 
       - name: Build BanterKeyboard (simulator)
         run: |
