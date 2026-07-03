@@ -19,3 +19,53 @@ public struct AnalyzeConversationRequest: Codable {
         self.tone = tone
     }
 }
+
+/// The four fixed sentiment factors returned by the coaching backend.
+/// Mirrors Backend/functions/coaching/llm/LLMProvider.ts's
+/// CoachingResponse.sentiment.factors exactly — a fixed-key object, not a
+/// dictionary, matching the locked Deno<->Swift contract.
+public struct SentimentFactors: Codable, Equatable {
+    public let interest: Double
+    public let reciprocity: Double
+    public let warmth: Double
+    public let responsiveness: Double
+
+    public init(interest: Double, reciprocity: Double, warmth: Double, responsiveness: Double) {
+        self.interest = interest
+        self.reciprocity = reciprocity
+        self.warmth = warmth
+        self.responsiveness = responsiveness
+    }
+}
+
+/// Aggregate sentiment for a coaching response. Server-stateless in Phase 3 —
+/// no event-timeline persistence yet (deferred to Phase 4, see Backend/README.md).
+public struct SentimentDTO: Codable, Equatable {
+    public let score: Double
+    public let factors: SentimentFactors
+    public let signal: String
+
+    public init(score: Double, factors: SentimentFactors, signal: String) {
+        self.score = score
+        self.factors = factors
+        self.signal = signal
+    }
+}
+
+/// The coaching edge function's response body. Mirrors
+/// Backend/functions/coaching/llm/LLMProvider.ts's CoachingResponse exactly
+/// (replies: ReplySuggestion, no confidence field) plus an echoed,
+/// client-minted conversationId (see Backend/README.md for the decision).
+/// This is the Deno<->Swift shared-fixture contract — kept byte-identical to
+/// coaching-response.sample.json via Backend/scripts/sync-fixture.sh.
+public struct CoachingResponseDTO: Codable, Equatable {
+    public let replies: [ReplySuggestion]
+    public let sentiment: SentimentDTO
+    public let conversationId: UUID?
+
+    public init(replies: [ReplySuggestion], sentiment: SentimentDTO, conversationId: UUID? = nil) {
+        self.replies = replies
+        self.sentiment = sentiment
+        self.conversationId = conversationId
+    }
+}
