@@ -21,10 +21,11 @@ struct ConfirmTranscriptView: View {
             } else {
                 messageList
             }
-
+        }
+        .background(Banter.Colors.background.ignoresSafeArea())
+        .safeAreaInset(edge: .bottom, spacing: 0) {
             bottomBar
         }
-        .background(Banter.Colors.background)
         .overlay(alignment: .bottom) {
             if showClearedToast {
                 clearedToast
