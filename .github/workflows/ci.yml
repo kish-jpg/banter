@@ -24,7 +24,7 @@ jobs:
             ${{ runner.os }}-spm-
 
       - name: Install XcodeGen
-        run: brew install xcodegen@2.45.4 || brew install xcodegen
+        run: brew install xcodegen@2.45.4
 
       - name: Generate project
         run: xcodegen generate
@@ -37,6 +37,20 @@ jobs:
               exit 1
             fi
           done
+          # Source-file grep above only catches the checked-in plist being
+          # edited directly. The real schema-drift threat (T-01-11) is
+          # XcodeGen's project.yml -> project.pbxproj wiring silently
+          # dropping the CODE_SIGN_ENTITLEMENTS build setting, so assert
+          # against the generated artifact too (grep -E to tolerate
+          # optional quoting around the path that XcodeGen may emit).
+          if ! grep -Eq 'CODE_SIGN_ENTITLEMENTS = "?BanterApp/BanterApp\.entitlements"?;' Banter.xcodeproj/project.pbxproj; then
+            echo "::error::CODE_SIGN_ENTITLEMENTS missing/wrong for BanterApp in generated project.pbxproj"
+            exit 1
+          fi
+          if ! grep -Eq 'CODE_SIGN_ENTITLEMENTS = "?BanterKeyboard/BanterKeyboard\.entitlements"?;' Banter.xcodeproj/project.pbxproj; then
+            echo "::error::CODE_SIGN_ENTITLEMENTS missing/wrong for BanterKeyboard in generated project.pbxproj"
+            exit 1
+          fi
 
       - name: Build BanterApp (simulator)
         run: |
