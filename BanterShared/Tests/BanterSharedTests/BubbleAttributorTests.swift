@@ -42,4 +42,31 @@ final class BubbleAttributorTests: XCTestCase {
 
         XCTAssertEqual(result.map(\.text), ["hey there", "sounds good"])
     }
+
+    /// WR-04 regression: noise-word match must be case-insensitive so a
+    /// differently-cased status label (theme/font variance) is still
+    /// filtered instead of leaking into the transcript as a fake message.
+    func testNoiseWordMatchIsCaseInsensitive() {
+        let real = RecognizedLine(text: "hey there", boundingBox: CGRect(x: 0.1, y: 0.8, width: 0.3, height: 0.05))
+        let lowercaseRead = RecognizedLine(text: "read", boundingBox: CGRect(x: 0.4, y: 0.6, width: 0.2, height: 0.05))
+        let uppercaseToday = RecognizedLine(text: "TODAY", boundingBox: CGRect(x: 0.4, y: 0.4, width: 0.2, height: 0.05))
+        let reply = RecognizedLine(text: "sounds good", boundingBox: CGRect(x: 0.6, y: 0.1, width: 0.3, height: 0.05))
+
+        let result = BubbleAttributor.attribute([real, lowercaseRead, uppercaseToday, reply])
+
+        XCTAssertEqual(result.map(\.text), ["hey there", "sounds good"])
+    }
+
+    /// IN-01 regression: non-finite bounding-box origins must not reach the
+    /// sort comparator (undefined behavior for sorted(by:) otherwise) — they
+    /// are dropped rather than crashing or corrupting output order.
+    func testNonFiniteBoundingBoxIsFilteredOut() {
+        let real = RecognizedLine(text: "hey there", boundingBox: CGRect(x: 0.1, y: 0.8, width: 0.3, height: 0.05))
+        let nanLine = RecognizedLine(text: "corrupt", boundingBox: CGRect(x: 0.1, y: .nan, width: 0.3, height: 0.05))
+        let reply = RecognizedLine(text: "sounds good", boundingBox: CGRect(x: 0.6, y: 0.1, width: 0.3, height: 0.05))
+
+        let result = BubbleAttributor.attribute([real, nanLine, reply])
+
+        XCTAssertEqual(result.map(\.text), ["hey there", "sounds good"])
+    }
 }

@@ -62,4 +62,19 @@ final class PasteTextParserTests: XCTestCase {
         XCTAssertEqual(result.count, 1)
         XCTAssertEqual(result.first?.speaker, .match)
     }
+
+    /// WR-03 regression: Windows-style \r\n line endings (common when
+    /// pasting from Notes/Mail/Android/Windows sources) must not leak a
+    /// trailing \r into parsed names or message text.
+    func testWindowsLineEndingsDoNotLeakCarriageReturn() {
+        let raw = "Alex: hey how's it going\r\nSam: pretty good, you?\r\n"
+
+        let result = PasteTextParser.parse(raw)
+
+        for message in result {
+            XCTAssertFalse(message.text.contains("\r"))
+        }
+        XCTAssertEqual(result.map(\.text), ["hey how's it going", "pretty good, you?"])
+        XCTAssertEqual(result.map(\.speaker), [.match, .user])
+    }
 }
