@@ -8,10 +8,11 @@ import XCTest
 /// ever drift, this test fails the decode.
 final class CoachingContractTests: XCTestCase {
     private func loadFixture() throws -> Data {
-        guard let url = Bundle.module.url(forResource: "coaching-response.sample", withExtension: "json") else {
-            XCTFail("coaching-response.sample.json not found in test bundle resources")
-            throw CocoaError(.fileNoSuchFile)
-        }
+        let url = try XCTUnwrap(
+            Bundle.module.url(forResource: "coaching-response.sample", withExtension: "json", subdirectory: "Fixtures")
+                ?? Bundle.module.url(forResource: "coaching-response.sample", withExtension: "json"),
+            "coaching-response.sample.json not found in test bundle resources"
+        )
         return try Data(contentsOf: url)
     }
 
