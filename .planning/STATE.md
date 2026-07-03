@@ -5,16 +5,16 @@ milestone_name: milestone
 current_phase: 2
 current_phase_name: Screenshot Import & OCR Pipeline
 status: executing
-stopped_at: Completed 02-01-PLAN.md - iOS 18 bump + OCRPipeline canary CI-confirmed green (run 28641698440)
-last_updated: "2026-07-03T06:05:12.537Z"
+stopped_at: Completed 02-02-PLAN.md - BubbleAttributor CI-confirmed green on first push (run 28642226580)
+last_updated: "2026-07-03T06:18:55.476Z"
 last_activity: 2026-07-03
-last_activity_desc: Completed 02-01-PLAN.md
+last_activity_desc: Completed 02-02-PLAN.md
 progress:
   total_phases: 8
   completed_phases: 1
   total_plans: 9
-  completed_plans: 5
-  percent: 56
+  completed_plans: 6
+  percent: 67
 ---
 
 # Project State
@@ -29,11 +29,11 @@ See: .planning/PROJECT.md (updated 2026-07-03)
 ## Current Position
 
 Phase: 2 (Screenshot Import & OCR Pipeline) — EXECUTING
-Plan: 2 of 5
-Status: Executing Phase 2
-Last activity: 2026-07-03 — Completed 02-01-PLAN.md
+Plan: 3 of 5
+Status: Ready to execute
+Last activity: 2026-07-03 — Completed 02-02-PLAN.md
 
-Progress: [██████░░░░] 56%
+Progress: [███████░░░] 67%
 
 ## Performance Metrics
 
@@ -60,6 +60,7 @@ Progress: [██████░░░░] 56%
 | Phase 01-foundation-privacy-boundary P03 | 12min | 3 tasks | 8 files |
 | Phase 01-foundation-privacy-boundary P04 | 20min | 2 tasks | 2 files |
 | Phase 02-screenshot-import-ocr-pipeline P01 | 15min | 2 tasks | 6 files |
+| Phase 02-screenshot-import-ocr-pipeline P02 | 12min | 2 tasks | 4 files |
 
 ## Accumulated Context
 
@@ -78,6 +79,8 @@ Recent decisions affecting current work:
 - [Phase ?]: [Phase 01-foundation-privacy-boundary]: Phase 1 CI gate reached green on run 28639232382 - both targets build on iOS Simulator, App Group round-trip + CAPT-04 guard tests pass
 - [Phase ?]: Bumped deployment target to iOS 18 (Package.swift + project.yml) to unlock async/await RecognizeTextRequest Vision API; no @available fallback, iOS 18 is now the floor
 - [Phase ?]: CI-only discovery: BanterShared/Package.swift needs BOTH .iOS and .macOS platform floors when using OS-versioned APIs (Vision), because swift test --package-path compiles on the CI host's native macOS, not the iOS Simulator - added .macOS(.v15) alongside .iOS(.v18)
+- [Phase 02-screenshot-import-ocr-pipeline]: userSideXThreshold = 0.4 shipped as documented public constant with ponytail-deferral comment; real-screenshot tuning deferred, matches RESEARCH.md recommendation
+- [Phase 02-screenshot-import-ocr-pipeline]: Reading-order fix (descending boundingBox.origin.y sort) unit-tested against shuffled input to prove Pitfall 2 fix actually works, not just happy-path ordering
 
 ### Pending Todos
 
@@ -100,6 +103,6 @@ Items acknowledged and carried forward from previous milestone close:
 
 ## Session Continuity
 
-Last session: 2026-07-03T06:05:12.516Z
-Stopped at: Completed 02-01-PLAN.md - iOS 18 bump + OCRPipeline canary CI-confirmed green (run 28641698440)
+Last session: 2026-07-03T06:18:55.476Z
+Stopped at: Completed 02-02-PLAN.md - BubbleAttributor CI-confirmed green on first push (run 28642226580)
 Resume file: None
