@@ -18,7 +18,8 @@ let package = Package(
         ),
         .testTarget(
             name: "BanterSharedTests",
-            dependencies: ["BanterShared"]
+            dependencies: ["BanterShared"],
+            resources: [.copy("Fixtures")]
         )
     ]
 )
