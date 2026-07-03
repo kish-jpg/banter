@@ -11,7 +11,7 @@ public enum OCRPipeline {
         request.usesLanguageCorrection = true
 
         let observations = try await request.perform(on: cgImage)
-        return observations.compactMap { observation in
+        return observations.compactMap { (observation) -> RecognizedLine? in
             guard let candidate = observation.topCandidates(1).first else { return nil }
             return RecognizedLine(text: candidate.string, boundingBox: observation.boundingBox)
         }
