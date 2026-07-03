@@ -5,16 +5,16 @@ milestone_name: milestone
 current_phase: 2
 current_phase_name: Screenshot Import & OCR Pipeline
 status: executing
-stopped_at: Completed 01-04-PLAN.md - CI workflow green (run 28639232382), Phase 1 complete
-last_updated: "2026-07-03T05:39:48.151Z"
+stopped_at: Completed 02-01-PLAN.md - iOS 18 bump + OCRPipeline canary authored, watching CI
+last_updated: "2026-07-03T05:49:20.974Z"
 last_activity: 2026-07-03
-last_activity_desc: Phase 1 complete, transitioned to Phase 2
+last_activity_desc: Completed 02-01-PLAN.md
 progress:
   total_phases: 8
   completed_phases: 1
-  total_plans: 4
-  completed_plans: 4
-  percent: 13
+  total_plans: 9
+  completed_plans: 5
+  percent: 56
 ---
 
 # Project State
@@ -24,16 +24,16 @@ progress:
 See: .planning/PROJECT.md (updated 2026-07-03)
 
 **Core value:** The user gets instant relief (great replies, right now) while becoming a measurably better texter over time — real skill transfer, backed by citable psychology.
-**Current focus:** Phase 1 — Foundation & Privacy Boundary
+**Current focus:** Phase 2 — Screenshot Import & OCR Pipeline
 
 ## Current Position
 
-Phase: 2 — Screenshot Import & OCR Pipeline
-Plan: Not started
-Status: Ready to execute
-Last activity: 2026-07-03 — Phase 1 complete, transitioned to Phase 2
+Phase: 2 (Screenshot Import & OCR Pipeline) — EXECUTING
+Plan: 2 of 5
+Status: Executing Phase 2
+Last activity: 2026-07-03 — Completed 02-01-PLAN.md
 
-Progress: [░░░░░░░░░░] 0%
+Progress: [██████░░░░] 56%
 
 ## Performance Metrics
 
@@ -59,6 +59,7 @@ Progress: [░░░░░░░░░░] 0%
 | Phase 01-foundation-privacy-boundary P02 | 5min | 3 tasks | 8 files |
 | Phase 01-foundation-privacy-boundary P03 | 12min | 3 tasks | 8 files |
 | Phase 01-foundation-privacy-boundary P04 | 20min | 2 tasks | 2 files |
+| Phase 02-screenshot-import-ocr-pipeline P01 | 15min | 2 tasks | 6 files |
 
 ## Accumulated Context
 
@@ -75,6 +76,7 @@ Recent decisions affecting current work:
 - [Phase 01-foundation-privacy-boundary]: BanterShared source+tests authored together per task (no local Swift toolchain); grep-based acceptance criteria substituted for swift build/test, compile proof deferred to CI (plan 01-04)
 - [Phase ?]: [Phase 01-foundation-privacy-boundary]: XcodeGen cannot attach a local SPM package test target to an Xcode scheme's test action - BanterShared tested via swift test --package-path, not xcodebuild test -scheme
 - [Phase ?]: [Phase 01-foundation-privacy-boundary]: Phase 1 CI gate reached green on run 28639232382 - both targets build on iOS Simulator, App Group round-trip + CAPT-04 guard tests pass
+- [Phase ?]: Bumped deployment target to iOS 18 (Package.swift + project.yml) to unlock async/await RecognizeTextRequest Vision API; no @available fallback, iOS 18 is now the floor
 
 ### Pending Todos
 
@@ -97,6 +99,6 @@ Items acknowledged and carried forward from previous milestone close:
 
 ## Session Continuity
 
-Last session: 2026-07-03T04:57:54.895Z
-Stopped at: Completed 01-04-PLAN.md - CI workflow green (run 28639232382), Phase 1 complete
+Last session: 2026-07-03T05:46:43.847Z
+Stopped at: Completed 02-01-PLAN.md - iOS 18 bump + OCRPipeline canary authored, watching CI
 Resume file: None

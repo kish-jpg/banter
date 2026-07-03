@@ -64,12 +64,12 @@ Decimal phases appear between their surrounding integers in numeric order.
   3. User can paste raw conversation text and get the same confirmable transcript as a fallback path.
   4. Nothing is sent for analysis until the user confirms the transcript.
 
-**Plans**: 5 plans
+**Plans**: 1/5 plans executed
 **UI hint**: yes
 
 **Wave 1**
 
-- [ ] 02-01-PLAN.md — iOS 18 bump (both config files) + Wave-0 Vision-in-simulator canary: OCRPipeline + RecognizedLine + one fixture PNG (CAPT-01)
+- [x] 02-01-PLAN.md — iOS 18 bump (both config files) + Wave-0 Vision-in-simulator canary: OCRPipeline + RecognizedLine + one fixture PNG (CAPT-01)
 
 **Wave 2** *(blocked on Wave 1)*
 
@@ -184,7 +184,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 → 8
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Foundation & Privacy Boundary | 4/4 | Complete    | 2026-07-03 |
-| 2. Screenshot Import & OCR Pipeline | 0/TBD | Not started | - |
+| 2. Screenshot Import & OCR Pipeline | 1/5 | In Progress|  |
 | 3. Backend LLM Orchestration | 0/TBD | Not started | - |
 | 4. Companion App UI & Paywall | 0/TBD | Not started | - |
 | 5. Keyboard Extension | 0/TBD | Not started | - |
