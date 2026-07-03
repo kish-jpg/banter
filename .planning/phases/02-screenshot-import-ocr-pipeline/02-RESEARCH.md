@@ -452,7 +452,7 @@ final class ScreenshotArtifactTests: XCTestCase {
 
 **If this table is empty:** N/A — see entries above; all are UX/product-judgment risks with the confirm-screen correctness net in place, not correctness or security risks.
 
-## Open Questions
+## Open Questions (RESOLVED)
 
 1. **Should the deployment target bump to iOS 18 now (Pitfall 1)?**
    - What we know: `RecognizeTextRequest` requires iOS 18+; current target is iOS 17; CI toolchain is already iOS 26/Xcode 26.5, so CI is not a blocker either way.
