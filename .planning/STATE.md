@@ -5,8 +5,8 @@ milestone_name: milestone
 current_phase: 2
 current_phase_name: Screenshot Import & OCR Pipeline
 status: executing
-stopped_at: Completed 02-01-PLAN.md - iOS 18 bump + OCRPipeline canary authored, watching CI
-last_updated: "2026-07-03T05:49:20.974Z"
+stopped_at: Completed 02-01-PLAN.md - iOS 18 bump + OCRPipeline canary CI-confirmed green (run 28641698440)
+last_updated: "2026-07-03T06:05:12.537Z"
 last_activity: 2026-07-03
 last_activity_desc: Completed 02-01-PLAN.md
 progress:
@@ -77,6 +77,7 @@ Recent decisions affecting current work:
 - [Phase ?]: [Phase 01-foundation-privacy-boundary]: XcodeGen cannot attach a local SPM package test target to an Xcode scheme's test action - BanterShared tested via swift test --package-path, not xcodebuild test -scheme
 - [Phase ?]: [Phase 01-foundation-privacy-boundary]: Phase 1 CI gate reached green on run 28639232382 - both targets build on iOS Simulator, App Group round-trip + CAPT-04 guard tests pass
 - [Phase ?]: Bumped deployment target to iOS 18 (Package.swift + project.yml) to unlock async/await RecognizeTextRequest Vision API; no @available fallback, iOS 18 is now the floor
+- [Phase ?]: CI-only discovery: BanterShared/Package.swift needs BOTH .iOS and .macOS platform floors when using OS-versioned APIs (Vision), because swift test --package-path compiles on the CI host's native macOS, not the iOS Simulator - added .macOS(.v15) alongside .iOS(.v18)
 
 ### Pending Todos
 
@@ -99,6 +100,6 @@ Items acknowledged and carried forward from previous milestone close:
 
 ## Session Continuity
 
-Last session: 2026-07-03T05:46:43.847Z
-Stopped at: Completed 02-01-PLAN.md - iOS 18 bump + OCRPipeline canary authored, watching CI
+Last session: 2026-07-03T06:05:12.516Z
+Stopped at: Completed 02-01-PLAN.md - iOS 18 bump + OCRPipeline canary CI-confirmed green (run 28641698440)
 Resume file: None
