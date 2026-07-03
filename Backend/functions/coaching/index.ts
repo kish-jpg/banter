@@ -1,7 +1,7 @@
 import { taxonomy, allowedTagNames, containsBannedTerm } from "./taxonomy.ts";
 import { validateCoachingResponse } from "./validate.ts";
 import { GeminiAdapter } from "./llm/GeminiAdapter.ts";
-import type { CoachingRequest, CoachingResponse, TranscriptEntry } from "./llm/LLMProvider.ts";
+import type { CoachingRequest, CoachingResponse, LLMProvider, TranscriptEntry } from "./llm/LLMProvider.ts";
 
 // V5 / T-03-08: request-size DoS cap, checked before any Gemini call.
 const MAX_MESSAGES = 50;
@@ -55,20 +55,32 @@ function validateCoachingRequestBody(body: any): { error: string } | { request: 
   };
 }
 
-/** Retries a gate-checked generation once with a stricter reminder; returns null if it still fails. */
+/** Retries a gate-checked generation once with a stricter reminder; returns null if it still fails (including provider errors). */
 async function generateAndGate<T extends { replies: { text: string; psychologyTag: string }[] }>(
   generate: (stricter: boolean) => Promise<T>,
 ): Promise<T | null> {
   const allowed = allowedTagNames();
   for (const stricter of [false, true]) {
-    const candidate = await generate(stricter);
-    const result = validateCoachingResponse(candidate, allowed, containsBannedTerm);
-    if (result.valid) return candidate;
+    try {
+      const candidate = await generate(stricter);
+      const result = validateCoachingResponse(candidate, allowed, containsBannedTerm);
+      if (result.valid) return candidate;
+    } catch {
+      // provider error (network, non-ok, safety-blocked, malformed JSON) - treat as a failed attempt, not a crash
+    }
   }
   return null;
 }
 
-Deno.serve(async (req: Request) => {
+const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+
+/** Validates conversationId is a UUID-shaped string or absent; drops anything else rather than echoing garbage back. */
+function sanitizeConversationId(v: unknown): string | undefined {
+  return typeof v === "string" && UUID_RE.test(v) ? v : undefined;
+}
+
+/** The real request handler, exported so tests can invoke it directly instead of reimplementing its logic. */
+export async function handleCoachingRequest(req: Request, provider: LLMProvider): Promise<Response> {
   if (req.method !== "POST") {
     return jsonResponse({ error: "method not allowed" }, 405);
   }
@@ -79,10 +91,13 @@ Deno.serve(async (req: Request) => {
   } catch {
     return badRequest("invalid JSON body");
   }
+  if (typeof body !== "object" || body === null) {
+    return badRequest("request body must be a JSON object");
+  }
 
-  const apiKey = Deno.env.get("GEMINI_API_KEY") ?? "";
-  const adapter = new GeminiAdapter(apiKey);
+  const adapter = provider;
   const allowedTags = taxonomy.allowed;
+  const conversationId = sanitizeConversationId(body.conversationId);
 
   // Opener path (COAC-07): profileText present, no messages transcript.
   if (typeof body.profileText === "string") {
@@ -100,7 +115,7 @@ Deno.serve(async (req: Request) => {
       return { replies: openers };
     });
     if (!result) return jsonResponse({ error: "gate rejected generated content" }, 502);
-    return jsonResponse({ openers: result.replies, conversationId: body.conversationId }, 200);
+    return jsonResponse({ openers: result.replies, conversationId }, 200);
   }
 
   const parsed = validateCoachingRequestBody(body);
@@ -118,5 +133,14 @@ Deno.serve(async (req: Request) => {
 
   // Server-stateless per Phase 3 scope (Open Q2): no SentimentEvent persistence here.
   // The response carries aggregate sentiment; event-timeline persistence is Phase 4.
-  return jsonResponse({ ...result, conversationId: body.conversationId }, 200);
-});
+  return jsonResponse({ ...result, conversationId }, 200);
+}
+
+// ponytail: only listen when run directly (deployed function entrypoint), not when
+// imported by tests - Deno.serve() requires --allow-net, which the test suite doesn't grant.
+if (import.meta.main) {
+  Deno.serve((req: Request) => {
+    const apiKey = Deno.env.get("GEMINI_API_KEY") ?? "";
+    return handleCoachingRequest(req, new GeminiAdapter(apiKey));
+  });
+}
