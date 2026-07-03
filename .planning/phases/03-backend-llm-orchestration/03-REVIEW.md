@@ -30,7 +30,18 @@ findings:
   warning: 5
   info: 2
   total: 10
-status: issues_found
+status: clean
+resolutions:
+  CR-01: "fixed in 6880096 - exported handleCoachingRequest(req, provider); index.test.ts now imports and exercises the real handler with a stub LLMProvider (happy path, gate-retry, both-attempts-fail, provider-throw x2, null/non-object/malformed body, non-POST, opener path, conversationId echo/drop)"
+  CR-02: "fixed in 6880096 - handleCoachingRequest rejects typeof body !== \"object\" || body === null with 400 before any property access"
+  CR-03: "fixed in 6880096 - generateAndGate wraps the provider call in try/catch; a throw counts as a failed attempt (retries once, then 502s) instead of crashing"
+  WR-01: "fixed in 1c956ab - containsBannedTerm regex-escapes each term and matches on \\b...\\b word boundaries instead of raw substring"
+  WR-02: "fixed in fcdd098 - buildSystemInstruction adds a data-only directive; formatTranscript wraps its output in [TRANSCRIPT]...[/TRANSCRIPT]. Defense-in-depth only - validator remains the hard gate"
+  WR-03: "fixed in 38508f4 - both generateCoaching and generateOpeners send the Gemini API key via the x-goog-api-key header instead of the URL query string"
+  WR-04: "fixed in c10fb98 - GeminiKeyBoundaryGuardTests.scanRoots now includes BanterKeyboard/"
+  WR-05: "fixed in 6880096 - conversationId is validated as UUID-shaped before being echoed back; malformed values are dropped rather than shipped in an otherwise-successful 200"
+  IN-01: "accepted, not fixed - retry-forces-tone-to-sincere is intentional per the plan (stricter reminder); adding a response field/log line noting retry-took-place is a behavior addition beyond a trivial safe fix, left for a future phase if gate-rejection frequency needs debugging"
+  IN-02: "accepted, not fixed - deno.json's nodeModulesDir: \"none\" is an accepted Deno config value and deno check/deno test pass with it; purely a documentation-consistency nit against the plan's literal \"false\" wording, no functional issue"
 ---
 
 # Phase 3: Code Review Report
@@ -38,7 +49,7 @@ status: issues_found
 **Reviewed:** 2026-07-04T09:00:00Z
 **Depth:** deep
 **Files Reviewed:** 20 (+ Backend/deno.json, BanterShared/Sources/BanterShared/Models/ReplySuggestion.swift referenced for contract-matching)
-**Status:** issues_found
+**Status:** clean (all findings resolved - see `resolutions` in frontmatter)
 
 ## Summary
 
