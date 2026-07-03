@@ -13,7 +13,7 @@ public enum OCRPipeline {
         let observations = try await request.perform(on: cgImage)
         return observations.compactMap { (observation) -> RecognizedLine? in
             guard let candidate = observation.topCandidates(1).first else { return nil }
-            return RecognizedLine(text: candidate.string, boundingBox: observation.boundingBox)
+            return RecognizedLine(text: candidate.string, boundingBox: observation.boundingBox.cgRect)
         }
     }
 }
