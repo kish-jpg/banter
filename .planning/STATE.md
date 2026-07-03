@@ -4,17 +4,17 @@ milestone: v1.0
 milestone_name: milestone
 current_phase: 2
 current_phase_name: Screenshot Import & OCR Pipeline
-status: executing
-stopped_at: Completed 02-04-PLAN.md - Import/Confirm UI + Banter design tokens, CI green (run 28653268129)
-last_updated: "2026-07-03T10:08:44.835Z"
+status: verifying
+stopped_at: Completed 02-05-PLAN.md - checkpoint resolved (3 CI screenshot defects fixed: dark mode, letterboxing, bottom-bar pinning), phase 2 complete (run 28657291388)
+last_updated: "2026-07-03T11:32:32.240Z"
 last_activity: 2026-07-03
 last_activity_desc: Completed 02-02-PLAN.md
 progress:
   total_phases: 8
-  completed_phases: 1
+  completed_phases: 2
   total_plans: 9
-  completed_plans: 8
-  percent: 13
+  completed_plans: 9
+  percent: 25
 ---
 
 # Project State
@@ -28,12 +28,12 @@ See: .planning/PROJECT.md (updated 2026-07-03)
 
 ## Current Position
 
-Phase: 2 (Screenshot Import & OCR Pipeline) — EXECUTING
+Phase: 2 (Screenshot Import & OCR Pipeline) — COMPLETE
 Plan: 5 of 5
-Status: Ready to execute
-Last activity: 2026-07-03 — Completed 02-02-PLAN.md
+Status: Phase complete — ready for verification
+Last activity: 2026-07-03 — Completed 02-05-PLAN.md (checkpoint resolution)
 
-Progress: [███████░░░] 67%
+Progress: [██████████] 100%
 
 ## Performance Metrics
 
@@ -87,6 +87,7 @@ Recent decisions affecting current work:
 - [Phase ?]: Banter.Type renamed to Banter.TextStyle - X.Type is a reserved Swift metatype expression, backticks fix declaration but not use sites
 - [Phase ?]: Added placeholder AppIcon.appiconset (1024x1024) - xcodebuild's actool defaults to --app-icon AppIcon and fails asset-catalog compile if none exists
 - [Phase ?]: Confirm & Continue and Start Over are pure local-state mutations, no network call, preserving CAPT-04 boundary until Phase 3
+- [Phase 02-screenshot-import-ocr-pipeline]: CI screenshot letterboxing (Task 3 checkpoint defect) was XCUIScreen.main.screenshot() whole-canvas capture, not an app layout bug - fixed by screenshotting app.windows.firstMatch instead; app-side .preferredColorScheme(.dark) and .safeAreaInset(edge: .bottom) fixes for dark-mode-default and bottom-bar pinning were also applied and are independently correct
 
 ### Pending Todos
 
@@ -109,6 +110,6 @@ Items acknowledged and carried forward from previous milestone close:
 
 ## Session Continuity
 
-Last session: 2026-07-03T10:08:44.820Z
-Stopped at: Completed 02-04-PLAN.md - Import/Confirm UI + Banter design tokens, CI green (run 28653268129)
+Last session: 2026-07-03T11:32:32.222Z
+Stopped at: Completed 02-05-PLAN.md - checkpoint resolved (3 CI screenshot defects fixed: dark mode, letterboxing, bottom-bar pinning), phase 2 complete (run 28657291388)
 Resume file: None
