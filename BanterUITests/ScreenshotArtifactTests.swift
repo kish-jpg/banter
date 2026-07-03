@@ -35,14 +35,21 @@ final class ScreenshotArtifactTests: XCTestCase {
     /// immediately after launch() screenshots that transition mid-flight:
     /// a rounded, shrunken card on a black backdrop, not the settled
     /// full-screen UI. Waiting for a concrete post-launch element lets the
-    /// animation complete before XCUIScreen.main.screenshot() runs.
+    /// animation complete before the screenshot runs.
     private func waitForLaunchAnimationToSettle(_ app: XCUIApplication, matching label: String) {
         let element = app.buttons[label]
         _ = element.waitForExistence(timeout: 10)
     }
 
+    /// Screenshot the app's own key window, not XCUIScreen.main. Whole-screen
+    /// capture (XCUIScreen.main.screenshot()) was observed to letterbox the
+    /// app content with large black bands top/bottom (present even in the
+    /// very first CI run of this test, unrelated to any color-scheme/layout
+    /// change) — app.windows.firstMatch.screenshot() captures exactly the
+    /// app's own rendered window bounds and avoids that whole-display
+    /// canvas ambiguity entirely.
     private func capture(_ app: XCUIApplication, name: String) {
-        let screenshot = XCUIScreen.main.screenshot()
+        let screenshot = app.windows.firstMatch.screenshot()
         let attachment = XCTAttachment(screenshot: screenshot)
         attachment.name = name
         attachment.lifetime = .keepAlways
