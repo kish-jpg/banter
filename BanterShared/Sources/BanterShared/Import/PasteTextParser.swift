@@ -12,7 +12,7 @@ public enum PasteTextParser {
     public static func parse(_ raw: String) -> [ConversationMessage] {
         let lines = raw
             .split(separator: "\n", omittingEmptySubsequences: true)
-            .map { $0.trimmingCharacters(in: .whitespaces) }
+            .map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }
             .filter { !$0.isEmpty }
 
         var result: [ConversationMessage] = []
@@ -37,7 +37,7 @@ public enum PasteTextParser {
     /// (never force-unwraps) if the line doesn't match or splits oddly.
     private static func matchNamePrefix(_ line: String) -> (name: String, text: String)? {
         guard line.range(of: namePrefixPattern, options: .regularExpression) != nil else { return nil }
-        let parts = line.split(separator: ":", maxSplits: 1).map { $0.trimmingCharacters(in: .whitespaces) }
+        let parts = line.split(separator: ":", maxSplits: 1).map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }
         guard parts.count == 2, !parts[0].isEmpty, !parts[1].isEmpty else { return nil }
         return (parts[0], parts[1])
     }
