@@ -82,3 +82,21 @@ jobs:
             -scheme BanterKeyboard \
             -destination "$SIMULATOR_DESTINATION" \
             CODE_SIGNING_ALLOWED=NO
+
+      - name: Run UI screenshot tests
+        run: |
+          xcodebuild test \
+            -project Banter.xcodeproj \
+            -scheme BanterApp \
+            -destination "$SIMULATOR_DESTINATION" \
+            -resultBundlePath TestResults.xcresult \
+            -only-testing:BanterUITests \
+            CODE_SIGNING_ALLOWED=NO
+
+      - name: Upload screenshot artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ui-screenshots
+          path: TestResults.xcresult
+          retention-days: 14
