@@ -24,7 +24,19 @@ jobs:
             ${{ runner.os }}-spm-
 
       - name: Install XcodeGen
-        run: brew install xcodegen@2.45.4
+        run: |
+          # Homebrew core has no versioned "xcodegen@2.45.4" formula alias
+          # (confirmed: `brew install xcodegen@2.45.4` errors "no available
+          # formula"). Install the unversioned formula, then assert the
+          # resolved version matches the pinned one so an unexpected
+          # XcodeGen upgrade fails loudly instead of silently drifting
+          # (STRIDE T-01-11).
+          brew install xcodegen
+          installed_version="$(xcodegen version | grep -oE '[0-9]+\.[0-9]+\.[0-9]+')"
+          if [ "$installed_version" != "2.45.4" ]; then
+            echo "::error::Expected XcodeGen 2.45.4, Homebrew installed $installed_version — re-pin deliberately"
+            exit 1
+          fi
 
       - name: Generate project
         run: xcodegen generate
