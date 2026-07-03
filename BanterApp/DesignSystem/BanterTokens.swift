@@ -25,7 +25,14 @@ enum Banter {
     /// Typography built on Dynamic Type text styles, never fixed point
     /// sizes — required for accessibility scaling (02-UI-SPEC.md
     /// "Typography", "Accessibility Checklist").
-    enum `Type` {
+    ///
+    /// Named `TextStyle`, not `Type` (the UI-SPEC's literal token name):
+    /// `Banter.Type.x` is unparseable Swift — `X.Type` is a reserved
+    /// metatype expression at the grammar level and backticks around
+    /// `Type` do not change how the parser reads that dotted expression
+    /// (compiler still resolves it to the metatype, not member access).
+    /// This is the same token set/values, just an unavoidable rename.
+    enum TextStyle {
         static let display: Font = .largeTitle.weight(.bold)
         static let heading: Font = .title2.weight(.semibold)
         static let body: Font = .body

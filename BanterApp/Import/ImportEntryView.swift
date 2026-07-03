@@ -15,7 +15,7 @@ struct ImportEntryView: View {
         ScrollView {
             VStack(spacing: Banter.Spacing.md) {
                 Text("Import a conversation")
-                    .font(Banter.`Type`.display)
+                    .font(Banter.TextStyle.display)
                     .padding(.top, Banter.Spacing.xl)
 
                 if !isPasteModeActive {
@@ -26,14 +26,14 @@ struct ImportEntryView: View {
                         .accessibilityHidden(true)
 
                     Text("Add a chat screenshot or paste the conversation — nothing sends anywhere until you confirm it.")
-                        .font(Banter.`Type`.body)
+                        .font(Banter.TextStyle.body)
                         .foregroundStyle(Banter.Colors.textSecondary)
                         .multilineTextAlignment(.center)
                         .padding(.horizontal, Banter.Spacing.md)
 
                     PhotosPicker(selection: $selectedItem, matching: .images) {
                         Text("Choose Screenshot")
-                            .font(Banter.`Type`.body)
+                            .font(Banter.TextStyle.body)
                             .frame(maxWidth: .infinity)
                             .frame(minHeight: 52)
                     }
@@ -50,7 +50,7 @@ struct ImportEntryView: View {
                         }
                     } label: {
                         Text("Paste Text Instead")
-                            .font(Banter.`Type`.body)
+                            .font(Banter.TextStyle.body)
                             .foregroundStyle(Banter.Colors.accent)
                             .frame(minHeight: 44)
                     }
@@ -70,14 +70,14 @@ struct ImportEntryView: View {
         VStack(alignment: .leading, spacing: Banter.Spacing.sm) {
             if pastedText.isEmpty {
                 Text("Paste your conversation")
-                    .font(Banter.`Type`.heading)
+                    .font(Banter.TextStyle.heading)
                 Text("Copy the chat from your messaging app, then paste it here. We'll split it into a message list you can check.")
-                    .font(Banter.`Type`.body)
+                    .font(Banter.TextStyle.body)
                     .foregroundStyle(Banter.Colors.textSecondary)
             }
 
             TextEditor(text: $pastedText)
-                .font(Banter.`Type`.body)
+                .font(Banter.TextStyle.body)
                 .frame(minHeight: 200)
                 .padding(Banter.Spacing.xs)
                 .overlay(
@@ -90,7 +90,7 @@ struct ImportEntryView: View {
                 Task { await model.parsePastedText(pastedText) }
             } label: {
                 Text("Parse Text")
-                    .font(Banter.`Type`.body)
+                    .font(Banter.TextStyle.body)
                     .frame(maxWidth: .infinity)
                     .frame(minHeight: 44)
             }
