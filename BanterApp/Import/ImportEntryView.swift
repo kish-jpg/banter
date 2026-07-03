@@ -6,10 +6,17 @@ import UIKit
 /// paste-text fallback revealed inline on the same screen.
 struct ImportEntryView: View {
     let model: ImportFlowModel
+    let startInPasteMode: Bool
 
     @State private var selectedItem: PhotosPickerItem?
-    @State private var isPasteModeActive = false
+    @State private var isPasteModeActive: Bool
     @State private var pastedText = ""
+
+    init(model: ImportFlowModel, startInPasteMode: Bool = false) {
+        self.model = model
+        self.startInPasteMode = startInPasteMode
+        _isPasteModeActive = State(initialValue: startInPasteMode)
+    }
 
     var body: some View {
         ScrollView {

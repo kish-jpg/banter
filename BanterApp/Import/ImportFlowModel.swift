@@ -15,13 +15,13 @@ final class ImportFlowModel {
     }
 
     enum State: Equatable {
-        case entry
+        case entry(startInPasteMode: Bool = false)
         case parsing(source: ParsingSource)
         case confirm
         case failure(source: ParsingSource)
     }
 
-    private(set) var state: State = .entry
+    private(set) var state: State = .entry()
     private(set) var transcript: [ConversationMessage] = []
 
     /// Debug launch argument (plan 05's XCUITest depends on this) —
@@ -94,7 +94,7 @@ final class ImportFlowModel {
 
     func startOver() {
         transcript = []
-        state = .entry
+        state = .entry()
     }
 
     func confirm() {
@@ -106,7 +106,11 @@ final class ImportFlowModel {
     }
 
     func retryFromFailure() {
-        state = .entry
+        state = .entry()
+    }
+
+    func pasteInsteadFromFailure() {
+        state = .entry(startInPasteMode: true)
     }
 
     // MARK: - Fixtures

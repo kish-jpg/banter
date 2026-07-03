@@ -11,21 +11,21 @@ struct ContentView: View {
         NavigationStack {
             Group {
                 switch model.state {
-                case .entry:
-                    ImportEntryView(model: model)
+                case .entry(let startInPasteMode):
+                    ImportEntryView(model: model, startInPasteMode: startInPasteMode)
                 case .parsing(let source):
                     ParsingProgressView(
                         source: source,
                         isFailure: false,
                         onTryAgain: { model.retryFromFailure() },
-                        onPasteInstead: { model.retryFromFailure() }
+                        onPasteInstead: { model.pasteInsteadFromFailure() }
                     )
                 case .failure(let source):
                     ParsingProgressView(
                         source: source,
                         isFailure: true,
                         onTryAgain: { model.retryFromFailure() },
-                        onPasteInstead: { model.retryFromFailure() }
+                        onPasteInstead: { model.pasteInsteadFromFailure() }
                     )
                 case .confirm:
                     ConfirmTranscriptView(model: model)
