@@ -64,7 +64,7 @@ Decimal phases appear between their surrounding integers in numeric order.
   3. User can paste raw conversation text and get the same confirmable transcript as a fallback path.
   4. Nothing is sent for analysis until the user confirms the transcript.
 
-**Plans**: 3/5 plans executed
+**Plans**: 4/5 plans executed
 **UI hint**: yes
 
 **Wave 1**
@@ -78,7 +78,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 
 **Wave 3** *(blocked on Wave 2)*
 
-- [ ] 02-04-PLAN.md — SwiftUI slice: Banter design tokens + 3 screens (Import Entry, Parsing Progress, Confirm Transcript flip/edit/confirm) per 02-UI-SPEC.md (CAPT-01, CAPT-02, CAPT-03)
+- [x] 02-04-PLAN.md — SwiftUI slice: Banter design tokens + 3 screens (Import Entry, Parsing Progress, Confirm Transcript flip/edit/confirm) per 02-UI-SPEC.md (CAPT-01, CAPT-02, CAPT-03)
 
 **Wave 4** *(blocked on Wave 3)*
 
@@ -184,7 +184,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 → 8
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Foundation & Privacy Boundary | 4/4 | Complete    | 2026-07-03 |
-| 2. Screenshot Import & OCR Pipeline | 3/5 | In Progress|  |
+| 2. Screenshot Import & OCR Pipeline | 4/5 | In Progress|  |
 | 3. Backend LLM Orchestration | 0/TBD | Not started | - |
 | 4. Companion App UI & Paywall | 0/TBD | Not started | - |
 | 5. Keyboard Extension | 0/TBD | Not started | - |

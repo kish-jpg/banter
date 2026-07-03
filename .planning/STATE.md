@@ -5,15 +5,15 @@ milestone_name: milestone
 current_phase: 2
 current_phase_name: Screenshot Import & OCR Pipeline
 status: executing
-stopped_at: Completed 02-02-PLAN.md - BubbleAttributor CI-confirmed green on first push (run 28642226580)
-last_updated: "2026-07-03T09:39:06.534Z"
+stopped_at: Completed 02-04-PLAN.md - Import/Confirm UI + Banter design tokens, CI green (run 28653268129)
+last_updated: "2026-07-03T10:08:44.835Z"
 last_activity: 2026-07-03
 last_activity_desc: Completed 02-02-PLAN.md
 progress:
   total_phases: 8
   completed_phases: 1
   total_plans: 9
-  completed_plans: 7
+  completed_plans: 8
   percent: 13
 ---
 
@@ -29,7 +29,7 @@ See: .planning/PROJECT.md (updated 2026-07-03)
 ## Current Position
 
 Phase: 2 (Screenshot Import & OCR Pipeline) — EXECUTING
-Plan: 4 of 5
+Plan: 5 of 5
 Status: Ready to execute
 Last activity: 2026-07-03 — Completed 02-02-PLAN.md
 
@@ -62,6 +62,7 @@ Progress: [███████░░░] 67%
 | Phase 02-screenshot-import-ocr-pipeline P01 | 15min | 2 tasks | 6 files |
 | Phase 02-screenshot-import-ocr-pipeline P02 | 12min | 2 tasks | 4 files |
 | Phase 02-screenshot-import-ocr-pipeline P03 | 8min | 1 tasks | 2 files |
+| Phase 02-screenshot-import-ocr-pipeline P04 | 25min | 3 tasks | 15 files |
 
 ## Accumulated Context
 
@@ -83,6 +84,9 @@ Recent decisions affecting current work:
 - [Phase 02-screenshot-import-ocr-pipeline]: userSideXThreshold = 0.4 shipped as documented public constant with ponytail-deferral comment; real-screenshot tuning deferred, matches RESEARCH.md recommendation
 - [Phase 02-screenshot-import-ocr-pipeline]: Reading-order fix (descending boundingBox.origin.y sort) unit-tested against shuffled input to prove Pitfall 2 fix actually works, not just happy-path ordering
 - [Phase ?]: First distinct speaker name in paste text defaults to .match, not .user - matches RESEARCH.md Pattern 3/Assumptions A2; confirm screen (plan 04) corrects wrong guesses
+- [Phase ?]: Banter.Type renamed to Banter.TextStyle - X.Type is a reserved Swift metatype expression, backticks fix declaration but not use sites
+- [Phase ?]: Added placeholder AppIcon.appiconset (1024x1024) - xcodebuild's actool defaults to --app-icon AppIcon and fails asset-catalog compile if none exists
+- [Phase ?]: Confirm & Continue and Start Over are pure local-state mutations, no network call, preserving CAPT-04 boundary until Phase 3
 
 ### Pending Todos
 
@@ -105,6 +109,6 @@ Items acknowledged and carried forward from previous milestone close:
 
 ## Session Continuity
 
-Last session: 2026-07-03T09:37:20.049Z
-Stopped at: Completed 02-02-PLAN.md - BubbleAttributor CI-confirmed green on first push (run 28642226580)
+Last session: 2026-07-03T10:08:44.820Z
+Stopped at: Completed 02-04-PLAN.md - Import/Confirm UI + Banter design tokens, CI green (run 28653268129)
 Resume file: None
