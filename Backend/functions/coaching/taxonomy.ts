@@ -23,7 +23,8 @@ export function allowedTagNames(): Set<string> {
 export function containsBannedTerm(text: string): string | null {
   const lower = text.toLowerCase();
   for (const term of taxonomy.bannedTerms) {
-    if (lower.includes(term.toLowerCase())) return term;
+    const escaped = term.toLowerCase().replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    if (new RegExp(`\\b${escaped}\\b`).test(lower)) return term;
   }
   return null;
 }

@@ -30,6 +30,13 @@ Deno.test("containsBannedTerm detects a banned term case-insensitively and retur
   assertStrictEquals(containsBannedTerm("a normal reply"), null);
 });
 
+Deno.test("containsBannedTerm uses word boundaries, not substring - 'neg' doesn't false-positive on 'negotiating'/'negative' (WR-01)", () => {
+  assertStrictEquals(containsBannedTerm("negotiating a good time to meet"), null);
+  assertStrictEquals(containsBannedTerm("I feel like I'm in the negative about this"), null);
+  assertStrictEquals(containsBannedTerm("that took a lot of energy"), null);
+  assertStrictEquals(containsBannedTerm("just say neg and see what happens"), "neg");
+});
+
 Deno.test("allowlist covers Gottman + attachment + Aron; banlist covers negging/scarcity/alpha", () => {
   const frameworks = taxonomy.allowed.map((e) => e.framework.toLowerCase());
   assert(frameworks.some((f) => f.includes("gottman")));
