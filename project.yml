@@ -4,6 +4,9 @@ options:
 packages:
   BanterShared:
     path: BanterShared
+  RevenueCat:
+    url: https://github.com/RevenueCat/purchases-ios.git
+    from: "5.80.2"
 targets:
   BanterApp:
     type: application
@@ -13,6 +16,8 @@ targets:
       - path: BanterApp
     dependencies:
       - package: BanterShared
+      - package: RevenueCat
+        product: RevenueCat
     entitlements:
       path: BanterApp/BanterApp.entitlements
       properties:

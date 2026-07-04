@@ -1,0 +1,48 @@
+{
+  "identifier" : "6EE4C9AA",
+  "nonRenewingSubscriptions" : [],
+  "products" : [],
+  "settings" : {
+    "_applicationInternalID" : "0",
+    "_developerTeamID" : "0",
+    "_lastSynchronizedDate" : 0
+  },
+  "subscriptionGroups" : [
+    {
+      "id" : "8C6A9F9A",
+      "localizations" : [],
+      "name" : "banter_premium",
+      "subscriptions" : [
+        {
+          "adHocOffers" : [],
+          "codeOffers" : [],
+          "displayPrice" : "6.99",
+          "familyShareable" : false,
+          "groupNumber" : 1,
+          "internalID" : "1F3B9A2D",
+          "introductoryOffer" : {
+            "internalID" : "9A2E7C4F",
+            "paymentMode" : "free",
+            "subscriptionPeriod" : "P2W"
+          },
+          "localizations" : [
+            {
+              "description" : "Unlimited daily analyses, full conversation health timeline, priority reply generation.",
+              "displayName" : "Banter Premium (Weekly)",
+              "locale" : "en_US"
+            }
+          ],
+          "productID" : "com.banter.premium.weekly",
+          "recurringSubscriptionPeriod" : "P1W",
+          "referenceName" : "Banter Premium Weekly",
+          "subscriptionGroupID" : "8C6A9F9A",
+          "type" : "RecurringSubscription"
+        }
+      ]
+    }
+  ],
+  "version" : {
+    "major" : 3,
+    "minor" : 0
+  }
+}
