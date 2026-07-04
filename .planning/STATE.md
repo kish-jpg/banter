@@ -5,15 +5,15 @@ milestone_name: milestone
 current_phase: 4
 current_phase_name: Companion App UI & Paywall
 status: executing
-stopped_at: Completed 04-03-PLAN.md (onboarding value-before-paywall slice)
-last_updated: "2026-07-04T12:21:57.389Z"
+stopped_at: Completed 04-04-PLAN.md (Conversation Health timeline)
+last_updated: "2026-07-04T12:30:53.542Z"
 last_activity: 2026-07-04
 last_activity_desc: Phase 4 execution started
 progress:
   total_phases: 8
   completed_phases: 3
   total_plans: 17
-  completed_plans: 15
+  completed_plans: 16
   percent: 38
 ---
 
@@ -29,7 +29,7 @@ See: .planning/PROJECT.md (updated 2026-07-03)
 ## Current Position
 
 Phase: 4 (Companion App UI & Paywall) — EXECUTING
-Plan: 4 of 5
+Plan: 5 of 5
 Status: Ready to execute
 Last activity: 2026-07-04 — Phase 4 execution started
 
@@ -112,6 +112,9 @@ Recent decisions affecting current work:
 - [Phase ?]: [Phase 04-companion-app-ui-paywall]: OnboardingFlowModel matches Wave-0 XCUITest scaffolds' --seed-fresh-install argument name; --reset-onboarding-state kept as a functional alias
 - [Phase ?]: [Phase 04-companion-app-ui-paywall]: Added --skip-onboarding CI seed and updated ScreenshotArtifactTests (not in plan's files_modified) since routing ContentView into ValueDemoCoordinatorView broke that existing Phase 2 test - Rule 1 auto-fix
 - [Phase ?]: [Phase 04-companion-app-ui-paywall]: ValueDemoCoordinatorView uses two onChange watchers (importModel.state and onboardingModel.state) since onChange never fires on a model's pre-seeded initial value
+- [Phase ?]: [Phase 04-companion-app-ui-paywall]: SentimentTimelineStore built to match the pre-existing Wave-0 test scaffold's API (class init, append(_:conversationId:), events(forConversationId:), BanterShared placement) rather than the plan's literal signatures/BanterApp path
+- [Phase ?]: [Phase 04-companion-app-ui-paywall]: Added optional factors: SentimentFactors? to SentimentEvent (Rule 1 auto-fix) so ConversationHealthView's factor grid has a real data source; additive/defaulted so existing call sites keep compiling
+- [Phase ?]: [Phase 04-companion-app-ui-paywall]: ConversationHealthView chart uses the UI-SPEC's neutral textPrimary/destructive fallback color, not new chartPositive/chartNegative tokens+assets
 
 ### Pending Todos
 
@@ -134,6 +137,6 @@ Items acknowledged and carried forward from previous milestone close:
 
 ## Session Continuity
 
-Last session: 2026-07-04T12:21:57.377Z
-Stopped at: Completed 04-03-PLAN.md (onboarding value-before-paywall slice)
+Last session: 2026-07-04T12:30:53.532Z
+Stopped at: Completed 04-04-PLAN.md (Conversation Health timeline)
 Resume file: None

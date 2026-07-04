@@ -25,8 +25,8 @@
 ### Love Calculator
 
 - [x] **CALC-01**: Each analyzed exchange is sentiment-scored (same structured LLM call as reply generation)
-- [ ] **CALC-02**: User can view a per-conversation health score with a timeline of emotional factors
-- [ ] **CALC-03**: Insights are scoped per-conversation only — no persistent profile of the match
+- [x] **CALC-02**: User can view a per-conversation health score with a timeline of emotional factors
+- [x] **CALC-03**: Insights are scoped per-conversation only — no persistent profile of the match
 
 ### Profile Engine
 
@@ -113,8 +113,8 @@ Which phases cover which requirements. Updated during roadmap creation.
 | ONBD-02 | Phase 4 | Complete |
 | COAC-02 | Phase 4 | Complete |
 | COAC-04 | Phase 4 | Complete |
-| CALC-02 | Phase 4 | Pending |
-| CALC-03 | Phase 4 | Pending |
+| CALC-02 | Phase 4 | Complete |
+| CALC-03 | Phase 4 | Complete |
 | MONE-01 | Phase 4 | Pending |
 | MONE-02 | Phase 4 | Pending |
 | MONE-03 | Phase 4 | Pending |
