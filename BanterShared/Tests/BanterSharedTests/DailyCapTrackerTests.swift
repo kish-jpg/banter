@@ -10,6 +10,28 @@ import XCTest
 /// Phase 4 plan). References the not-yet-built production symbol so this
 /// fails-red on "cannot find 'DailyCapTracker' in scope".
 final class DailyCapTrackerTests: XCTestCase {
+    /// The tracker writes through AppGroupStore into the real UserDefaults
+    /// suite with fixed date keys — remove them before AND after each test
+    /// so local re-runs on the same machine don't see the prior run's counts.
+    private static let testKeys = ["dailyCap.2026-07-04", "dailyCap.2026-07-05"]
+
+    override func setUp() {
+        super.setUp()
+        removeTestKeys()
+    }
+
+    override func tearDown() {
+        removeTestKeys()
+        super.tearDown()
+    }
+
+    private func removeTestKeys() {
+        let defaults = UserDefaults(suiteName: AppGroupStore.suiteName)
+        for key in Self.testKeys {
+            defaults?.removeObject(forKey: key)
+        }
+    }
+
     func testBlocksAfterDailyLimitReached() {
         let tracker = DailyCapTracker(dailyLimit: 3, dateString: "2026-07-04")
 
