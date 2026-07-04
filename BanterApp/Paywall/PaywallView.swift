@@ -170,7 +170,8 @@ struct PaywallView: View {
         guard let offerings = try? await Purchases.shared.offerings() else { return }
         guard let package = offerings.current?.availablePackages.first else { return }
         packageToPurchase = package
-        isTrialEligible = await Purchases.shared.checkTrialOrIntroDiscountEligibility(product: package.storeProduct).trialOrIntroEligibility == .eligible
+        let eligibility = await Purchases.shared.checkTrialOrIntroDiscountEligibility(product: package.storeProduct)
+        isTrialEligible = eligibility.status == .eligible
     }
 
     private func purchase() async {
