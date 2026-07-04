@@ -18,6 +18,11 @@ public struct RevenueCatEntitlementSource: EntitlementSource {
     public init() {}
 
     public func fetchState() async -> EntitlementState {
+        // Unconfigured SDK (placeholder key build) degrades to .free instead
+        // of tripping Purchases.shared's not-configured fatalError.
+        guard Purchases.isConfigured else {
+            return .free
+        }
         guard let info = try? await Purchases.shared.customerInfo() else {
             return .free
         }
@@ -37,5 +42,10 @@ enum RevenueCatConfig {
     /// dashboard project exists. RC_PUBLIC_SDK_KEY_PLACEHOLDER is an obvious
     /// sentinel — Purchases.configure must not be called with this value in
     /// a build that expects live purchases to work.
-    static let publicSDKKey = "RC_PUBLIC_SDK_KEY_PLACEHOLDER"
+    static let placeholderKey = "RC_PUBLIC_SDK_KEY_PLACEHOLDER"
+    static let publicSDKKey = placeholderKey
+
+    /// True only once publicSDKKey has been replaced with a real dashboard
+    /// key — BanterAppApp gates Purchases.configure on this.
+    static var hasRealKey: Bool { publicSDKKey != placeholderKey }
 }

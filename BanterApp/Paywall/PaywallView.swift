@@ -167,6 +167,12 @@ struct PaywallView: View {
     // MARK: - RevenueCat
 
     private func loadOffering() async {
+        // Unconfigured SDK (placeholder key build): degrade with a message
+        // instead of tripping Purchases.shared's not-configured fatalError.
+        guard Purchases.isConfigured else {
+            errorMessage = "Purchases aren't available in this build."
+            return
+        }
         guard let offerings = try? await Purchases.shared.offerings() else { return }
         guard let package = offerings.current?.availablePackages.first else { return }
         packageToPurchase = package
