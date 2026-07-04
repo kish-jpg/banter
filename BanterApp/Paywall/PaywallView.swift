@@ -40,6 +40,17 @@ struct PaywallView: View {
                             .foregroundStyle(Banter.Colors.destructive)
                             .multilineTextAlignment(.center)
                             .padding(.horizontal, Banter.Spacing.md)
+
+                        // Offering never loaded (offline/misconfig): give the
+                        // user a path back instead of a forever-disabled CTA.
+                        if packageToPurchase == nil {
+                            Button("Retry") {
+                                Task { await loadOffering() }
+                            }
+                            .font(Banter.TextStyle.body)
+                            .foregroundStyle(Banter.Colors.accent)
+                            .frame(minHeight: 44)
+                        }
                     }
                 }
                 .padding(.horizontal, Banter.Spacing.md)
@@ -173,11 +184,21 @@ struct PaywallView: View {
             errorMessage = "Purchases aren't available in this build."
             return
         }
-        guard let offerings = try? await Purchases.shared.offerings() else { return }
-        guard let package = offerings.current?.availablePackages.first else { return }
-        packageToPurchase = package
-        let eligibility = await Purchases.shared.checkTrialOrIntroDiscountEligibility(product: package.storeProduct)
-        isTrialEligible = eligibility.status == .eligible
+        do {
+            let offerings = try await Purchases.shared.offerings()
+            guard let package = offerings.current?.availablePackages.first else {
+                errorMessage = "No subscription is available right now. Please try again later."
+                return
+            }
+            errorMessage = nil
+            packageToPurchase = package
+            let eligibility = await Purchases.shared.checkTrialOrIntroDiscountEligibility(product: package.storeProduct)
+            isTrialEligible = eligibility.status == .eligible
+        } catch {
+            // A paywall that silently can't sell is a revenue bug — surface
+            // the failure and offer a retry instead of a dead disabled CTA.
+            errorMessage = "Couldn't load subscription options. Check your connection and retry."
+        }
     }
 
     private func purchase() async {
