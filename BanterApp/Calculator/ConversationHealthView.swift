@@ -101,7 +101,10 @@ struct ConversationHealthView: View {
                     )
                     .foregroundStyle(chartColor(for: onlyEvent.scoreDelta))
                 } else {
-                    ForEach(events, id: \.messageIndex) { event in
+                    // messageIndex is NOT unique (user + match events can
+                    // share one, re-analysis duplicates too) — key by array
+                    // position instead, matching the suggestions-list pattern.
+                    ForEach(Array(events.enumerated()), id: \.offset) { _, event in
                         LineMark(
                             x: .value("Message", event.messageIndex),
                             y: .value("Score", event.scoreDelta)
