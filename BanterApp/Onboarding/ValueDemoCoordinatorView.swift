@@ -109,6 +109,31 @@ struct ValueDemoCoordinatorView: View {
             ScrollView {
                 VStack(spacing: Banter.Spacing.lg) {
                     TonePickerView(model: coachingModel)
+
+                    // First-run value demo must never dead-end silently:
+                    // show a spinner while the request is in flight and an
+                    // error + Retry if it fails (offline/backend down).
+                    if coachingModel.isLoading {
+                        ProgressView()
+                            .frame(maxWidth: .infinity)
+                            .padding(.top, Banter.Spacing.xl)
+                    } else if let errorMessage = coachingModel.errorMessage {
+                        VStack(spacing: Banter.Spacing.sm) {
+                            Text(errorMessage)
+                                .font(Banter.TextStyle.body)
+                                .foregroundStyle(Banter.Colors.textSecondary)
+                                .multilineTextAlignment(.center)
+                            Button("Retry") {
+                                Task { await coachingModel.selectTone(coachingModel.selectedTone) }
+                            }
+                            .font(Banter.TextStyle.body)
+                            .foregroundStyle(Banter.Colors.accent)
+                            .frame(minHeight: 44)
+                        }
+                        .frame(maxWidth: .infinity)
+                        .padding(.top, Banter.Spacing.xl)
+                    }
+
                     ForEach(Array(coachingModel.replies.enumerated()), id: \.offset) { index, reply in
                         SuggestionCardView(index: index, reply: reply, model: coachingModel)
                     }
