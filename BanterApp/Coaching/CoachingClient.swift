@@ -18,7 +18,22 @@ public struct CoachingClient {
     public let baseURL: URL
     private let session: URLSession
 
-    public init(baseURL: URL = URL(string: "http://localhost:54321")!, session: URLSession = .shared) {
+    /// Default endpoint. DEBUG builds target the local Supabase edge runtime;
+    /// release builds deliberately resolve to an unroutable sentinel host so
+    /// a missing production endpoint fails fast at the suggestions screen's
+    /// error+Retry surface instead of silently POSTing to localhost.
+    /// ponytail: no production endpoint exists yet — swap the release branch
+    /// for the deployed URL (via xcconfig/Info.plist) once one does; tracked
+    /// in .planning/phases/04-companion-app-ui-paywall/deferred-items.md.
+    public static let defaultBaseURL: URL = {
+        #if DEBUG
+        URL(string: "http://localhost:54321")!
+        #else
+        URL(string: "https://coaching-endpoint-not-configured.invalid")!
+        #endif
+    }()
+
+    public init(baseURL: URL = CoachingClient.defaultBaseURL, session: URLSession = .shared) {
         self.baseURL = baseURL
         self.session = session
     }

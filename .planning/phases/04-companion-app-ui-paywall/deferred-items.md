@@ -31,3 +31,11 @@ references in demo-path files).
 delivered in Phase 4. The cap gate, paywall presentation, downgrade banner,
 and health-view write path land with the first post-onboarding surface
 (planned alongside Phase 5's keyboard flow or a dedicated home-surface plan).
+
+## From code review (WR-11) — no production coaching endpoint
+
+`CoachingClient.defaultBaseURL` targets `http://localhost:54321` in DEBUG and
+an unroutable `.invalid` sentinel host in release (fails fast at the
+suggestions error+Retry surface). Before any real-device/TestFlight build:
+deploy the coaching edge function, then move the base URL into
+xcconfig/Info.plist and replace the sentinel.
