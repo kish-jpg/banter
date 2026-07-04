@@ -54,9 +54,9 @@
 
 ### Monetization
 
-- [ ] **MONE-01**: Free tier with daily analysis cap — psychology tags always visible on the free tier
-- [ ] **MONE-02**: Premium subscription (RevenueCat/StoreKit 2) unlocks unlimited analyses, love-calculator depth, and full progression
-- [ ] **MONE-03**: Reverse trial — 14 days full access, then graceful downgrade to free tier
+- [x] **MONE-01**: Free tier with daily analysis cap — psychology tags always visible on the free tier
+- [x] **MONE-02**: Premium subscription (RevenueCat/StoreKit 2) unlocks unlimited analyses, love-calculator depth, and full progression
+- [x] **MONE-03**: Reverse trial — 14 days full access, then graceful downgrade to free tier
 
 ### Privacy
 
@@ -115,9 +115,9 @@ Which phases cover which requirements. Updated during roadmap creation.
 | COAC-04 | Phase 4 | Complete |
 | CALC-02 | Phase 4 | Complete |
 | CALC-03 | Phase 4 | Complete |
-| MONE-01 | Phase 4 | Pending |
-| MONE-02 | Phase 4 | Pending |
-| MONE-03 | Phase 4 | Pending |
+| MONE-01 | Phase 4 | Complete |
+| MONE-02 | Phase 4 | Complete |
+| MONE-03 | Phase 4 | Complete |
 | KEYS-01 | Phase 5 | Pending |
 | KEYS-02 | Phase 5 | Pending |
 | KEYS-03 | Phase 5 | Pending |
