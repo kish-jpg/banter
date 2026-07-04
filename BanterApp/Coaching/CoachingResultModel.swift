@@ -14,26 +14,45 @@ public final class CoachingResultModel {
     public private(set) var errorMessage: String?
     public private(set) var expandedTagIndices: Set<Int> = []
 
-    /// Set by a later Phase 4 plan's daily-cap wiring; defaults false here so
-    /// the onboarding demo path stays ungated (RESEARCH.md Pitfall 4).
+    /// True once a non-onboarding caller's DailyCapTracker has blocked a new
+    /// analysis. Defaults false, and the onboarding demo path never supplies
+    /// a capGate closure, so it can never become true there (RESEARCH.md
+    /// Pitfall 4 — the demo call stays structurally ungated).
     public private(set) var dailyCapReached: Bool = false
 
     private let messages: [ConversationMessage]
     private let client: CoachingClient
 
+    /// Non-onboarding callers pass a closure consulting
+    /// DailyCapTracker.canAnalyze(isPremium:)/EntitlementManager.isPremium;
+    /// nil (the default) means "never capped" — the shape the onboarding
+    /// demo path relies on by simply not supplying one.
+    private let capGate: (() -> Bool)?
+    private let onAnalysisRecorded: (() -> Void)?
+
     public init(
         messages: [ConversationMessage],
         replies: [ReplySuggestion] = [],
         selectedTone: ReplyStyle = .playful,
-        client: CoachingClient = CoachingClient()
+        client: CoachingClient = CoachingClient(),
+        capGate: (() -> Bool)? = nil,
+        onAnalysisRecorded: (() -> Void)? = nil
     ) {
         self.messages = messages
         self.replies = replies
         self.selectedTone = selectedTone
         self.client = client
+        self.capGate = capGate
+        self.onAnalysisRecorded = onAnalysisRecorded
     }
 
     public func selectTone(_ tone: ReplyStyle) async {
+        if let capGate, !capGate() {
+            dailyCapReached = true
+            return
+        }
+        dailyCapReached = false
+
         selectedTone = tone
         isLoading = true
         errorMessage = nil
@@ -43,6 +62,7 @@ public final class CoachingResultModel {
         do {
             let response = try await client.send(request)
             replies = response.replies
+            onAnalysisRecorded?()
         } catch {
             errorMessage = "Couldn't get suggestions"
         }
