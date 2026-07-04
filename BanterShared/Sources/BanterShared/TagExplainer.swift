@@ -11,7 +11,9 @@ public enum TagExplainer {
         else {
             return [:]
         }
-        return Dictionary(uniqueKeysWithValues: decoded.allowed.map { ($0.tagName, $0) })
+        // First entry wins on duplicate tagNames — the hand-edited taxonomy
+        // must never be able to crash the client (uniqueKeysWithValues traps).
+        return Dictionary(decoded.allowed.map { ($0.tagName, $0) }, uniquingKeysWith: { first, _ in first })
     }()
 
     public static func entry(forTag tag: String) -> TaxonomyEntry? {
