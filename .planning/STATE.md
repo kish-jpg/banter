@@ -5,15 +5,15 @@ milestone_name: milestone
 current_phase: 4
 current_phase_name: Companion App UI & Paywall
 status: executing
-stopped_at: Completed 04-01-PLAN.md
-last_updated: "2026-07-04T04:47:01.168Z"
+stopped_at: Completed 04-03-PLAN.md (onboarding value-before-paywall slice)
+last_updated: "2026-07-04T12:21:57.389Z"
 last_activity: 2026-07-04
 last_activity_desc: Phase 4 execution started
 progress:
   total_phases: 8
   completed_phases: 3
   total_plans: 17
-  completed_plans: 14
+  completed_plans: 15
   percent: 38
 ---
 
@@ -29,7 +29,7 @@ See: .planning/PROJECT.md (updated 2026-07-03)
 ## Current Position
 
 Phase: 4 (Companion App UI & Paywall) — EXECUTING
-Plan: 3 of 5
+Plan: 4 of 5
 Status: Ready to execute
 Last activity: 2026-07-04 — Phase 4 execution started
 
@@ -70,6 +70,7 @@ Progress: [██████████] 100%
 | Phase 03-backend-llm-orchestration P03 | 50min | 3 tasks | 13 files |
 | Phase 4 P1 | 18min | 3 tasks | 12 files |
 | Phase 04-companion-app-ui-paywall PP02 | 22min | 3 tasks | 10 files |
+| Phase 04-companion-app-ui-paywall PP03 | 35min | 3 tasks | 9 files |
 
 ## Accumulated Context
 
@@ -108,6 +109,9 @@ Recent decisions affecting current work:
 - [Phase ?]: EntitlementManagerTests defines its own EntitlementSource/EntitlementState protocol seam so tests never require import RevenueCat to compile
 - [Phase 04-companion-app-ui-paywall]: TonePicker/TagExplainer live in BanterShared (not BanterApp) so Wave-0 test scaffolds compile under swift test --package-path BanterShared
 - [Phase 04-companion-app-ui-paywall]: taxonomy.json bundled a second time inside BanterShared package resources; sync-taxonomy.sh extended to keep both client copies + backend source byte-identical
+- [Phase ?]: [Phase 04-companion-app-ui-paywall]: OnboardingFlowModel matches Wave-0 XCUITest scaffolds' --seed-fresh-install argument name; --reset-onboarding-state kept as a functional alias
+- [Phase ?]: [Phase 04-companion-app-ui-paywall]: Added --skip-onboarding CI seed and updated ScreenshotArtifactTests (not in plan's files_modified) since routing ContentView into ValueDemoCoordinatorView broke that existing Phase 2 test - Rule 1 auto-fix
+- [Phase ?]: [Phase 04-companion-app-ui-paywall]: ValueDemoCoordinatorView uses two onChange watchers (importModel.state and onboardingModel.state) since onChange never fires on a model's pre-seeded initial value
 
 ### Pending Todos
 
@@ -130,6 +134,6 @@ Items acknowledged and carried forward from previous milestone close:
 
 ## Session Continuity
 
-Last session: 2026-07-04T04:42:07.825Z
-Stopped at: Completed 04-01-PLAN.md
+Last session: 2026-07-04T12:21:57.377Z
+Stopped at: Completed 04-03-PLAN.md (onboarding value-before-paywall slice)
 Resume file: None

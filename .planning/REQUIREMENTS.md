@@ -49,8 +49,8 @@
 
 ### Onboarding
 
-- [ ] **ONBD-01**: Onboarding demonstrates core value before any signup or paywall (Wispr Flow pattern)
-- [ ] **ONBD-02**: Permissions (photos, keyboard) are primed contextually with explainer screens at the moment of need
+- [x] **ONBD-01**: Onboarding demonstrates core value before any signup or paywall (Wispr Flow pattern)
+- [x] **ONBD-02**: Permissions (photos, keyboard) are primed contextually with explainer screens at the moment of need
 
 ### Monetization
 
@@ -109,8 +109,8 @@ Which phases cover which requirements. Updated during roadmap creation.
 | COAC-05 | Phase 3 | Complete |
 | COAC-07 | Phase 3 | Complete |
 | CALC-01 | Phase 3 | Complete |
-| ONBD-01 | Phase 4 | Pending |
-| ONBD-02 | Phase 4 | Pending |
+| ONBD-01 | Phase 4 | Complete |
+| ONBD-02 | Phase 4 | Complete |
 | COAC-02 | Phase 4 | Complete |
 | COAC-04 | Phase 4 | Complete |
 | CALC-02 | Phase 4 | Pending |
