@@ -41,11 +41,21 @@ final class OnboardingFlowModel {
     static let seedFreshInstallArgument = "--seed-fresh-install"
     static let resetOnboardingStateArgument = "--reset-onboarding-state"
 
+    /// CI seed for pre-Phase-4 XCUITests (ScreenshotArtifactTests) that
+    /// launch with no onboarding seed at all and expect to land directly on
+    /// Import Entry, unchanged since Phase 2 - bypasses Welcome/priming
+    /// entirely rather than asking every existing test to learn about the
+    /// new onboarding flow.
+    static let skipOnboardingArgument = "--skip-onboarding"
+
     init(arguments: [String] = CommandLine.arguments) {
         #if DEBUG
         if arguments.contains(Self.seedFreshInstallArgument) || arguments.contains(Self.resetOnboardingStateArgument) {
             hasSeenPhotosPriming = false
             state = .welcome
+        } else if arguments.contains(Self.skipOnboardingArgument) {
+            hasSeenPhotosPriming = true
+            state = .importFlow
         }
         #endif
     }
@@ -70,5 +80,15 @@ final class OnboardingFlowModel {
 
     func showSuggestions() {
         state = .suggestionsShown
+    }
+
+    /// Marks priming as already-seen without changing `state`. Used only by
+    /// ValueDemoCoordinatorView's CI-seed detection: when ImportFlowModel's
+    /// own `--seed-sample-transcript` debug seed has already bypassed real
+    /// OCR/permission flow, `start()` (triggered by the Welcome tap) should
+    /// route straight to `.importFlow`, skipping the priming step entirely,
+    /// while still showing Welcome first.
+    func markPrimingSeenWithoutAdvancing() {
+        hasSeenPhotosPriming = true
     }
 }

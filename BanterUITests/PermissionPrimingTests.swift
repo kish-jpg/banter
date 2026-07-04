@@ -28,9 +28,4 @@ final class PermissionPrimingTests: XCTestCase {
         // documented limitation) - this test only proves the in-app priming
         // screen renders first, not the subsequent system dialog itself.
     }
-
-    private func waitForLaunchAnimationToSettle(_ app: XCUIApplication, matching label: String) {
-        let element = app.buttons[label]
-        _ = element.waitForExistence(timeout: 10)
-    }
 }

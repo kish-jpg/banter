@@ -33,9 +33,4 @@ final class OnboardingFlowTests: XCTestCase {
         XCTAssertFalse(app.buttons["Start Free Trial"].exists, "Onboarding path must never surface a purchase CTA")
         XCTAssertFalse(app.textFields["Email"].exists, "Onboarding path must never surface a signup form")
     }
-
-    private func waitForLaunchAnimationToSettle(_ app: XCUIApplication, matching label: String) {
-        let element = app.buttons[label]
-        _ = element.waitForExistence(timeout: 10)
-    }
 }
