@@ -28,6 +28,7 @@ public protocol EntitlementSource: Sendable {
 /// resolves, so callers never assert a tier before the async call completes
 /// (RESEARCH.md Pitfall 2).
 @Observable
+@MainActor
 public final class EntitlementManager {
     public private(set) var isPremium: Bool = false
     public private(set) var isLoaded: Bool = false

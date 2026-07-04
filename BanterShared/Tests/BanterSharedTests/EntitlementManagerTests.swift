@@ -12,6 +12,7 @@ import XCTest
 /// production symbols so this fails-red on "cannot find type in scope".
 /// Deliberately does NOT `import RevenueCat` - the protocol seam is defined
 /// so this test has zero dependency on the live SDK.
+@MainActor
 final class EntitlementManagerTests: XCTestCase {
     private final class MockEntitlementSource: EntitlementSource {
         var stubbedState: EntitlementState = .free
