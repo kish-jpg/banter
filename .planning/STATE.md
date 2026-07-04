@@ -6,14 +6,14 @@ current_phase: 4
 current_phase_name: Companion App UI & Paywall
 status: executing
 stopped_at: Completed 04-01-PLAN.md
-last_updated: "2026-07-04T04:31:49.081Z"
+last_updated: "2026-07-04T04:47:01.168Z"
 last_activity: 2026-07-04
 last_activity_desc: Phase 4 execution started
 progress:
   total_phases: 8
   completed_phases: 3
   total_plans: 17
-  completed_plans: 13
+  completed_plans: 14
   percent: 38
 ---
 
@@ -29,7 +29,7 @@ See: .planning/PROJECT.md (updated 2026-07-03)
 ## Current Position
 
 Phase: 4 (Companion App UI & Paywall) — EXECUTING
-Plan: 2 of 5
+Plan: 3 of 5
 Status: Ready to execute
 Last activity: 2026-07-04 — Phase 4 execution started
 
@@ -69,6 +69,7 @@ Progress: [██████████] 100%
 | Phase 03-backend-llm-orchestration P02 | 8min | 2 tasks | 6 files |
 | Phase 03-backend-llm-orchestration P03 | 50min | 3 tasks | 13 files |
 | Phase 4 P1 | 18min | 3 tasks | 12 files |
+| Phase 04-companion-app-ui-paywall PP02 | 22min | 3 tasks | 10 files |
 
 ## Accumulated Context
 
@@ -105,6 +106,8 @@ Recent decisions affecting current work:
 - [Phase ?]: RevenueCat/purchases-ios T-04-SC checkpoint approved by human exactly as specified (official org, SPM URL, from: 5.80.2 pin)
 - [Phase ?]: Bundled-copy-of-taxonomy.json approach used (not a new backend endpoint), per 04-RESEARCH.md Open Question 2 default
 - [Phase ?]: EntitlementManagerTests defines its own EntitlementSource/EntitlementState protocol seam so tests never require import RevenueCat to compile
+- [Phase 04-companion-app-ui-paywall]: TonePicker/TagExplainer live in BanterShared (not BanterApp) so Wave-0 test scaffolds compile under swift test --package-path BanterShared
+- [Phase 04-companion-app-ui-paywall]: taxonomy.json bundled a second time inside BanterShared package resources; sync-taxonomy.sh extended to keep both client copies + backend source byte-identical
 
 ### Pending Todos
 
@@ -127,6 +130,6 @@ Items acknowledged and carried forward from previous milestone close:
 
 ## Session Continuity
 
-Last session: 2026-07-04T04:31:49.051Z
+Last session: 2026-07-04T04:42:07.825Z
 Stopped at: Completed 04-01-PLAN.md
 Resume file: None

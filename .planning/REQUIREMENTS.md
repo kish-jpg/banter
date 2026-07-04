@@ -15,7 +15,7 @@
 ### Coaching
 
 - [x] **COAC-01**: User receives 3 suggested replies per analysis
-- [ ] **COAC-02**: User can select a tone (playful, sincere, witty, direct) to steer suggestions
+- [x] **COAC-02**: User can select a tone (playful, sincere, witty, direct) to steer suggestions
 - [x] **COAC-03**: Every suggested reply carries a one-line psychology tag by default (zero extra taps)
 - [x] **COAC-04**: User can tap a tag to expand a plain-English "why this works" explanation with framework citation
 - [x] **COAC-05**: Suggestions match the user's texting voice and avoid AI tells (enforced at prompt level)
@@ -111,7 +111,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | CALC-01 | Phase 3 | Complete |
 | ONBD-01 | Phase 4 | Pending |
 | ONBD-02 | Phase 4 | Pending |
-| COAC-02 | Phase 4 | Pending |
+| COAC-02 | Phase 4 | Complete |
 | COAC-04 | Phase 4 | Complete |
 | CALC-02 | Phase 4 | Pending |
 | CALC-03 | Phase 4 | Pending |
