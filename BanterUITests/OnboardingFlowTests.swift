@@ -14,7 +14,10 @@ import XCTest
 final class OnboardingFlowTests: XCTestCase {
     func testFreshInstallReachesSuggestionsWithNoPaywallOrSignupUI() throws {
         let app = XCUIApplication()
-        app.launchArguments = ["--seed-fresh-install", "--seed-sample-transcript"]
+        // --seed-sample-replies: CI has no coaching backend, so the
+        // suggestions surface is populated from a static in-app fixture
+        // (ValueDemoCoordinatorView.sampleReplies) instead of the network.
+        app.launchArguments = ["--seed-fresh-install", "--seed-sample-transcript", "--seed-sample-replies"]
         app.launch()
 
         waitForLaunchAnimationToSettle(app, matching: "Try It Now")

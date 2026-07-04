@@ -125,9 +125,48 @@ struct ValueDemoCoordinatorView: View {
     /// EntitlementManager.
     @MainActor
     private func startCoaching() async {
+        #if DEBUG
+        // CI seed (OnboardingFlowTests): no coaching backend runs on the CI
+        // simulator, so `--seed-sample-replies` populates the suggestions
+        // surface from a static fixture instead of the network — mirrors
+        // ImportFlowModel's --seed-sample-transcript pattern.
+        if CommandLine.arguments.contains(Self.seedSampleRepliesArgument) {
+            coachingModel = CoachingResultModel(
+                messages: importModel.transcript,
+                replies: Self.sampleReplies
+            )
+            onboardingModel.showSuggestions()
+            return
+        }
+        #endif
         let model = CoachingResultModel(messages: importModel.transcript)
         coachingModel = model
         onboardingModel.showSuggestions()
         await model.selectTone(model.selectedTone)
     }
+
+    #if DEBUG
+    /// Debug launch argument: seed the suggestions screen with a static
+    /// reply fixture (no network call). Tags are real taxonomy.json
+    /// tagNames so TagExplainerSheet expansion works in CI too.
+    static let seedSampleRepliesArgument = "--seed-sample-replies"
+
+    private static let sampleReplies: [ReplySuggestion] = [
+        ReplySuggestion(
+            text: "Chaos buddies then — what's been the most 'a lot' part of your week?",
+            psychologyTag: "Turning toward a bid",
+            style: .playful
+        ),
+        ReplySuggestion(
+            text: "Honestly same. Mine's been saved by good coffee — what's saving yours?",
+            psychologyTag: "Reciprocal self-disclosure",
+            style: .playful
+        ),
+        ReplySuggestion(
+            text: "Weeks like that deserve a proper debrief. Trade highlights sometime?",
+            psychologyTag: "Mutual exchange",
+            style: .playful
+        ),
+    ]
+    #endif
 }
