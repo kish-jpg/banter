@@ -114,5 +114,8 @@ jobs:
       - name: Sync shared fixture (Deno<->Swift drift guard)
         run: bash Backend/scripts/sync-fixture.sh
 
+      - name: Taxonomy drift guard (backend<->client byte-identical, COAC-04)
+        run: bash Backend/scripts/sync-taxonomy.sh --check
+
       - name: Run Deno test suite (mocked Gemini, no docker/live API)
         run: deno test Backend/ --allow-env --allow-read
