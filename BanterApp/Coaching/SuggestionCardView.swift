@@ -78,6 +78,9 @@ struct SuggestionCardView: View {
                 .frame(width: 44, height: 44)
         }
         .accessibilityLabel("Copy reply")
+        // Stable hook for OnboardingFlowTests' `app.buttons["Copy"]` query —
+        // the label above is user-facing VoiceOver text, this is the test id.
+        .accessibilityIdentifier("Copy")
     }
 
     private var copiedToast: some View {
