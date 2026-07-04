@@ -39,7 +39,20 @@ created: 2026-07-04
 
 | Task ID | Plan | Wave | Requirement | Threat Ref | Secure Behavior | Test Type | Automated Command | File Exists | Status |
 |---------|------|------|-------------|------------|-----------------|-----------|-------------------|-------------|--------|
-| *(filled by planner — one row per task)* | | | | | | | | | ⬜ pending |
+| 01-T1 | 04-01 | 0 | COAC-04 | T-04-SC | RevenueCat add human-vetted before resolve | checkpoint | (blocking-human) | n/a | ⬜ pending |
+| 01-T2 | 04-01 | 0 | COAC-04 | T-04-01-DRIFT | Offline taxonomy decodes; bundled copy not drifted | unit + script | `swift test --package-path BanterShared --filter TaxonomyEntry`; `bash Backend/scripts/sync-taxonomy.sh` | ❌ Wave 0 | ⬜ pending |
+| 01-T3 | 04-01 | 0 | ONBD-01/02,COAC-02/04,CALC-02/03,MONE-01/02/03 | — | 7 test scaffolds fail-red on missing symbols | unit + XCUITest | `swift test --package-path BanterShared` | ❌ Wave 0 | ⬜ pending |
+| 02-T1 | 04-02 | 1 | COAC-02 | T-04-02-LEAK | CoachingClient DTO-only, no secret literal | unit | `swift test --package-path BanterShared --filter TonePickerTests` | ❌ Wave 0 | ⬜ pending |
+| 02-T2 | 04-02 | 1 | COAC-02 | T-04-02-TAG | Tags rendered unconditionally (never paywalled) | unit + snapshot | `swift test --package-path BanterShared --filter TonePickerTests` | ❌ Wave 0 | ⬜ pending |
+| 02-T3 | 04-02 | 1 | COAC-04 | — | Offline taxonomy lookup, no network per tap | unit | `swift test --package-path BanterShared --filter TagExplainerTests` | ❌ Wave 0 | ⬜ pending |
+| 03-T1 | 04-03 | 2 | ONBD-02 | T-04-03-PERM | Photos explainer at moment of need; paste fallback | XCUITest | `xcodebuild test -only-testing:BanterUITests/PermissionPrimingTests` | ❌ Wave 0 | ⬜ pending |
+| 03-T2 | 04-03 | 2 | ONBD-01 | T-04-03-GATE | Demo path has zero entitlement/cap tokens (grep guard) | grep + integration | grep guard on demo-path files | ❌ Wave 0 | ⬜ pending |
+| 03-T3 | 04-03 | 2 | ONBD-01 | T-04-03-GATE | Fresh install reaches suggestions, no paywall element | XCUITest | `xcodebuild test -only-testing:BanterUITests/OnboardingFlowTests` | ❌ Wave 0 | ⬜ pending |
+| 04-T1 | 04-04 | 2 | CALC-02,CALC-03 | T-04-04-DOSSIER | conversationId-only keying; negative structural guard | unit | `swift test --package-path BanterShared --filter SentimentTimelineStoreTests` | ❌ Wave 0 | ⬜ pending |
+| 04-T2 | 04-04 | 2 | CALC-02,CALC-03 | T-04-04-DOSSIER | Scope caption present; no match name displayed; accessible chart | grep + snapshot | grep guard + CI XCUITest render | ❌ Wave 0 | ⬜ pending |
+| 05-T1 | 04-05 | 3 | MONE-02,MONE-03 | — | Entitlement/product config + API confirmed pre-wire | checkpoint | (blocking-human) | n/a | ⬜ pending |
+| 05-T2 | 04-05 | 3 | MONE-01,MONE-02,MONE-03 | T-04-05-SPOOF | Premium only from RevenueCat; cap resets by date; premium uncapped | unit (mocked) | `swift test --package-path BanterShared --filter EntitlementManagerTests`; `--filter DailyCapTrackerTests` | ❌ Wave 0 | ⬜ pending |
+| 05-T3 | 04-05 | 3 | MONE-01,MONE-03 | T-04-05-TAGGATE | Runtime price (no hardcode); tags visible at cap; graceful downgrade | grep + unit | grep guard + `swift test --package-path BanterShared --filter DailyCapTrackerTests` | ❌ Wave 0 | ⬜ pending |
 
 *Status: ⬜ pending · ✅ green · ❌ red · ⚠️ flaky*
 
