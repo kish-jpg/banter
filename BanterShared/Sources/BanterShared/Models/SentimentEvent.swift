@@ -9,6 +9,9 @@ public struct SentimentEvent: Codable, Equatable {
     public let scoreDelta: Double
     public let signal: String
     public let timestamp: Date
+    /// Optional so every pre-existing call site (Wave-0 test scaffolds built
+    /// before CALC-02's factor grid existed) keeps compiling unchanged.
+    public let factors: SentimentFactors?
 
     public init(
         conversationId: UUID,
@@ -16,7 +19,8 @@ public struct SentimentEvent: Codable, Equatable {
         speaker: Speaker,
         scoreDelta: Double,
         signal: String,
-        timestamp: Date
+        timestamp: Date,
+        factors: SentimentFactors? = nil
     ) {
         self.conversationId = conversationId
         self.messageIndex = messageIndex
@@ -24,5 +28,6 @@ public struct SentimentEvent: Codable, Equatable {
         self.scoreDelta = scoreDelta
         self.signal = signal
         self.timestamp = timestamp
+        self.factors = factors
     }
 }

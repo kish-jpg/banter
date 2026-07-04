@@ -45,7 +45,8 @@ public final class SentimentTimelineStore {
             speaker: speaker,
             scoreDelta: response.sentiment.score,
             signal: response.sentiment.signal,
-            timestamp: Date()
+            timestamp: Date(),
+            factors: response.sentiment.factors
         )
         append(event, conversationId: conversationId)
     }
