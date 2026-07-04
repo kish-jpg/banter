@@ -9,6 +9,7 @@ import XCTest
 /// Wave-0 red state: `SentimentTimelineStore` does not exist yet (built in a
 /// later Phase 4 plan). References the not-yet-built production symbol so
 /// this fails-red on "cannot find 'SentimentTimelineStore' in scope".
+@MainActor
 final class SentimentTimelineStoreTests: XCTestCase {
     func testAppendingEventsRoundTripsInOrder() {
         let conversationId = UUID()

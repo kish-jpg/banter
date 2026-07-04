@@ -9,6 +9,13 @@ import Foundation
 ///
 /// Thin wrapper over `AppGroupStore`, keyed strictly by
 /// `"timeline.\(conversationId)"` — never a cross-conversation key.
+///
+/// @MainActor: `append` is an unsynchronized read-modify-write over the
+/// shared App Group suite — main-actor-only access is the in-process
+/// guarantee. ponytail: cross-process ceiling — when the keyboard extension
+/// (Phase 5, separate process) also writes timelines, concurrent writes can
+/// drop events; plan file coordination then.
+@MainActor
 public final class SentimentTimelineStore {
     /// Per-conversation event cap. Conversations are short-lived; unbounded
     /// growth of a single UserDefaults value is accepted-risk (T-04-04-GROWTH)

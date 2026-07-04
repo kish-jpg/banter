@@ -10,6 +10,13 @@ import Foundation
 /// midnight-reset logic (T-04-05-CAPBYPASS: a clock rollback can reset this
 /// counter early; accepted risk, no financial loss, documented in the plan's
 /// threat register).
+///
+/// @MainActor: recordGeneration is an unsynchronized read-modify-write over
+/// the shared App Group suite — main-actor-only access is the in-process
+/// guarantee. ponytail: cross-process ceiling — when the keyboard extension
+/// (Phase 5, separate process) also writes this key, UserDefaults offers no
+/// atomic increment; plan file coordination or an atomic scheme then.
+@MainActor
 public final class DailyCapTracker {
     private let dailyLimit: Int
     private let key: String

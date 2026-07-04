@@ -9,6 +9,7 @@ import XCTest
 /// Wave-0 red state: `DailyCapTracker` does not exist yet (built in a later
 /// Phase 4 plan). References the not-yet-built production symbol so this
 /// fails-red on "cannot find 'DailyCapTracker' in scope".
+@MainActor
 final class DailyCapTrackerTests: XCTestCase {
     /// The tracker writes through AppGroupStore into the real UserDefaults
     /// suite with fixed date keys — remove them before AND after each test
