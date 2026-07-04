@@ -17,7 +17,7 @@
 - [x] **COAC-01**: User receives 3 suggested replies per analysis
 - [ ] **COAC-02**: User can select a tone (playful, sincere, witty, direct) to steer suggestions
 - [x] **COAC-03**: Every suggested reply carries a one-line psychology tag by default (zero extra taps)
-- [ ] **COAC-04**: User can tap a tag to expand a plain-English "why this works" explanation with framework citation
+- [x] **COAC-04**: User can tap a tag to expand a plain-English "why this works" explanation with framework citation
 - [x] **COAC-05**: Suggestions match the user's texting voice and avoid AI tells (enforced at prompt level)
 - [x] **COAC-06**: All coaching content is gated by an evidence-based framework allowlist (Gottman, attachment theory, Aron self-disclosure) and a PUA/coercive-technique banlist — maintained as a literal artifact
 - [x] **COAC-07**: User can generate conversation openers from a match profile screenshot
@@ -112,7 +112,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | ONBD-01 | Phase 4 | Pending |
 | ONBD-02 | Phase 4 | Pending |
 | COAC-02 | Phase 4 | Pending |
-| COAC-04 | Phase 4 | Pending |
+| COAC-04 | Phase 4 | Complete |
 | CALC-02 | Phase 4 | Pending |
 | CALC-03 | Phase 4 | Pending |
 | MONE-01 | Phase 4 | Pending |

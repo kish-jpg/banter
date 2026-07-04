@@ -5,15 +5,15 @@ milestone_name: milestone
 current_phase: 4
 current_phase_name: Companion App UI & Paywall
 status: executing
-stopped_at: Phase 4 UI-SPEC approved
-last_updated: "2026-07-04T03:45:44.665Z"
-last_activity: 2026-07-03
-last_activity_desc: Phase 3 complete, transitioned to Phase 4
+stopped_at: Completed 04-01-PLAN.md
+last_updated: "2026-07-04T04:31:49.081Z"
+last_activity: 2026-07-04
+last_activity_desc: Phase 4 execution started
 progress:
   total_phases: 8
   completed_phases: 3
-  total_plans: 12
-  completed_plans: 12
+  total_plans: 17
+  completed_plans: 13
   percent: 38
 ---
 
@@ -24,14 +24,14 @@ progress:
 See: .planning/PROJECT.md (updated 2026-07-03)
 
 **Core value:** The user gets instant relief (great replies, right now) while becoming a measurably better texter over time — real skill transfer, backed by citable psychology.
-**Current focus:** Phase 3 — Backend LLM Orchestration
+**Current focus:** Phase 4 — Companion App UI & Paywall
 
 ## Current Position
 
-Phase: 4 — Companion App UI & Paywall
-Plan: Not started
+Phase: 4 (Companion App UI & Paywall) — EXECUTING
+Plan: 2 of 5
 Status: Ready to execute
-Last activity: 2026-07-03 — Phase 3 complete, transitioned to Phase 4
+Last activity: 2026-07-04 — Phase 4 execution started
 
 Progress: [██████████] 100%
 
@@ -68,6 +68,7 @@ Progress: [██████████] 100%
 | Phase 03-backend-llm-orchestration P01 | 12min | 2 tasks | 7 files |
 | Phase 03-backend-llm-orchestration P02 | 8min | 2 tasks | 6 files |
 | Phase 03-backend-llm-orchestration P03 | 50min | 3 tasks | 13 files |
+| Phase 4 P1 | 18min | 3 tasks | 12 files |
 
 ## Accumulated Context
 
@@ -101,6 +102,9 @@ Recent decisions affecting current work:
 - [Phase ?]: conversationId is client-minted; server echoes it back, no server-side minting (offline-first, stable for Phase 4 timeline)
 - [Phase ?]: Phase 3 is server-stateless: no SentimentEvent persistence; response carries aggregate sentiment only, event-timeline persistence deferred to Phase 4
 - [Phase ?]: docker compose restart does not reload docker-compose.yml environment block - smoke-coaching.sh uses up -d --force-recreate to pick up env changes
+- [Phase ?]: RevenueCat/purchases-ios T-04-SC checkpoint approved by human exactly as specified (official org, SPM URL, from: 5.80.2 pin)
+- [Phase ?]: Bundled-copy-of-taxonomy.json approach used (not a new backend endpoint), per 04-RESEARCH.md Open Question 2 default
+- [Phase ?]: EntitlementManagerTests defines its own EntitlementSource/EntitlementState protocol seam so tests never require import RevenueCat to compile
 
 ### Pending Todos
 
@@ -123,6 +127,6 @@ Items acknowledged and carried forward from previous milestone close:
 
 ## Session Continuity
 
-Last session: 2026-07-04T03:28:37.780Z
-Stopped at: Phase 4 UI-SPEC approved
-Resume file: .planning/phases/04-companion-app-ui-paywall/04-UI-SPEC.md
+Last session: 2026-07-04T04:31:49.051Z
+Stopped at: Completed 04-01-PLAN.md
+Resume file: None

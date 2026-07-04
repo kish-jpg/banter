@@ -126,12 +126,12 @@ Decimal phases appear between their surrounding integers in numeric order.
   4. Free tier caps daily analyses but always shows psychology tags; a 14-day full-access reverse trial downgrades gracefully to free, and premium unlocks unlimited analyses + calculator depth via RevenueCat/StoreKit 2.
   5. Photos and keyboard permissions are primed with contextual explainers at the moment of need.
 
-**Plans**: 5 plans
+**Plans**: 1/5 plans executed
 **UI hint**: yes
 
 **Wave 0**
 
-- [ ] 04-01-PLAN.md — RevenueCat SPM add (human-gated) + TaxonomyEntry model + bundled/synced taxonomy + Banter.storekit + 7 Wave-0 test scaffolds (COAC-04)
+- [x] 04-01-PLAN.md — RevenueCat SPM add (human-gated) + TaxonomyEntry model + bundled/synced taxonomy + Banter.storekit + 7 Wave-0 test scaffolds (COAC-04)
 
 **Wave 1** *(blocked on Wave 0)*
 
@@ -216,7 +216,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 → 8
 | 1. Foundation & Privacy Boundary | 4/4 | Complete    | 2026-07-03 |
 | 2. Screenshot Import & OCR Pipeline | 5/5 | Complete    | 2026-07-03 |
 | 3. Backend LLM Orchestration | 3/3 | Complete    | 2026-07-03 |
-| 4. Companion App UI & Paywall | 0/5 | Not started | - |
+| 4. Companion App UI & Paywall | 1/5 | In Progress|  |
 | 5. Keyboard Extension | 0/TBD | Not started | - |
 | 6. Profile Engine, XP & Grading | 0/TBD | Not started | - |
 | 7. Privacy Hardening | 0/TBD | Not started | - |
