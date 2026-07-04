@@ -15,7 +15,8 @@ let package = Package(
     ],
     targets: [
         .target(
-            name: "BanterShared"
+            name: "BanterShared",
+            resources: [.copy("Resources/taxonomy.json")]
         ),
         .testTarget(
             name: "BanterSharedTests",

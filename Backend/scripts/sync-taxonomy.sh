@@ -10,20 +10,25 @@ set -euo pipefail
 
 REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 SOURCE="$REPO_ROOT/Backend/functions/coaching/taxonomy.json"
-DEST="$REPO_ROOT/BanterApp/Resources/taxonomy.json"
+DESTS=(
+  "$REPO_ROOT/BanterApp/Resources/taxonomy.json"
+  "$REPO_ROOT/BanterShared/Sources/BanterShared/Resources/taxonomy.json"
+)
 
 if [ ! -f "$SOURCE" ]; then
   echo "sync-taxonomy.sh: source taxonomy not found at $SOURCE" >&2
   exit 1
 fi
 
-mkdir -p "$(dirname "$DEST")"
-cp "$SOURCE" "$DEST"
+for DEST in "${DESTS[@]}"; do
+  mkdir -p "$(dirname "$DEST")"
+  cp "$SOURCE" "$DEST"
 
-if ! diff -q "$SOURCE" "$DEST" > /dev/null; then
-  echo "sync-taxonomy.sh: taxonomy files differ after copy - this should never happen" >&2
-  diff "$SOURCE" "$DEST" >&2 || true
-  exit 1
-fi
+  if ! diff -q "$SOURCE" "$DEST" > /dev/null; then
+    echo "sync-taxonomy.sh: taxonomy files differ after copy - this should never happen" >&2
+    diff "$SOURCE" "$DEST" >&2 || true
+    exit 1
+  fi
+done
 
-echo "sync-taxonomy.sh: taxonomy files byte-identical ($SOURCE <-> $DEST)"
+echo "sync-taxonomy.sh: taxonomy files byte-identical ($SOURCE <-> ${DESTS[*]})"
