@@ -30,6 +30,11 @@ public final class CoachingResultModel {
     private let capGate: (() -> Bool)?
     private let onAnalysisRecorded: (() -> Void)?
 
+    /// Monotonic request generation. Rapid tone switches start overlapping
+    /// requests; only the newest generation may mutate `replies`/`errorMessage`
+    /// (or count toward the daily cap) — stale completions are dropped.
+    private var requestGeneration = 0
+
     public init(
         messages: [ConversationMessage],
         replies: [ReplySuggestion] = [],
@@ -56,14 +61,20 @@ public final class CoachingResultModel {
         selectedTone = tone
         isLoading = true
         errorMessage = nil
-        defer { isLoading = false }
+        requestGeneration += 1
+        let generation = requestGeneration
+        defer {
+            if generation == requestGeneration { isLoading = false }
+        }
 
         let request = TonePicker(selected: tone).makeRequest(messages: messages)
         do {
             let response = try await client.send(request)
+            guard generation == requestGeneration else { return }
             replies = response.replies
             onAnalysisRecorded?()
         } catch {
+            guard generation == requestGeneration else { return }
             errorMessage = "Couldn't get suggestions"
         }
     }
