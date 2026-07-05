@@ -21,9 +21,7 @@ struct TonePickerView: View {
     private func segment(for tone: ReplyStyle) -> some View {
         let isSelected = model.selectedTone == tone
         return Button {
-            withAnimation(reduceMotionAwareAnimation) {
-                Task { await model.selectTone(tone) }
-            }
+            Task { await model.selectTone(tone) }
         } label: {
             Text(tone.rawValue.capitalized)
                 .font(Banter.TextStyle.label)
