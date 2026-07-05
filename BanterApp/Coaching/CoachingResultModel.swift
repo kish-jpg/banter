@@ -30,6 +30,13 @@ public final class CoachingResultModel {
     private let capGate: (() -> Bool)?
     private let onAnalysisRecorded: (() -> Void)?
 
+    /// Additive response hook (CALC-02): fires once per non-stale coaching
+    /// response with the full decoded DTO, so a caller can append a
+    /// SentimentEvent without CoachingResultModel knowing about
+    /// SentimentTimelineStore. Defaults nil, so the onboarding demo path
+    /// (which never supplies it) appends no sentiment (ONBD-01).
+    private let onResponse: ((CoachingResponseDTO) -> Void)?
+
     /// Monotonic request generation. Rapid tone switches start overlapping
     /// requests; only the newest generation may mutate `replies`/`errorMessage`
     /// (or count toward the daily cap) — stale completions are dropped.
@@ -41,7 +48,8 @@ public final class CoachingResultModel {
         selectedTone: ReplyStyle = .playful,
         client: CoachingClient = CoachingClient(),
         capGate: (() -> Bool)? = nil,
-        onAnalysisRecorded: (() -> Void)? = nil
+        onAnalysisRecorded: (() -> Void)? = nil,
+        onResponse: ((CoachingResponseDTO) -> Void)? = nil
     ) {
         self.messages = messages
         self.replies = replies
@@ -49,6 +57,7 @@ public final class CoachingResultModel {
         self.client = client
         self.capGate = capGate
         self.onAnalysisRecorded = onAnalysisRecorded
+        self.onResponse = onResponse
     }
 
     public func selectTone(_ tone: ReplyStyle) async {
@@ -73,6 +82,7 @@ public final class CoachingResultModel {
             guard generation == requestGeneration else { return }
             replies = response.replies
             onAnalysisRecorded?()
+            onResponse?(response)
         } catch {
             guard generation == requestGeneration else { return }
             errorMessage = "Couldn't get suggestions"
