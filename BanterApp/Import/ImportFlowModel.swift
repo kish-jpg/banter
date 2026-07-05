@@ -18,6 +18,9 @@ final class ImportFlowModel {
         case entry(startInPasteMode: Bool = false)
         case parsing(source: ParsingSource)
         case confirm
+        /// Entered ONLY by the user's Confirm tap (`confirm()`), never by
+        /// parsing — the CAPT-04 consent signal consumers trigger coaching on.
+        case confirmed
         case failure(source: ParsingSource)
     }
 
@@ -99,10 +102,11 @@ final class ImportFlowModel {
 
     func confirm() {
         // CAPT-04 gate: this is the tap that makes the transcript eligible
-        // to leave the device. No network call here — that is Phase 3.
+        // to leave the device — the parse landing in .confirm is NOT
+        // consent. No network call here; downstream observes the
+        // .confirm -> .confirmed transition and starts coaching from it.
         guard !transcript.isEmpty else { return }
-        // State stays .confirm; downstream (Phase 3) reads `transcript`
-        // once this tap has occurred.
+        state = .confirmed
     }
 
     func retryFromFailure() {

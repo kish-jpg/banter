@@ -100,7 +100,10 @@ struct ValueDemoCoordinatorView: View {
                 onTryAgain: { importModel.retryFromFailure() },
                 onPasteInstead: { importModel.pasteInsteadFromFailure() }
             )
-        case .confirm:
+        case .confirm, .confirmed:
+            // The demo intentionally starts coaching on .confirm (instant
+            // speed-to-value); .confirmed is handled only for switch
+            // exhaustiveness and behaves identically.
             ConfirmTranscriptView(model: importModel)
         }
     }

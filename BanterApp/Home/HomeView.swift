@@ -27,7 +27,11 @@ struct HomeView: View {
             }
         }
         .onChange(of: model.importModel.state) { _, newState in
-            if newState == .confirm {
+            // CAPT-04: coaching starts on the user's Confirm tap
+            // (.confirmed), never on parse completion (.confirm) — the
+            // Confirm screen must be reviewable before anything leaves
+            // the device.
+            if newState == .confirmed {
                 Task { await model.startCoaching() }
             }
         }
@@ -58,7 +62,9 @@ struct HomeView: View {
                 onTryAgain: { model.importModel.retryFromFailure() },
                 onPasteInstead: { model.importModel.pasteInsteadFromFailure() }
             )
-        case .confirm:
+        case .confirm, .confirmed:
+            // .confirmed renders for at most a frame before startCoaching
+            // sets `coaching` and the dispatcher switches surfaces.
             ConfirmTranscriptView(model: model.importModel)
         }
     }
