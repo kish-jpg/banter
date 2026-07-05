@@ -36,7 +36,7 @@ public struct RevenueCatEntitlementSource: EntitlementSource {
 /// RevenueCat SDK configuration. StoreKit-config-only local testing for now
 /// (per Task 1 resolution) — this key is a runtime-config placeholder, never
 /// a real embedded secret. Safe to embed once real: RevenueCat's public SDK
-/// key is designed to be public (T-04-05-KEY, unlike GEMINI_API_KEY).
+/// key is designed to be public (T-04-05-KEY, unlike the server-side Gemini key).
 enum RevenueCatConfig {
     /// TODO(deferred): replace via Info.plist/xcconfig once the RevenueCat
     /// dashboard project exists. RC_PUBLIC_SDK_KEY_PLACEHOLDER is an obvious
