@@ -1,5 +1,7 @@
 # Banter — Session Handoff (written 2026-07-05)
 
+> **UPDATE 2026-07-05 (later session):** Phase 4 is now CLOSED — gap plans 04-06/04-07 wired the monetization + conversation-health surfaces, re-verification passed 5/5, everything is pushed, and CI is green (run 28740477670 after 4 fix-forward iterations). The "Resume exactly here" steps 1–4 below are DONE. Resume at step 5: `/gsd:plan-phase 5` (Keyboard Extension). All locked decisions, invariants, environment facts, and subagent boilerplate below remain current.
+
 **Audience:** a fresh Claude Code session on a different account, picking up mid-Phase-4.
 **Read this file first, then STATE.md, then follow "Resume exactly here" below.**
 
