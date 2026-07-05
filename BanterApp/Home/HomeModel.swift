@@ -15,6 +15,13 @@ final class HomeModel {
     let importModel = ImportFlowModel()
     private(set) var coaching: CoachingResultModel?
 
+    /// Client-minted, CALC-03-safe key (no match name/identity) scoping the
+    /// love-calculator timeline to this one conversation. One HomeModel
+    /// instance == one conversation; a fresh conversation gets a fresh
+    /// HomeModel/conversationId.
+    let conversationId = UUID()
+    let sentimentStore = SentimentTimelineStore()
+
     /// True on a premium->free transition (trial/subscription expiry) that
     /// hasn't been shown yet — deduped via
     /// DowngradeBannerStorageKey.lastSeenDowngrade so re-launching on the
@@ -53,7 +60,10 @@ final class HomeModel {
         let model = CoachingResultModel(
             messages: importModel.transcript,
             capGate: { [entitlement, capTracker] in capTracker.canAnalyze(isPremium: entitlement.isPremium) },
-            onAnalysisRecorded: { [capTracker] in capTracker.recordAnalysis() }
+            onAnalysisRecorded: { [capTracker] in capTracker.recordAnalysis() },
+            onResponse: { [sentimentStore, conversationId, importModel] response in
+                sentimentStore.append(from: response, conversationId: conversationId, messageIndex: max(0, importModel.transcript.count - 1), speaker: .match)
+            }
         )
         coaching = model
         await model.selectTone(model.selectedTone)

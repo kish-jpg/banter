@@ -98,6 +98,15 @@ struct HomeView: View {
                     ForEach(Array(coaching.replies.enumerated()), id: \.offset) { index, reply in
                         SuggestionCardView(index: index, reply: reply, model: coaching)
                     }
+
+                    NavigationLink {
+                        ConversationHealthView(conversationId: model.conversationId, store: model.sentimentStore)
+                    } label: {
+                        Label("Conversation Health", systemImage: "heart.text.square")
+                            .font(Banter.TextStyle.body)
+                            .foregroundStyle(Banter.Colors.accent)
+                            .frame(minHeight: 44)
+                    }
                 }
                 .padding(.horizontal, Banter.Spacing.md)
                 .padding(.top, Banter.Spacing.md)
