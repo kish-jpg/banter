@@ -14,7 +14,9 @@ import XCTest
 /// so this test has zero dependency on the live SDK.
 @MainActor
 final class EntitlementManagerTests: XCTestCase {
-    private final class MockEntitlementSource: EntitlementSource {
+    // @unchecked: mutable stub is set before use and read once per test —
+    // single-threaded test access, no real data race.
+    private final class MockEntitlementSource: EntitlementSource, @unchecked Sendable {
         var stubbedState: EntitlementState = .free
         func fetchState() async -> EntitlementState { stubbedState }
     }
