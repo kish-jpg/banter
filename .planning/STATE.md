@@ -2,19 +2,19 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-current_phase: 4
-current_phase_name: Companion App UI & Paywall
-status: verifying
-stopped_at: Completed 04-04-PLAN.md (Conversation Health timeline)
-last_updated: "2026-07-04T19:56:58.823Z"
-last_activity: 2026-07-04
-last_activity_desc: Phase 4 execution started
+current_phase: 04
+current_phase_name: companion-app-ui-paywall
+status: executing
+stopped_at: Completed 04-06-PLAN.md (Home surface wiring monetization)
+last_updated: "2026-07-05T03:58:21.984Z"
+last_activity: 2026-07-05
+last_activity_desc: Phase 04 execution started
 progress:
   total_phases: 8
-  completed_phases: 4
-  total_plans: 17
-  completed_plans: 17
-  percent: 50
+  completed_phases: 3
+  total_plans: 19
+  completed_plans: 18
+  percent: 38
 ---
 
 # Project State
@@ -24,14 +24,14 @@ progress:
 See: .planning/PROJECT.md (updated 2026-07-03)
 
 **Core value:** The user gets instant relief (great replies, right now) while becoming a measurably better texter over time — real skill transfer, backed by citable psychology.
-**Current focus:** Phase 4 — Companion App UI & Paywall
+**Current focus:** Phase 04 — companion-app-ui-paywall
 
 ## Current Position
 
-Phase: 4 (Companion App UI & Paywall) — EXECUTING
-Plan: 5 of 5
-Status: Phase complete — ready for verification
-Last activity: 2026-07-04 — Phase 4 execution started
+Phase: 04 (companion-app-ui-paywall) — EXECUTING
+Plan: 2 of 7
+Status: Ready to execute
+Last activity: 2026-07-05 — Phase 04 execution started
 
 Progress: [██████████] 100%
 
@@ -72,6 +72,7 @@ Progress: [██████████] 100%
 | Phase 04-companion-app-ui-paywall PP02 | 22min | 3 tasks | 10 files |
 | Phase 04-companion-app-ui-paywall PP03 | 35min | 3 tasks | 9 files |
 | Phase 04-companion-app-ui-paywall P05 | 12min | 2 tasks | 6 files |
+| Phase 04 P06 | 19min | 3 tasks | 4 files |
 
 ## Accumulated Context
 
@@ -118,6 +119,9 @@ Recent decisions affecting current work:
 - [Phase ?]: [Phase 04-companion-app-ui-paywall]: ConversationHealthView chart uses the UI-SPEC's neutral textPrimary/destructive fallback color, not new chartPositive/chartNegative tokens+assets
 - [Phase ?]: [Phase 04-companion-app-ui-paywall]: EntitlementManager/EntitlementSource/EntitlementState/DailyCapTracker placed in BanterShared/Paywall/ (not BanterApp) to match the Wave-0 test scaffolds' @testable import BanterShared contract; RevenueCat-backed production conformer (RevenueCatEntitlementSource) placed in BanterApp/Paywall/ since RevenueCat is only a BanterApp package dependency
 - [Phase ?]: [Phase 04-companion-app-ui-paywall]: CoachingResultModel's daily-cap gate is an optional injected capGate/onAnalysisRecorded closure pair (default nil = never capped), not a hard EntitlementManager/DailyCapTracker type dependency - keeps the onboarding demo path's ungated guarantee grep-verifiable (zero functional token reference), not just a default-parameter behavior
+- [Phase ?]: [Phase 04-companion-app-ui-paywall]: HomeModel is the sole production construction site for EntitlementManager/DailyCapTracker; downgrade dedup marker + last-known-premium flag both re-arm (clear) when currently premium so a second trial/subscription cycle re-shows DowngradeBanner instead of staying deduped forever
+- [Phase ?]: [Phase 04-companion-app-ui-paywall]: HomeView's top-level branch is model.coaching != nil ? suggestionsContent : importFlowContent, the Home-surface analog of ValueDemoCoordinatorView's onboardingModel.state switch (HomeModel has no separate onboarding-style state enum)
+- [Phase ?]: [Phase 04-companion-app-ui-paywall]: ContentView's DEBUG forcesOnboarding override covers only --seed-fresh-install/--reset-onboarding-state, not --seed-sample-transcript/--skip-onboarding, per the plan's explicit carve-out so ScreenshotArtifactTests/PermissionPrimingTests keep routing unchanged
 
 ### Pending Todos
 
@@ -140,6 +144,6 @@ Items acknowledged and carried forward from previous milestone close:
 
 ## Session Continuity
 
-Last session: 2026-07-04T19:56:58.810Z
-Stopped at: Completed 04-04-PLAN.md (Conversation Health timeline)
+Last session: 2026-07-05T03:58:21.973Z
+Stopped at: Completed 04-06-PLAN.md (Home surface wiring monetization)
 Resume file: None
