@@ -5,7 +5,7 @@ import Foundation
 /// (field names + order). Bundled offline via BanterApp/Resources/taxonomy.json,
 /// kept byte-identical to the backend-authoritative copy by
 /// Backend/scripts/sync-taxonomy.sh.
-public struct TaxonomyEntry: Codable, Equatable {
+public struct TaxonomyEntry: Codable, Equatable, Sendable {
     public let framework: String
     public let technique: String
     public let tagName: String
