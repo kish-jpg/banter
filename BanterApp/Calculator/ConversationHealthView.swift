@@ -10,7 +10,7 @@ struct ConversationHealthView: View {
     let conversationId: UUID
     let store: SentimentTimelineStore
 
-    init(conversationId: UUID, store: SentimentTimelineStore = SentimentTimelineStore()) {
+    init(conversationId: UUID, store: SentimentTimelineStore) {
         self.conversationId = conversationId
         self.store = store
     }
