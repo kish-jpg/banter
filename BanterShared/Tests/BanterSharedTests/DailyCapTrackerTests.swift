@@ -16,14 +16,16 @@ final class DailyCapTrackerTests: XCTestCase {
     /// so local re-runs on the same machine don't see the prior run's counts.
     private static let testKeys = ["dailyCap.2026-07-04", "dailyCap.2026-07-05"]
 
-    override func setUp() {
-        super.setUp()
+    // async overrides: the sync setUp/tearDown are nonisolated on XCTestCase,
+    // so they can't call this @MainActor class's methods under strict concurrency.
+    override func setUp() async throws {
+        try await super.setUp()
         removeTestKeys()
     }
 
-    override func tearDown() {
+    override func tearDown() async throws {
         removeTestKeys()
-        super.tearDown()
+        try await super.tearDown()
     }
 
     private func removeTestKeys() {
