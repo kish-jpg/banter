@@ -15,10 +15,9 @@ final class HomeModel {
     private(set) var coaching: CoachingResultModel?
 
     /// Client-minted, CALC-03-safe key (no match name/identity) scoping the
-    /// love-calculator timeline to this one conversation. One HomeModel
-    /// instance == one conversation; a fresh conversation gets a fresh
-    /// HomeModel/conversationId.
-    let conversationId = UUID()
+    /// love-calculator timeline to this one conversation. A fresh
+    /// conversation gets a fresh conversationId via startNewConversation().
+    private(set) var conversationId = UUID()
     let sentimentStore = SentimentTimelineStore()
 
     /// True on a premium->free transition (trial/subscription expiry) that
@@ -69,6 +68,18 @@ final class HomeModel {
         )
         coaching = model
         await model.selectTone(model.selectedTone)
+    }
+
+    /// WR-03: resets the conversation-scoped pieces (coaching surface,
+    /// timeline id, import flow) so a second conversation can be analyzed
+    /// without killing the app. Session-long cap/entitlement/banner state is
+    /// deliberately untouched. The old coaching model's onResponse closure
+    /// captured the old conversationId by value, so any in-flight response
+    /// still lands in the correct (old) timeline.
+    func startNewConversation() {
+        coaching = nil
+        conversationId = UUID()
+        importModel.startOver()
     }
 
     /// Built per gate/record call (WR-02): the tracker's date-scoped storage

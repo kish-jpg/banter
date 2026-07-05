@@ -121,6 +121,15 @@ struct HomeView: View {
                             .foregroundStyle(Banter.Colors.accent)
                             .frame(minHeight: 44)
                     }
+
+                    Button {
+                        model.startNewConversation()
+                    } label: {
+                        Label("New Conversation", systemImage: "plus.bubble")
+                            .font(Banter.TextStyle.body)
+                            .foregroundStyle(Banter.Colors.accent)
+                            .frame(minHeight: 44)
+                    }
                 }
                 .padding(.horizontal, Banter.Spacing.md)
                 .padding(.top, Banter.Spacing.md)
