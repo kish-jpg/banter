@@ -365,7 +365,7 @@ struct KeyboardSuggestionsView: View {
 
 **If this table is empty:** N/A — see entries above; all three are LOW risk given the mitigations already baked into the recommended architecture.
 
-## Open Questions
+## Open Questions (RESOLVED)
 
 1. **Should the daily-cap state be surfaced in the keyboard UI at all (e.g., "come back tomorrow" messaging), or is that entirely out of KEYS-01..04's scope?**
    - What we know: `DailyCapTracker`'s storage is App-Group-backed and technically readable (not writable) from the keyboard process; KEYS-01..04 as written only require displaying cached suggestions and inserting them, with no explicit requirement to surface cap state in-keyboard.
