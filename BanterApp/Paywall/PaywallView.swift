@@ -193,7 +193,7 @@ struct PaywallView: View {
             errorMessage = nil
             packageToPurchase = package
             let eligibility = await Purchases.shared.checkTrialOrIntroDiscountEligibility(product: package.storeProduct)
-            isTrialEligible = eligibility.status == .eligible
+            isTrialEligible = eligibility == .eligible
         } catch {
             // A paywall that silently can't sell is a revenue bug — surface
             // the failure and offer a retry instead of a dead disabled CTA.
