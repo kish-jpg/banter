@@ -15,8 +15,10 @@ struct ValueDemoCoordinatorView: View {
     @State private var onboardingModel: OnboardingFlowModel
     @State private var importModel: ImportFlowModel
     @State private var coachingModel: CoachingResultModel?
+    private let onComplete: () -> Void
 
-    init(arguments: [String] = CommandLine.arguments) {
+    init(arguments: [String] = CommandLine.arguments, onComplete: @escaping () -> Void = {}) {
+        self.onComplete = onComplete
         let importModel = ImportFlowModel(arguments: arguments)
         let onboardingModel = OnboardingFlowModel(arguments: arguments)
         // ImportFlowModel's own --seed-sample-transcript debug seed already
@@ -137,6 +139,16 @@ struct ValueDemoCoordinatorView: View {
                     ForEach(Array(coachingModel.replies.enumerated()), id: \.offset) { index, reply in
                         SuggestionCardView(index: index, reply: reply, model: coachingModel)
                     }
+
+                    Button {
+                        onComplete()
+                    } label: {
+                        Text("Continue to Banter")
+                            .font(Banter.TextStyle.body)
+                            .foregroundStyle(Banter.Colors.accent)
+                            .frame(minHeight: 44)
+                    }
+                    .padding(.top, Banter.Spacing.sm)
                 }
                 .padding(.horizontal, Banter.Spacing.md)
                 .padding(.top, Banter.Spacing.md)

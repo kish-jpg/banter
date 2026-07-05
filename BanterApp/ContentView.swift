@@ -6,12 +6,37 @@ import BanterShared
 /// rather than jumping straight to Import Entry. `--seed-sample-transcript`
 /// alone (no onboarding seed arg) still lands directly on the Confirm
 /// screen via ImportFlowModel's own seed, preserving the Phase 2
-/// ScreenshotArtifactTests CI path unchanged.
+/// ScreenshotArtifactTests CI path unchanged. Once onboarding completes,
+/// later launches route straight to the real (cap-gated) HomeView --
+/// ContentView only routes between the two; it never constructs
+/// entitlement/cap machinery itself (that lives in HomeModel).
 struct ContentView: View {
+    @AppStorage("hasCompletedOnboarding") private var hasCompletedOnboarding = false
+
     var body: some View {
         NavigationStack {
-            ValueDemoCoordinatorView()
-                .navigationBarTitleDisplayMode(.inline)
+            Group {
+                if hasCompletedOnboarding && !forcesOnboarding {
+                    HomeView()
+                } else {
+                    ValueDemoCoordinatorView(onComplete: { hasCompletedOnboarding = true })
+                }
+            }
+            .navigationBarTitleDisplayMode(.inline)
         }
+    }
+
+    /// DEBUG-only: a fresh-install/reset-onboarding seed on a reused CI
+    /// simulator must always force onboarding, even if a stale persisted
+    /// `hasCompletedOnboarding` flag says otherwise. `--seed-sample-transcript`
+    /// alone is deliberately NOT included here -- that path must keep
+    /// routing exactly as it does today.
+    private var forcesOnboarding: Bool {
+        #if DEBUG
+        CommandLine.arguments.contains(OnboardingFlowModel.seedFreshInstallArgument)
+            || CommandLine.arguments.contains(OnboardingFlowModel.resetOnboardingStateArgument)
+        #else
+        false
+        #endif
     }
 }
