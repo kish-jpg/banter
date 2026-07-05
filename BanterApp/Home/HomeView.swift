@@ -8,13 +8,22 @@ import BanterShared
 /// deliberately omits (ONBD-01).
 struct HomeView: View {
     @State private var model = HomeModel()
+    @State private var showPaywall = false
 
     var body: some View {
-        Group {
-            if model.coaching != nil {
-                suggestionsContent
-            } else {
-                importFlowContent
+        VStack(spacing: 0) {
+            if model.showDowngradeBanner {
+                DowngradeBanner(onGoPremium: { showPaywall = true })
+                    .padding(.horizontal, Banter.Spacing.md)
+                    .padding(.top, Banter.Spacing.sm)
+            }
+
+            Group {
+                if model.coaching != nil {
+                    suggestionsContent
+                } else {
+                    importFlowContent
+                }
             }
         }
         .onChange(of: model.importModel.state) { _, newState in
@@ -24,6 +33,9 @@ struct HomeView: View {
         }
         .task {
             await model.refreshEntitlement()
+        }
+        .sheet(isPresented: $showPaywall) {
+            PaywallView(entitlementManager: model.entitlement, onDismiss: { showPaywall = false })
         }
     }
 
@@ -58,6 +70,10 @@ struct HomeView: View {
                 VStack(spacing: Banter.Spacing.lg) {
                     TonePickerView(model: coaching)
 
+                    if coaching.dailyCapReached {
+                        dailyCapBanner
+                    }
+
                     if coaching.isLoading {
                         ProgressView()
                             .frame(maxWidth: .infinity)
@@ -88,5 +104,34 @@ struct HomeView: View {
             }
             .background(Banter.Colors.background.ignoresSafeArea())
         }
+    }
+
+    /// Daily-cap-reached surface (UI-SPEC Screen 4.3 States): shown ABOVE
+    /// already-loaded cards, never in place of them — the cap only blocks
+    /// generating NEW analyses, tags on existing cards stay visible
+    /// (MONE-01).
+    private var dailyCapBanner: some View {
+        VStack(alignment: .leading, spacing: Banter.Spacing.xs) {
+            Text("You've used today's free analyses")
+                .font(Banter.TextStyle.heading)
+                .foregroundStyle(Banter.Colors.textPrimary)
+
+            Text("Tags are still yours — come back tomorrow, or go unlimited now.")
+                .font(Banter.TextStyle.body)
+                .foregroundStyle(Banter.Colors.textSecondary)
+
+            Button {
+                showPaywall = true
+            } label: {
+                Text("See Premium")
+                    .font(Banter.TextStyle.body)
+                    .foregroundStyle(Banter.Colors.accent)
+                    .frame(minHeight: 44)
+            }
+        }
+        .padding(Banter.Spacing.md)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(Banter.Colors.surface)
+        .clipShape(RoundedRectangle(cornerRadius: Banter.Radius.lg))
     }
 }

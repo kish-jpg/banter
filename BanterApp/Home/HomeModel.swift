@@ -15,10 +15,35 @@ final class HomeModel {
     let importModel = ImportFlowModel()
     private(set) var coaching: CoachingResultModel?
 
-    /// Resolves entitlement state on appear. Downgrade-transition detection
-    /// is layered onto this same call site by Task 2.
+    /// True on a premium->free transition (trial/subscription expiry) that
+    /// hasn't been shown yet — deduped via
+    /// DowngradeBannerStorageKey.lastSeenDowngrade so re-launching on the
+    /// free tier doesn't re-show it every time (MONE-03).
+    private(set) var showDowngradeBanner = false
+
+    private static let lastKnownPremiumKey = "entitlement.lastKnownPremium"
+
+    /// Resolves entitlement state on appear and detects a premium->free
+    /// transition since the last check.
     func refreshEntitlement() async {
+        let wasPremium = AppGroupStore.read(Bool.self, forKey: Self.lastKnownPremiumKey) ?? false
         await entitlement.refresh()
+        let isPremiumNow = entitlement.isPremium
+
+        if wasPremium, !isPremiumNow {
+            let alreadySeen = AppGroupStore.read(Bool.self, forKey: DowngradeBannerStorageKey.lastSeenDowngrade) ?? false
+            if !alreadySeen {
+                showDowngradeBanner = true
+                AppGroupStore.write(true, forKey: DowngradeBannerStorageKey.lastSeenDowngrade)
+            }
+        }
+        if isPremiumNow {
+            // Back on premium - clear the marker so a FUTURE downgrade (a
+            // second trial/subscription cycle) shows the banner again
+            // instead of staying deduped forever.
+            AppGroupStore.write(false, forKey: DowngradeBannerStorageKey.lastSeenDowngrade)
+        }
+        AppGroupStore.write(isPremiumNow, forKey: Self.lastKnownPremiumKey)
     }
 
     /// Builds the real, cap-gated coaching model — the injection point the
