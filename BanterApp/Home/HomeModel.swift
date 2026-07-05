@@ -11,7 +11,6 @@ import BanterShared
 @MainActor
 final class HomeModel {
     let entitlement = EntitlementManager(source: RevenueCatEntitlementSource())
-    let capTracker = DailyCapTracker(dailyLimit: 3, dateString: Self.todayDateString)
     let importModel = ImportFlowModel()
     private(set) var coaching: CoachingResultModel?
 
@@ -62,8 +61,8 @@ final class HomeModel {
     func startCoaching() async {
         let model = CoachingResultModel(
             messages: importModel.transcript,
-            capGate: { [entitlement, capTracker] in capTracker.canAnalyze(isPremium: entitlement.isPremium) },
-            onAnalysisRecorded: { [capTracker] in capTracker.recordAnalysis() },
+            capGate: { [entitlement] in HomeModel.makeCapTracker().canAnalyze(isPremium: entitlement.isPremium) },
+            onAnalysisRecorded: { HomeModel.makeCapTracker().recordAnalysis() },
             onResponse: { [sentimentStore, conversationId, importModel] response in
                 sentimentStore.append(from: response, conversationId: conversationId, messageIndex: max(0, importModel.transcript.count - 1), speaker: .match)
             }
@@ -72,11 +71,24 @@ final class HomeModel {
         await model.selectTone(model.selectedTone)
     }
 
-    private static var todayDateString: String {
+    /// Built per gate/record call (WR-02): the tracker's date-scoped storage
+    /// key must reflect "today" at USE time, not HomeModel-init time, so a
+    /// session spanning midnight rolls over to the new day's cap instead of
+    /// reading/writing yesterday's key forever. DailyCapTracker is stateless
+    /// (all state lives in AppGroupStore), so per-call construction is free.
+    private static func makeCapTracker() -> DailyCapTracker {
+        DailyCapTracker(dailyLimit: 3, dateString: todayDateString)
+    }
+
+    private static let dateKeyFormatter: DateFormatter = {
         let formatter = DateFormatter()
         formatter.locale = Locale(identifier: "en_US_POSIX")
         formatter.timeZone = TimeZone.current
         formatter.dateFormat = "yyyy-MM-dd"
-        return formatter.string(from: Date())
+        return formatter
+    }()
+
+    private static var todayDateString: String {
+        dateKeyFormatter.string(from: Date())
     }
 }
