@@ -1,136 +1,74 @@
 ---
 phase: 04-companion-app-ui-paywall
-fixed_at: 2026-07-05T00:00:00Z
+fixed_at: 2026-07-05T12:00:00Z
 review_path: .planning/phases/04-companion-app-ui-paywall/04-REVIEW.md
-iteration: 1
-findings_in_scope: 15
-fixed: 15
+iteration: 2
+findings_in_scope: 4
+fixed: 4
 skipped: 0
 status: all_fixed
 ---
 
-# Phase 4: Code Review Fix Report
+# Phase 4: Code Review Fix Report (gap-closure re-review)
 
 **Fixed at:** 2026-07-05
-**Source review:** .planning/phases/04-companion-app-ui-paywall/04-REVIEW.md
-**Iteration:** 1
+**Source review:** .planning/phases/04-companion-app-ui-paywall/04-REVIEW.md (gap-closure re-review of `3b71c5b..bedb277`)
+**Iteration:** 2
 
 **Summary:**
-- Findings in scope: 15 (CR-01..CR-03, WR-01..WR-12; fix_scope critical_warning — IN-* excluded)
-- Fixed: 15
+- Findings in scope: 4 (CR-01, WR-01..WR-03; fix_scope critical_warning — IN-01/02/03 excluded and left recorded in REVIEW.md)
+- Fixed: 4
 - Skipped: 0
 
-**Verification note (environment):** no local Swift toolchain exists on this
-machine — all Swift changes were verified by careful re-read + grep only.
-Compile verification is CI-deferred to the `Build BanterApp (simulator)` and
-`swift test --package-path BanterShared` gates. The shell/YAML changes
-(WR-12) were verified live (`bash -n` + a real `--check` run, which passed).
+**Verification note (environment):** no local Swift toolchain on this machine —
+every fix was verified by full re-read, brace/paren balance counts, and
+invariant greps. Compile verification is CI-deferred to the
+`Build BanterApp (simulator)` and `swift test --package-path BanterShared` gates.
 
-**Phase invariants re-verified after all fixes:**
-- Tag chip renders unconditionally, no tier branch (grep: no isPremium/Entitlement in SuggestionCardView).
-- Onboarding demo-path files: zero code references to EntitlementManager/DailyCapTracker (comment-only mentions pre-date this pass).
-- SentimentTimelineStore: conversationId-only keying; forbidden-token scan (matchName/matchId/matchIdentity) still 0.
-- No `$<digit>` price literals in Swift source (all grep hits are `$0`/`$1` closure shorthand).
-- CoachingClient still sends only the structured-text `AnalyzeConversationRequest` DTO.
+**Phase invariants re-verified after all fixes (grep, comment-stripped where relevant):**
+- ONBD-01: zero functional EntitlementManager/DailyCapTracker refs in all onboarding files + ContentView (0 hits each after `//`-comment strip). The demo's coaching trigger is unchanged (`newState == .confirm`, ValueDemoCoordinatorView:67).
+- MONE-01: SuggestionCardView untouched (empty diff vs bedb277), no isPremium/Entitlement refs; cap banner still renders above cards, never in place of them.
+- CALC-03: conversationId is UUID-only everywhere; forbidden-token scan hits only PasteTextParser's `matchNamePrefix` verb helper and the test's own forbidden list (both pre-existing, outside the diff).
+- No `$<digit>` price literals in Swift source.
+- CoachingClient untouched (empty diff vs bedb277).
+- Files touched across all four fixes: HomeModel.swift, HomeView.swift, ImportFlowModel.swift, ValueDemoCoordinatorView.swift — nothing else.
 
 ## Fixed Issues
 
-### CR-01: PaywallView trial-eligibility uses nonexistent RevenueCat property
+### CR-01: Coaching starts on parse completion, not on the Confirm tap — CAPT-04 gate bypassed
 
-**Files modified:** `BanterApp/Paywall/PaywallView.swift`
-**Commit:** 4ea98dd
-**Applied fix:** Replaced `.trialOrIntroEligibility` with the verified v5 API: bind the returned `IntroEligibility` and compare `eligibility.status == .eligible`.
+**Files modified:** `BanterApp/Import/ImportFlowModel.swift`, `BanterApp/Home/HomeView.swift`, `BanterApp/Onboarding/ValueDemoCoordinatorView.swift`
+**Commit:** f918d7b
+**Applied fix:** Added an additive `.confirmed` case to `ImportFlowModel.State`, entered ONLY by `confirm()` (the CAPT-04 tap) — `guard !transcript.isEmpty` retained. HomeView's trigger moved from `.confirm` to `.confirmed`, so the Confirm screen (CAPT-02 flip/edit/delete) is now reachable and reviewable before anything leaves the device, and a daily-cap unit is only consumed by an action the user took. Both dispatchers handle the new case: HomeView renders `ConfirmTranscriptView` for `.confirm, .confirmed` (`.confirmed` shows at most one frame before `coaching` flips the surface); ValueDemoCoordinatorView handles `.confirmed` for switch exhaustiveness only — its trigger stays `.confirm` (intentional instant-demo behavior), so onboarding is behaviorally unchanged. The CI seed path (`--seed-sample-transcript` → `.confirm`) still lands on the Confirm screen: the seed sets `.confirm`, not `.confirmed`, and HomeView renders that as `ConfirmTranscriptView` without auto-starting coaching.
+**Verification:** re-read all three files; brace/paren balance 22/22-42/42, 37/37-73/73, 39/39-83/83; grep confirms demo trigger unchanged and ONBD-01 comment-stripped refs = 0.
 
-### CR-02: OnboardingFlowTests has no backend to reach in CI
+### WR-01: Downgrade banner stale after in-session re-upgrade; entitlement bookkeeping reconciled once per lifetime
 
-**Files modified:** `BanterApp/Onboarding/ValueDemoCoordinatorView.swift`, `BanterUITests/OnboardingFlowTests.swift`
-**Commit:** 62e53f0
-**Applied fix:** Added a `--seed-sample-replies` DEBUG launch argument (mirroring `--seed-sample-transcript`): `startCoaching()` seeds `CoachingResultModel` via its existing `replies:` init parameter from a static 3-reply fixture (tags are real taxonomy.json tagNames so TagExplainerSheet expansion works) and skips the network call entirely. Test now passes the argument. The seeded path still never references EntitlementManager/DailyCapTracker (ONBD-01 preserved).
+**Files modified:** `BanterApp/Home/HomeModel.swift`, `BanterApp/Home/HomeView.swift`
+**Commit:** 63fc586
+**Applied fix:** `refreshEntitlement()`'s `isPremiumNow` branch now also sets `showDowngradeBanner = false` (alongside the existing `lastSeenDowngrade` clear), so a re-upgrade hides a showing banner. HomeView adds `.onChange(of: showPaywall)` that re-runs `refreshEntitlement()` whenever the paywall closes — this also rewrites `lastKnownPremiumKey` to the post-purchase truth, so a purchase-then-expiry-before-next-launch still detects the NEXT downgrade (MONE-03 preserved). Existing dedup semantics (set marker on show, clear on premium) unchanged.
+**Verification:** re-read; brace balance 10/10 and 40/40; `lastKnownPremiumKey` write still unconditional at the end of `refreshEntitlement()`.
 
-### CR-03: UI test queries buttons["Copy"] but label is "Copy reply"
+### WR-02: Daily-cap date key frozen at HomeModel init — no midnight rollover
 
-**Files modified:** `BanterApp/Coaching/SuggestionCardView.swift`
-**Commit:** b4cc9ca
-**Applied fix:** Added `.accessibilityIdentifier("Copy")` to the copy button (kept the user-facing VoiceOver label "Copy reply" unchanged).
+**Files modified:** `BanterApp/Home/HomeModel.swift`
+**Commit:** 88d7826
+**Applied fix:** Removed the stored `capTracker` property (it had no consumers outside HomeModel). Added `private static func makeCapTracker()` which constructs `DailyCapTracker(dailyLimit: 3, dateString: todayDateString)` at USE time; the `capGate`/`onAnalysisRecorded` closures now call `HomeModel.makeCapTracker()` per invocation (explicit type name — no `self`/`Self` capture, so the no-retain-cycle property from the review holds). A session spanning midnight now gates/records against the new day's key. `DateFormatter` cached in `static let dateKeyFormatter` since date-string resolution became per-call. DailyCapTracker itself untouched (stateless; all state in AppGroupStore, per its date-scoped-key design).
+**Verification:** re-read; brace balance 12/12; grep confirms zero remaining `capTracker` stored-property refs anywhere in BanterApp; closures capture only `[entitlement]` / nothing / `[sentimentStore, conversationId, importModel]` — never self.
 
-### WR-01: Purchases.shared used but Purchases.configure never called
+### WR-03: One-way trip into the suggestions surface — no path to a second conversation
 
-**Files modified:** `BanterApp/BanterAppApp.swift`, `BanterApp/Paywall/RevenueCatEntitlementSource.swift`, `BanterApp/Paywall/PaywallView.swift`
-**Commit:** 9ae4963
-**Applied fix:** `BanterAppApp.init` now calls `Purchases.configure(withAPIKey:)` guarded by `RevenueCatConfig.hasRealKey` (sentinel comparison lives next to the placeholder declaration). `RevenueCatEntitlementSource.fetchState` and `PaywallView.loadOffering` guard `Purchases.isConfigured` and degrade (`.free` / error message) instead of tripping the SDK's not-configured fatalError.
-
-### WR-02: Paywall/cap/banner/health surfaces have zero live call sites
-
-**Files modified:** `.planning/phases/04-companion-app-ui-paywall/deferred-items.md` (created)
-**Commit:** b22368d
-**Applied fix:** Took the review's option B (per fix-pass guidance: full wiring requires a new post-onboarding surface — a feature build too large/risky for a review-fix commit with no compiler, and half-wiring risks the ONBD-01 ungated-demo invariant). Created phase deferred-items.md explicitly recording that MONE-01/MONE-02 UI enforcement is NOT delivered in Phase 4, listing every inert surface and the wiring requirements, so verification cannot count it as shipped.
-
-### WR-03: TagExplainer traps on duplicate tagName
-
-**Files modified:** `BanterShared/Sources/BanterShared/TagExplainer.swift`
-**Commit:** 9b7cbc8
-**Applied fix:** `Dictionary(uniqueKeysWithValues:)` → `Dictionary(_:uniquingKeysWith:)` with first-entry-wins, so a hand-edited taxonomy can no longer crash the client.
-
-### WR-04: selectTone lacks in-flight cancellation — stale responses overwrite newer tone
-
-**Files modified:** `BanterApp/Coaching/CoachingResultModel.swift`
-**Commit:** 6588590
-**Applied fix:** Added a monotonic `requestGeneration` counter; stale completions (success AND failure paths) are dropped, `onAnalysisRecorded` fires only for the newest generation (no double cap count), and the `defer { isLoading = false }` is generation-guarded so a stale completion cannot clear the newer request's spinner. **Requires human/CI verification** — this is concurrency logic that grep-level verification cannot prove; the CI build plus a manual rapid-tone-tap check should confirm.
-
-### WR-05: Onboarding suggestions screen renders neither loading nor error state
-
-**Files modified:** `BanterApp/Onboarding/ValueDemoCoordinatorView.swift`
-**Commit:** b3f6965
-**Applied fix:** `suggestionsContent` now renders a `ProgressView` while `coachingModel.isLoading` and, on `errorMessage`, the message plus a Retry button re-invoking `selectTone(selectedTone)` — the first-run demo can no longer dead-end on a silent blank screen.
-
-### WR-06: loadOffering swallows all failures — CTA disabled forever
-
-**Files modified:** `BanterApp/Paywall/PaywallView.swift`
-**Commit:** 7d0a05e
-**Applied fix:** `loadOffering` now uses do/catch: sets `errorMessage` on fetch failure and on empty offering; body shows a Retry button (re-runs `loadOffering`) whenever an error is displayed and no package loaded.
-
-### WR-07: DailyCapTrackerTests non-idempotent — fixed date keys persist
-
-**Files modified:** `BanterShared/Tests/BanterSharedTests/DailyCapTrackerTests.swift`
-**Commit:** b487555
-**Applied fix:** Added `setUp`/`tearDown` removing both hardcoded keys (`dailyCap.2026-07-04`, `dailyCap.2026-07-05`) from `UserDefaults(suiteName: AppGroupStore.suiteName)` before and after every test.
-
-### WR-08: Chart ForEach keyed by non-unique messageIndex
-
-**Files modified:** `BanterApp/Calculator/ConversationHealthView.swift`
-**Commit:** 6c5b288
-**Applied fix:** `ForEach(events, id: \.messageIndex)` → `ForEach(Array(events.enumerated()), id: \.offset)`, matching the existing suggestions-list pattern (chose the review's second option — no `SentimentEvent` schema change, so persisted Codable data stays decodable).
-
-### WR-09: EntitlementManager mutates UI-observed state off the main actor
-
-**Files modified:** `BanterShared/Sources/BanterShared/Paywall/EntitlementManager.swift`, `BanterShared/Tests/BanterSharedTests/EntitlementManagerTests.swift`
-**Commit:** 5364975
-**Applied fix:** Marked `EntitlementManager` `@MainActor` (matching `CoachingResultModel`); marked the test class `@MainActor` so init/refresh calls compile under BanterShared's Swift 6 language mode (the nested mock becomes MainActor-isolated and thereby implicitly Sendable, satisfying `EntitlementSource: Sendable`). **Requires CI verification** — Swift 6 isolation checking is exactly what cannot be verified without a compiler.
-
-### WR-10: Unsynchronized read-modify-write over the shared App Group store
-
-**Files modified:** `BanterShared/Sources/BanterShared/Paywall/DailyCapTracker.swift`, `BanterShared/Sources/BanterShared/Calculator/SentimentTimelineStore.swift`, `BanterShared/Tests/BanterSharedTests/DailyCapTrackerTests.swift`, `BanterShared/Tests/BanterSharedTests/SentimentTimelineStoreTests.swift`
-**Commit:** cd3e7b7
-**Applied fix:** Marked both classes `@MainActor` (in-process guarantee) with a documented cross-process ceiling: when the Phase 5 keyboard extension writes the same keys, UserDefaults has no atomic increment — file coordination/atomic scheme flagged for that phase's threat register. Both test classes annotated `@MainActor`. Forbidden-token scan of SentimentTimelineStore still passes (0 hits). **Requires CI verification** (same Swift 6 isolation caveat as WR-09).
-
-### WR-11: Release builds POST the onboarding demo to http://localhost:54321
-
-**Files modified:** `BanterApp/Coaching/CoachingClient.swift`, `.planning/phases/04-companion-app-ui-paywall/deferred-items.md`
-**Commit:** 8f07d54
-**Applied fix:** Introduced `CoachingClient.defaultBaseURL`: localhost only under `#if DEBUG`; release resolves to an unroutable `.invalid` sentinel host so a missing production endpoint fails fast at WR-05's new error+Retry surface instead of silently POSTing to localhost. Production-endpoint deployment + xcconfig/Info.plist migration recorded in deferred-items.
-
-### WR-12: Taxonomy drift guard structurally cannot fail and CI never runs it
-
-**Files modified:** `Backend/scripts/sync-taxonomy.sh`, `.github/workflows/ci.yml`
-**Commit:** eaeae24
-**Applied fix:** Added a `--check` mode that diffs WITHOUT copying (exit 1 on mismatch or missing destination); default mode remains local sync (copy only, no dead diff). Added a `backend-tests` CI step running `sync-taxonomy.sh --check`. Verified live: `bash -n` clean, `--check` run passes on the current byte-identical copies.
+**Files modified:** `BanterApp/Home/HomeModel.swift`, `BanterApp/Home/HomeView.swift`
+**Commit:** ccd72d4
+**Applied fix:** `conversationId` became `private(set) var`; added `startNewConversation()` (sets `coaching = nil`, mints a fresh `UUID`, calls `importModel.startOver()`) — resets conversation-scoped state while keeping session-long cap/entitlement/banner state. HomeView's `suggestionsContent` gains a "New Conversation" button (44pt min height, accent style, below Conversation Health) that calls it, returning the dispatcher to `importFlowContent` at `.entry`. Any in-flight coaching response still lands in the OLD timeline because the old model's `onResponse` closure captured the old `conversationId` by value. No history/persistence built — one conversation at a time, per constraint.
+**Verification:** re-read; brace balance 13/13 and 42/42; CALC-03 grep clean (UUID-only, no identity tokens introduced).
 
 ## Skipped Issues
 
-None — all 15 in-scope findings were fixed (WR-02 via the review's documented option B).
+None — all four in-scope findings fixed. IN-01/IN-02/IN-03 are out of scope for this pass and remain recorded in 04-REVIEW.md.
 
 ---
 
 _Fixed: 2026-07-05_
 _Fixer: Claude (gsd-code-fixer)_
-_Iteration: 1_
+_Iteration: 2_
