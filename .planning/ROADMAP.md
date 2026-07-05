@@ -126,7 +126,7 @@ Decimal phases appear between their surrounding integers in numeric order.
   4. Free tier caps daily analyses but always shows psychology tags; a 14-day full-access reverse trial downgrades gracefully to free, and premium unlocks unlimited analyses + calculator depth via RevenueCat/StoreKit 2.
   5. Photos and keyboard permissions are primed with contextual explainers at the moment of need.
 
-**Plans**: 6/7 plans executed
+**Plans**: 7/7 plans complete
 **UI hint**: yes
 
 **Wave 0**
@@ -149,7 +149,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 **Gap closure** *(from 04-VERIFICATION.md — SC3/SC4 artifacts built but had zero production call sites)*
 
 - [x] 04-06-PLAN.md — Post-onboarding Home surface + monetization surfacing: constructs EntitlementManager + DailyCapTracker, gated coaching loop, presents PaywallView on cap + DowngradeBanner on downgrade, routes ContentView (MONE-01, MONE-02, MONE-03)
-- [ ] 04-07-PLAN.md — Conversation-health wiring: onResponse injection + production SentimentTimelineStore.append + ConversationHealthView navigation (CALC-02, CALC-03)
+- [x] 04-07-PLAN.md — Conversation-health wiring: onResponse injection + production SentimentTimelineStore.append + ConversationHealthView navigation (CALC-02, CALC-03)
 
 ### Phase 5: Keyboard Extension
 
@@ -221,7 +221,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 → 8
 | 1. Foundation & Privacy Boundary | 4/4 | Complete    | 2026-07-03 |
 | 2. Screenshot Import & OCR Pipeline | 5/5 | Complete    | 2026-07-03 |
 | 3. Backend LLM Orchestration | 3/3 | Complete    | 2026-07-03 |
-| 4. Companion App UI & Paywall | 6/7 | In Progress|  |
+| 4. Companion App UI & Paywall | 7/7 | Complete   | 2026-07-05 |
 | 5. Keyboard Extension | 0/TBD | Not started | - |
 | 6. Profile Engine, XP & Grading | 0/TBD | Not started | - |
 | 7. Privacy Hardening | 0/TBD | Not started | - |
