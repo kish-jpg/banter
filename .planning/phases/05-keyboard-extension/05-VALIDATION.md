@@ -1,9 +1,9 @@
 ---
 phase: 5
 slug: keyboard-extension
-status: draft
-nyquist_compliant: false
-wave_0_complete: false
+status: planned
+nyquist_compliant: true
+wave_0_complete: true
 created: 2026-07-05
 ---
 
@@ -39,7 +39,14 @@ created: 2026-07-05
 
 | Task ID | Plan | Wave | Requirement | Threat Ref | Secure Behavior | Test Type | Automated Command | File Exists | Status |
 |---------|------|------|-------------|------------|-----------------|-----------|-------------------|-------------|--------|
-| *(filled by planner — one row per task)* | | | | | | | | | ⬜ pending |
+| 01-T1 | 05-01 | 1 | KEYS-01 | T-05-02 | Public typed key; array round-trips through App Group | unit (BanterShared) | `swift test --package-path BanterShared --filter CachedSuggestionsRoundTripTests` | ❌ new (Wave 0) | ⬜ pending |
+| 01-T2 | 05-01 | 1 | KEYS-01 | T-05-03 | Single overwrite write; sole producer; no cross-process write race | structural/grep + CI build | `grep -q 'AppGroupStore.write(response.replies, forKey: CachedSuggestionsStorageKey.suggestions)' BanterApp/Home/HomeModel.swift` | ✅ modify | ⬜ pending |
+| 01-T3 | 05-01 | 1 | KEYS-03 | T-05-01 | No network/RevenueCat token anywhere under BanterKeyboard/ | structural negative-guard (XCTest) | `swift test --package-path BanterShared --filter KeyboardNetworkBoundaryGuardTests` | ❌ new (Wave 0) | ⬜ pending |
+| 02-T1 | 05-02 | 2 | KEYS-01, KEYS-02 | T-05-06 | ≤3 tappable rows, empty-state copy, neutral globe; trivial view tree | structural/grep + CI build + #Preview | `grep -q 'onInsert(suggestion.text)' BanterKeyboard/KeyboardSuggestionsView.swift` | ❌ new | ⬜ pending |
+| 02-T2 | 05-02 | 2 | KEYS-01, KEYS-02, KEYS-03 | T-05-04, T-05-05 | Reads App Group, re-reads on viewWillAppear, inserts via proxy, no network path, RequestsOpenAccess=false | structural/grep + CI build + guard test | `grep -q 'textDocumentProxy.insertText' BanterKeyboard/KeyboardViewController.swift` | ❌ rewrite | ⬜ pending |
+| 03-T1 | 05-03 | 1 | KEYS-04 | T-05-09 | Additive steps + reassurance ("Full Access not needed"); Photos site unchanged | structural/grep + CI build | `grep -q 'static func keyboard(onContinue' BanterApp/Onboarding/PermissionPrimingView.swift` | ✅ modify | ⬜ pending |
+| 03-T2 | 05-03 | 1 | KEYS-04 | T-05-07 | Banner (DowngradeBanner family) + fail-open AppleKeyboards detection | structural/grep + CI build + #Preview | `grep -q 'struct KeyboardEnableBanner' BanterApp/Home/KeyboardEnableBanner.swift` | ❌ new | ⬜ pending |
+| 03-T3 | 05-03 | 1 | KEYS-04 | T-05-08 | Production call site in HomeView; prefs: deep link (exact string only); persistent dismissal | structural/grep + CI build + XCUITest | `grep -q 'PermissionPrimingView.keyboard' BanterApp/Home/HomeView.swift` | ✅ modify | ⬜ pending |
 
 *Status: ⬜ pending · ✅ green · ❌ red · ⚠️ flaky*
 

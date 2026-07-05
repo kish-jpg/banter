@@ -164,8 +164,17 @@ Decimal phases appear between their surrounding integers in numeric order.
   3. The keyboard's core loop functions with Full Access off — it never calls the network directly.
   4. A guided enable flow with a contextual explainer walks the user through turning the keyboard on.
 
-**Plans**: TBD
+**Plans**: 3 plans
 **UI hint**: yes
+
+**Wave 1**
+
+- [ ] 05-01-PLAN.md — Public CachedSuggestionsStorageKey + HomeModel write call (app caches suggestions to App Group) + KEYS-03 network-boundary guard test + round-trip test (KEYS-01, KEYS-03)
+- [ ] 05-03-PLAN.md — Guided keyboard-enable flow: additive PermissionPrimingView.keyboard(...) + KeyboardEnableBanner on Home + prefs: deep link to Keyboard settings (KEYS-04)
+
+**Wave 2** *(blocked on Wave 1: needs the public storage key from 05-01)*
+
+- [ ] 05-02-PLAN.md — Rewrite KeyboardViewController to host SwiftUI KeyboardSuggestionsView: reads App Group cache, tap-to-insert via textDocumentProxy, globe key, Full-Access-off, no network (KEYS-01, KEYS-02, KEYS-03)
 
 ### Phase 6: Profile Engine, XP & Grading
 
@@ -222,7 +231,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 → 8
 | 2. Screenshot Import & OCR Pipeline | 5/5 | Complete    | 2026-07-03 |
 | 3. Backend LLM Orchestration | 3/3 | Complete    | 2026-07-03 |
 | 4. Companion App UI & Paywall | 7/7 | Complete    | 2026-07-05 |
-| 5. Keyboard Extension | 0/TBD | Not started | - |
+| 5. Keyboard Extension | 0/3 | Planned | - |
 | 6. Profile Engine, XP & Grading | 0/TBD | Not started | - |
 | 7. Privacy Hardening | 0/TBD | Not started | - |
 | 8. Metrics & Launch | 0/TBD | Not started | - |
