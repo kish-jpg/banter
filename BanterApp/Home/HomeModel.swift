@@ -45,9 +45,12 @@ final class HomeModel {
             }
         }
         if isPremiumNow {
-            // Back on premium - clear the marker so a FUTURE downgrade (a
-            // second trial/subscription cycle) shows the banner again
-            // instead of staying deduped forever.
+            // Back on premium - hide any showing banner (an in-session
+            // re-upgrade must not keep saying "back on the free plan") and
+            // clear the marker so a FUTURE downgrade (a second
+            // trial/subscription cycle) shows the banner again instead of
+            // staying deduped forever.
+            showDowngradeBanner = false
             AppGroupStore.write(false, forKey: DowngradeBannerStorageKey.lastSeenDowngrade)
         }
         AppGroupStore.write(isPremiumNow, forKey: Self.lastKnownPremiumKey)

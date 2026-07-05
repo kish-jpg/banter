@@ -38,6 +38,14 @@ struct HomeView: View {
         .task {
             await model.refreshEntitlement()
         }
+        .onChange(of: showPaywall) { _, isShowing in
+            // Re-reconcile after the paywall closes: an in-session purchase
+            // must clear the downgrade banner and update lastKnownPremium so
+            // the NEXT downgrade is still detected.
+            if !isShowing {
+                Task { await model.refreshEntitlement() }
+            }
+        }
         .sheet(isPresented: $showPaywall) {
             PaywallView(entitlementManager: model.entitlement, onDismiss: { showPaywall = false })
         }
