@@ -64,7 +64,11 @@ jobs:
             exit 1
           fi
 
-      - name: Build BanterApp (simulator)
+      # BanterKeyboard is an embedded dependency of BanterApp (project.yml),
+      # so this single scheme build compiles the keyboard extension too — no
+      # separate BanterKeyboard scheme exists (XcodeGen only generates
+      # declared schemes; a headless build of an undeclared scheme fails).
+      - name: Build BanterApp + embedded BanterKeyboard (simulator)
         run: |
           xcodebuild build \
             -project Banter.xcodeproj \
@@ -74,14 +78,6 @@ jobs:
 
       - name: Test BanterShared
         run: swift test --package-path BanterShared
-
-      - name: Build BanterKeyboard (simulator)
-        run: |
-          xcodebuild build \
-            -project Banter.xcodeproj \
-            -scheme BanterKeyboard \
-            -destination "$SIMULATOR_DESTINATION" \
-            CODE_SIGNING_ALLOWED=NO
 
       - name: Run UI screenshot tests
         run: |
