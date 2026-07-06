@@ -30,7 +30,10 @@ struct KeyboardSuggestionsView: View {
                     .foregroundStyle(Banter.Colors.textSecondary)
                     .padding()
             } else {
-                ForEach(suggestions.prefix(3), id: \.text) { suggestion in
+                // id: \.offset, not \.text — suggestion texts are
+                // LLM-generated and unvalidated; duplicates would collide as
+                // ForEach identities (same pattern as HomeView's reply list).
+                ForEach(Array(suggestions.prefix(3).enumerated()), id: \.offset) { _, suggestion in
                     Button {
                         onInsert(suggestion.text)
                     } label: {
