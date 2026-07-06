@@ -40,6 +40,11 @@ targets:
       PRODUCT_BUNDLE_IDENTIFIER: com.banter.BanterApp.BanterKeyboard
     sources:
       - path: BanterKeyboard
+      # Banter.* tokens resolve colors via Color(..., bundle: .main), so the
+      # extension must compile BOTH the tokens source and its own copy of the
+      # color catalog (CI fix: "cannot find 'Banter' in scope").
+      - path: BanterApp/DesignSystem/BanterTokens.swift
+      - path: BanterApp/DesignSystem/Assets.xcassets
     dependencies:
       - package: BanterShared
     entitlements:
