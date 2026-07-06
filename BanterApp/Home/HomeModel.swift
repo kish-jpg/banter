@@ -58,12 +58,18 @@ final class HomeModel {
     /// onboarding demo path deliberately never supplies (RESEARCH.md
     /// Pitfall 4 / ONBD-01).
     func startCoaching() async {
+        // Captured by value: the transcript is frozen for the life of this
+        // coaching session. Computing the index at response-arrival time
+        // would read the NEW transcript after startNewConversation() reset
+        // it, recording a late response at index 0 instead of the old
+        // conversation's last index.
+        let messageIndex = max(0, importModel.transcript.count - 1)
         let model = CoachingResultModel(
             messages: importModel.transcript,
             capGate: { [entitlement] in HomeModel.makeCapTracker().canAnalyze(isPremium: entitlement.isPremium) },
             onAnalysisRecorded: { HomeModel.makeCapTracker().recordAnalysis() },
-            onResponse: { [sentimentStore, conversationId, importModel] response in
-                sentimentStore.append(from: response, conversationId: conversationId, messageIndex: max(0, importModel.transcript.count - 1), speaker: .match)
+            onResponse: { [sentimentStore, conversationId] response in
+                sentimentStore.append(from: response, conversationId: conversationId, messageIndex: messageIndex, speaker: .match)
                 // Caches the latest suggestions for the keyboard to read (KEYS-01).
                 AppGroupStore.write(response.replies, forKey: CachedSuggestionsStorageKey.suggestions)
             }
