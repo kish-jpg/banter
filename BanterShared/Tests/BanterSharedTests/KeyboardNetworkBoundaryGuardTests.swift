@@ -20,8 +20,10 @@ final class KeyboardNetworkBoundaryGuardTests: XCTestCase {
         let enumerator = FileManager.default.enumerator(at: keyboardDirURL, includingPropertiesForKeys: nil)
         let forbidden = ["URLSession", "import RevenueCat", "import Network"]
 
+        var scanned = 0
         while let fileURL = enumerator?.nextObject() as? URL {
             guard fileURL.pathExtension == "swift" else { continue }
+            scanned += 1
             let source = try String(contentsOf: fileURL, encoding: .utf8)
             for token in forbidden {
                 XCTAssertFalse(
@@ -30,5 +32,13 @@ final class KeyboardNetworkBoundaryGuardTests: XCTestCase {
                 )
             }
         }
+
+        // Anti-vacuity floor: if the path derivation breaks (directory
+        // renamed, checkout layout differs), the enumerator yields nothing
+        // and this guard would silently pass having scanned zero files.
+        XCTAssertGreaterThanOrEqual(
+            scanned, 2,
+            "Expected to scan BanterKeyboard sources at \(keyboardDirURL.path) — path derivation broke, guard is vacuous"
+        )
     }
 }
