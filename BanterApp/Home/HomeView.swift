@@ -78,10 +78,13 @@ struct HomeView: View {
         }
     }
 
-    /// KEYS-04 primary CTA: deep-links to Settings > General > Keyboard via
-    /// the prefs URL type registered in BanterApp/Info.plist (QA1924).
+    /// KEYS-04 primary CTA: opens Settings > Banter via the only supported
+    /// third-party route (QA1924: UIApplication.openSettingsURLString —
+    /// prefs:root= deep links are private API and a 2.5.1 rejection risk).
+    /// The app's own Settings page contains the "Keyboards" row once the
+    /// extension is embedded in the app bundle.
     private func openKeyboardSettings() {
-        if let url = URL(string: "prefs:root=General&path=Keyboard") {
+        if let url = URL(string: UIApplication.openSettingsURLString) {
             UIApplication.shared.open(url)
         }
     }

@@ -107,17 +107,18 @@ extension PermissionPrimingView {
 
     /// The keyboard-enable guided flow (05-UI-SPEC.md Screen 5.2, KEYS-04).
     /// Reuses this exact generic component per its own doc-comment intent -
-    /// the caller supplies onContinue (the prefs deep link); this view never
-    /// hardcodes Settings navigation.
+    /// the caller supplies onContinue (opens Settings > Banter via
+    /// UIApplication.openSettingsURLString); this view never hardcodes
+    /// Settings navigation.
     static func keyboard(onContinue: @escaping () -> Void, onSkip: @escaping () -> Void) -> PermissionPrimingView {
         PermissionPrimingView(
             icon: "keyboard",
             heading: "Type without switching apps",
             body: "Turn on the Banter keyboard to insert your suggestions directly into any chat — no copy-paste, no app-switching.",
             steps: [
-                "1. Open Settings → General → Keyboard → Keyboards",
-                "2. Tap Add New Keyboard, then choose Banter",
-                "3. Tap Banter in the list and make sure Allow Full Access stays off — Banter never needs it"
+                "1. Tap Continue — Settings opens on Banter's page",
+                "2. Tap Keyboards, then turn on Banter",
+                "3. Leave Allow Full Access off — Banter never needs it"
             ],
             reassurance: "Banter's keyboard never needs Full Access and never connects to the internet on its own.",
             onContinue: onContinue,
