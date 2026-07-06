@@ -58,6 +58,9 @@ targets:
       # NSExtension dict must live here or CI wipes it and the embedded
       # .appex fails simulator install ("extensionDictionary must be set").
       properties:
+        # Name shown in Settings > General > Keyboard > Keyboards; installd
+        # rejects an appex without a non-empty CFBundleDisplayName.
+        CFBundleDisplayName: Banter
         NSExtension:
           NSExtensionPointIdentifier: com.apple.keyboard-service
           NSExtensionPrincipalClass: $(PRODUCT_MODULE_NAME).KeyboardViewController
