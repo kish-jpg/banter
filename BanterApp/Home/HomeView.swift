@@ -1,4 +1,5 @@
 import SwiftUI
+import UIKit
 import BanterShared
 
 /// Post-onboarding home surface: the real (non-demo), cap-gated import ->
@@ -9,11 +10,31 @@ import BanterShared
 struct HomeView: View {
     @State private var model = HomeModel()
     @State private var showPaywall = false
+    @State private var showKeyboardEnable = false
+
+    /// BanterKeyboard's bundle id — derived from project.yml's
+    /// bundleIdPrefix (com.banter) + XcodeGen's default target-name suffix.
+    /// Used only for the fail-open best-effort AppleKeyboards check below.
+    private static let keyboardExtensionBundleID = "com.banter.BanterKeyboard"
+
+    private var shouldShowKeyboardEnableBanner: Bool {
+        let dismissed = AppGroupStore.read(Bool.self, forKey: KeyboardEnableBannerStorageKey.dismissed) ?? false
+        if dismissed { return false }
+        // Fail-open (05-RESEARCH.md Assumption A1): an uncertain/false read
+        // means "show the banner", never "hide it".
+        return !isKeyboardLikelyEnabled(bundleID: Self.keyboardExtensionBundleID)
+    }
 
     var body: some View {
         VStack(spacing: 0) {
             if model.showDowngradeBanner {
                 DowngradeBanner(onGoPremium: { showPaywall = true })
+                    .padding(.horizontal, Banter.Spacing.md)
+                    .padding(.top, Banter.Spacing.sm)
+            }
+
+            if shouldShowKeyboardEnableBanner {
+                KeyboardEnableBanner(onTap: { showKeyboardEnable = true })
                     .padding(.horizontal, Banter.Spacing.md)
                     .padding(.top, Banter.Spacing.sm)
             }
@@ -49,6 +70,27 @@ struct HomeView: View {
         .sheet(isPresented: $showPaywall) {
             PaywallView(entitlementManager: model.entitlement, onDismiss: { showPaywall = false })
         }
+        .sheet(isPresented: $showKeyboardEnable) {
+            PermissionPrimingView.keyboard(
+                onContinue: { openKeyboardSettings() },
+                onSkip: { dismissKeyboardBanner() }
+            )
+        }
+    }
+
+    /// KEYS-04 primary CTA: deep-links to Settings > General > Keyboard via
+    /// the prefs URL type registered in BanterApp/Info.plist (QA1924).
+    private func openKeyboardSettings() {
+        if let url = URL(string: "prefs:root=General&path=Keyboard") {
+            UIApplication.shared.open(url)
+        }
+    }
+
+    /// One-shot dismissal (mirrors DowngradeBanner's dedup shape) — the
+    /// banner does not reappear once dismissed (05-UI-SPEC.md Screen 5.3).
+    private func dismissKeyboardBanner() {
+        AppGroupStore.write(true, forKey: KeyboardEnableBannerStorageKey.dismissed)
+        showKeyboardEnable = false
     }
 
     @ViewBuilder
