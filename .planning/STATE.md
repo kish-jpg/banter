@@ -6,14 +6,14 @@ current_phase: 5
 current_phase_name: Keyboard Extension
 status: executing
 stopped_at: Completed 05-01-PLAN.md
-last_updated: "2026-07-06T04:15:27.061Z"
+last_updated: "2026-07-06T04:23:41.631Z"
 last_activity: 2026-07-06
 last_activity_desc: Phase 5 execution started
 progress:
   total_phases: 8
   completed_phases: 4
   total_plans: 22
-  completed_plans: 20
+  completed_plans: 21
   percent: 50
 ---
 
@@ -29,7 +29,7 @@ See: .planning/PROJECT.md (updated 2026-07-03)
 ## Current Position
 
 Phase: 5 (Keyboard Extension) — EXECUTING
-Plan: 2 of 3
+Plan: 3 of 3
 Status: Ready to execute
 Last activity: 2026-07-06 — Phase 5 execution started
 
@@ -75,6 +75,7 @@ Progress: [██████████] 100%
 | Phase 04-companion-app-ui-paywall P05 | 12min | 2 tasks | 6 files |
 | Phase 04 P06 | 19min | 3 tasks | 4 files |
 | Phase 05-keyboard-extension P01 | 3min | 3 tasks | 4 files |
+| Phase 05-keyboard-extension P03 | 9min | 3 tasks | 4 files |
 
 ## Accumulated Context
 
@@ -126,6 +127,8 @@ Recent decisions affecting current work:
 - [Phase ?]: [Phase 04-companion-app-ui-paywall]: ContentView's DEBUG forcesOnboarding override covers only --seed-fresh-install/--reset-onboarding-state, not --seed-sample-transcript/--skip-onboarding, per the plan's explicit carve-out so ScreenshotArtifactTests/PermissionPrimingTests keep routing unchanged
 - [Phase ?]: [Phase 05-keyboard-extension]: CachedSuggestionsStorageKey placed in BanterShared (public on enum and constant) since BanterKeyboard reads it across the SPM package boundary in Plan 02, unlike the internal DowngradeBannerStorageKey
 - [Phase ?]: [Phase 05-keyboard-extension]: KEYS-03 guard enumerates the whole BanterKeyboard/ directory via FileManager.default.enumerator, extending NetworkBoundaryGuardTests' single-file pattern to a directory walk
+- [Phase ?]: [Phase 05-keyboard-extension]: PermissionPrimingView steps/reassurance added as nil-defaulted additive init params so the .photos(...) call site required zero changes
+- [Phase ?]: [Phase 05-keyboard-extension]: KeyboardEnableBanner bundle id for AppleKeyboards detection derived as com.banter.BanterKeyboard from project.yml's bundleIdPrefix + XcodeGen default per-target suffix; used only for fail-open detection, never functional gating
 
 ### Pending Todos
 
@@ -148,6 +151,6 @@ Items acknowledged and carried forward from previous milestone close:
 
 ## Session Continuity
 
-Last session: 2026-07-06T04:15:27.048Z
+Last session: 2026-07-06T04:23:31.555Z
 Stopped at: Completed 05-01-PLAN.md
 Resume file: None

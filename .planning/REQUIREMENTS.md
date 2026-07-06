@@ -45,7 +45,7 @@
 - [x] **KEYS-01**: Custom keyboard displays cached suggestions from the App Group shared container
 - [ ] **KEYS-02**: User can insert a suggestion into any chat app with one tap
 - [x] **KEYS-03**: Keyboard core loop works without Full Access (never calls the network directly)
-- [ ] **KEYS-04**: Guided keyboard-enable flow with contextual explainer
+- [x] **KEYS-04**: Guided keyboard-enable flow with contextual explainer
 
 ### Onboarding
 
@@ -121,7 +121,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | KEYS-01 | Phase 5 | Complete |
 | KEYS-02 | Phase 5 | Pending |
 | KEYS-03 | Phase 5 | Complete |
-| KEYS-04 | Phase 5 | Pending |
+| KEYS-04 | Phase 5 | Complete |
 | PROF-01 | Phase 6 | Pending |
 | PROF-02 | Phase 6 | Pending |
 | PROF-03 | Phase 6 | Pending |
