@@ -54,6 +54,17 @@ targets:
           - group.com.banter.shared
     info:
       path: BanterKeyboard/Info.plist
+      # XcodeGen REGENERATES this plist on every `xcodegen generate` — the
+      # NSExtension dict must live here or CI wipes it and the embedded
+      # .appex fails simulator install ("extensionDictionary must be set").
+      properties:
+        NSExtension:
+          NSExtensionPointIdentifier: com.apple.keyboard-service
+          NSExtensionPrincipalClass: $(PRODUCT_MODULE_NAME).KeyboardViewController
+          NSExtensionAttributes:
+            IsASCIICapable: false
+            PrimaryLanguage: en-US
+            RequestsOpenAccess: false
   BanterUITests:
     type: bundle.ui-testing
     platform: iOS
