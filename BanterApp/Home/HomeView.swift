@@ -12,10 +12,11 @@ struct HomeView: View {
     @State private var showPaywall = false
     @State private var showKeyboardEnable = false
 
-    /// BanterKeyboard's bundle id — derived from project.yml's
-    /// bundleIdPrefix (com.banter) + XcodeGen's default target-name suffix.
+    /// BanterKeyboard's bundle id — the explicit PRODUCT_BUNDLE_IDENTIFIER
+    /// set in project.yml (nested under the containing app's bundle id, as
+    /// App Store validation requires). Must stay in sync with project.yml.
     /// Used only for the fail-open best-effort AppleKeyboards check below.
-    private static let keyboardExtensionBundleID = "com.banter.BanterKeyboard"
+    private static let keyboardExtensionBundleID = "com.banter.BanterApp.BanterKeyboard"
 
     private var shouldShowKeyboardEnableBanner: Bool {
         let dismissed = AppGroupStore.read(Bool.self, forKey: KeyboardEnableBannerStorageKey.dismissed) ?? false

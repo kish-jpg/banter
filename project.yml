@@ -18,6 +18,9 @@ targets:
       - package: BanterShared
       - package: RevenueCat
         product: RevenueCat
+      # Embeds the .appex into the app bundle — without this the keyboard
+      # never appears in Settings > Keyboards on any device (CR-02).
+      - target: BanterKeyboard
     entitlements:
       path: BanterApp/BanterApp.entitlements
       properties:
@@ -29,6 +32,12 @@ targets:
     type: app-extension
     platform: iOS
     deploymentTarget: "18.0"
+    settings:
+      # App Store validation requires the extension's bundle ID to be
+      # prefixed by the containing app's (com.banter.BanterApp), not the
+      # XcodeGen default com.banter.BanterKeyboard. Must stay in sync with
+      # HomeView.keyboardExtensionBundleID.
+      PRODUCT_BUNDLE_IDENTIFIER: com.banter.BanterApp.BanterKeyboard
     sources:
       - path: BanterKeyboard
     dependencies:
