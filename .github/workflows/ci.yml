@@ -74,7 +74,44 @@ jobs:
             -project Banter.xcodeproj \
             -scheme BanterApp \
             -destination "$SIMULATOR_DESTINATION" \
+            -derivedDataPath DerivedData \
             CODE_SIGNING_ALLOWED=NO
+
+      # Browser-testable simulator bundle (Appetize.io accepts a zipped
+      # simulator .app). Reuses the build above via the pinned DerivedData.
+      - name: Package simulator app (Appetize)
+        run: |
+          cd DerivedData/Build/Products/Debug-iphonesimulator
+          zip -qry "$GITHUB_WORKSPACE/BanterApp-simulator.zip" BanterApp.app
+
+      - name: Upload simulator app artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: banter-simulator-app
+          path: BanterApp-simulator.zip
+          retention-days: 14
+
+      # Unsigned device build for AltStore/SideStore sideloading (free Apple
+      # ID re-signs on install — no Developer Program needed). Debug config:
+      # same settings already proven green on simulator.
+      - name: Build unsigned device IPA (AltStore sideload)
+        run: |
+          xcodebuild build \
+            -project Banter.xcodeproj \
+            -scheme BanterApp \
+            -destination "generic/platform=iOS" \
+            -derivedDataPath DerivedData \
+            CODE_SIGNING_ALLOWED=NO
+          mkdir -p Payload
+          cp -R DerivedData/Build/Products/Debug-iphoneos/BanterApp.app Payload/
+          zip -qry BanterApp-unsigned.ipa Payload
+
+      - name: Upload unsigned IPA artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: banter-unsigned-ipa
+          path: BanterApp-unsigned.ipa
+          retention-days: 14
 
       - name: Test BanterShared
         run: swift test --package-path BanterShared
@@ -85,6 +122,7 @@ jobs:
             -project Banter.xcodeproj \
             -scheme BanterApp \
             -destination "$SIMULATOR_DESTINATION" \
+            -derivedDataPath DerivedData \
             -resultBundlePath TestResults.xcresult \
             -only-testing:BanterUITests \
             CODE_SIGNING_ALLOWED=NO
