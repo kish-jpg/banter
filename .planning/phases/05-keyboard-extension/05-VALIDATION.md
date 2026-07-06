@@ -67,7 +67,7 @@ created: 2026-07-05
 |----------|-------------|------------|-------------------|
 | Tap suggestion inserts text into another app | KEYS-02 | Third-party keyboard cannot be driven by XCUITest in a host app; simulator keyboard switching is unreliable | On device/simulator: enable Banter keyboard, open Notes, switch keyboard, tap a suggestion, confirm insertion |
 | Keyboard functions with Full Access OFF | KEYS-03 (runtime half) | Full Access toggle is Settings-level system UI | Leave Allow Full Access off; confirm suggestions render and insert |
-| Guided enable flow deep link lands on Keyboard settings | KEYS-04 | Settings navigation is system UI | Tap enable CTA; confirm Settings opens at General → Keyboard path |
+| Guided enable flow deep link lands on Keyboard settings | KEYS-04 | Settings navigation is system UI | Tap enable CTA; confirm Settings opens at the Banter app settings page (openSettingsURLString) |
 | Globe key switches back to system keyboard | HIG/4.4.1 | System keyboard switching | With multiple keyboards enabled, confirm globe key present and functional |
 
 ---
