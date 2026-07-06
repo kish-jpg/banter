@@ -13,6 +13,12 @@ GitHub → `kish-jpg/banter` → **Actions** → click the latest green **CI** r
 
 You must be logged into GitHub to download them. They expire after 14 days — just grab them from a newer run.
 
+> **⚠ Double-zip gotcha:** GitHub wraps every artifact download in an EXTRA zip.
+> Always extract the downloaded file once first — the real payload is inside:
+> `banter-simulator-app.zip` → contains → `BanterApp-simulator.zip` (upload THIS to Appetize)
+> `banter-unsigned-ipa.zip` → contains → `BanterApp-unsigned.ipa` (feed THIS to AltStore)
+> Uploading the outer wrapper to Appetize fails with "app not found".
+
 ---
 
 ## Path 1 — Appetize.io: app in your browser (10 minutes)
