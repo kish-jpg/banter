@@ -17,7 +17,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 - [x] **Phase 2: Screenshot Import & OCR Pipeline** - Vision OCR + speaker attribution + user-confirmable transcript, plus paste fallback (completed 2026-07-03)
 - [x] **Phase 3: Backend LLM Orchestration** - Psychology taxonomy artifact, then schema-enforced tagged replies + sentiment in one anti-AI-tell call (completed 2026-07-03)
 - [x] **Phase 4: Companion App UI & Paywall** - Wispr-grade onboarding, suggestion cards, tone control, love-calculator timeline, and the freemium reverse trial (completed 2026-07-04)
-- [ ] **Phase 5: Keyboard Extension** - Thin App Group reader that inserts cached suggestions in any chat app without Full Access
+- [x] **Phase 5: Keyboard Extension** - Thin App Group reader that inserts cached suggestions in any chat app without Full Access (completed 2026-07-06)
 - [ ] **Phase 6: Profile Engine, XP & Grading** - Personalization from a live user profile plus own-attempt grading and visible skill progression
 - [ ] **Phase 7: Privacy Hardening** - Short-TTL user-keyed retention, in-app deletion, and explicit training-consent opt-in
 - [ ] **Phase 8: Metrics & Launch** - Instrumentation, cohort analysis, App Review notes, and App Store submission
@@ -164,7 +164,7 @@ Decimal phases appear between their surrounding integers in numeric order.
   3. The keyboard's core loop functions with Full Access off — it never calls the network directly.
   4. A guided enable flow with a contextual explainer walks the user through turning the keyboard on.
 
-**Plans**: 2/3 plans executed
+**Plans**: 3/3 plans complete
 **UI hint**: yes
 
 **Wave 1**
@@ -174,7 +174,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 
 **Wave 2** *(blocked on Wave 1: needs the public storage key from 05-01)*
 
-- [ ] 05-02-PLAN.md — Rewrite KeyboardViewController to host SwiftUI KeyboardSuggestionsView: reads App Group cache, tap-to-insert via textDocumentProxy, globe key, Full-Access-off, no network (KEYS-01, KEYS-02, KEYS-03)
+- [x] 05-02-PLAN.md — Rewrite KeyboardViewController to host SwiftUI KeyboardSuggestionsView: reads App Group cache, tap-to-insert via textDocumentProxy, globe key, Full-Access-off, no network (KEYS-01, KEYS-02, KEYS-03)
 
 ### Phase 6: Profile Engine, XP & Grading
 
@@ -231,7 +231,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 → 8
 | 2. Screenshot Import & OCR Pipeline | 5/5 | Complete    | 2026-07-03 |
 | 3. Backend LLM Orchestration | 3/3 | Complete    | 2026-07-03 |
 | 4. Companion App UI & Paywall | 7/7 | Complete    | 2026-07-05 |
-| 5. Keyboard Extension | 2/3 | In Progress|  |
+| 5. Keyboard Extension | 3/3 | Complete   | 2026-07-06 |
 | 6. Profile Engine, XP & Grading | 0/TBD | Not started | - |
 | 7. Privacy Hardening | 0/TBD | Not started | - |
 | 8. Metrics & Launch | 0/TBD | Not started | - |
