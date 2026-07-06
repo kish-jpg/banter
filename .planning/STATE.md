@@ -5,15 +5,15 @@ milestone_name: milestone
 current_phase: 5
 current_phase_name: Keyboard Extension
 status: executing
-stopped_at: Phase 5 UI-SPEC approved
-last_updated: "2026-07-05T20:54:48.748Z"
-last_activity: 2026-07-05
-last_activity_desc: Phase 04 complete, transitioned to Phase 5
+stopped_at: Completed 05-01-PLAN.md
+last_updated: "2026-07-06T04:15:27.061Z"
+last_activity: 2026-07-06
+last_activity_desc: Phase 5 execution started
 progress:
   total_phases: 8
   completed_phases: 4
-  total_plans: 19
-  completed_plans: 19
+  total_plans: 22
+  completed_plans: 20
   percent: 50
 ---
 
@@ -24,14 +24,14 @@ progress:
 See: .planning/PROJECT.md (updated 2026-07-03)
 
 **Core value:** The user gets instant relief (great replies, right now) while becoming a measurably better texter over time — real skill transfer, backed by citable psychology.
-**Current focus:** Phase 04 — companion-app-ui-paywall
+**Current focus:** Phase 5 — Keyboard Extension
 
 ## Current Position
 
-Phase: 5 — Keyboard Extension
-Plan: Not started
+Phase: 5 (Keyboard Extension) — EXECUTING
+Plan: 2 of 3
 Status: Ready to execute
-Last activity: 2026-07-05 — Phase 04 complete, transitioned to Phase 5
+Last activity: 2026-07-06 — Phase 5 execution started
 
 Progress: [██████████] 100%
 
@@ -74,6 +74,7 @@ Progress: [██████████] 100%
 | Phase 04-companion-app-ui-paywall PP03 | 35min | 3 tasks | 9 files |
 | Phase 04-companion-app-ui-paywall P05 | 12min | 2 tasks | 6 files |
 | Phase 04 P06 | 19min | 3 tasks | 4 files |
+| Phase 05-keyboard-extension P01 | 3min | 3 tasks | 4 files |
 
 ## Accumulated Context
 
@@ -123,6 +124,8 @@ Recent decisions affecting current work:
 - [Phase ?]: [Phase 04-companion-app-ui-paywall]: HomeModel is the sole production construction site for EntitlementManager/DailyCapTracker; downgrade dedup marker + last-known-premium flag both re-arm (clear) when currently premium so a second trial/subscription cycle re-shows DowngradeBanner instead of staying deduped forever
 - [Phase ?]: [Phase 04-companion-app-ui-paywall]: HomeView's top-level branch is model.coaching != nil ? suggestionsContent : importFlowContent, the Home-surface analog of ValueDemoCoordinatorView's onboardingModel.state switch (HomeModel has no separate onboarding-style state enum)
 - [Phase ?]: [Phase 04-companion-app-ui-paywall]: ContentView's DEBUG forcesOnboarding override covers only --seed-fresh-install/--reset-onboarding-state, not --seed-sample-transcript/--skip-onboarding, per the plan's explicit carve-out so ScreenshotArtifactTests/PermissionPrimingTests keep routing unchanged
+- [Phase ?]: [Phase 05-keyboard-extension]: CachedSuggestionsStorageKey placed in BanterShared (public on enum and constant) since BanterKeyboard reads it across the SPM package boundary in Plan 02, unlike the internal DowngradeBannerStorageKey
+- [Phase ?]: [Phase 05-keyboard-extension]: KEYS-03 guard enumerates the whole BanterKeyboard/ directory via FileManager.default.enumerator, extending NetworkBoundaryGuardTests' single-file pattern to a directory walk
 
 ### Pending Todos
 
@@ -145,6 +148,6 @@ Items acknowledged and carried forward from previous milestone close:
 
 ## Session Continuity
 
-Last session: 2026-07-05T20:54:48.729Z
-Stopped at: Phase 5 UI-SPEC approved
-Resume file: .planning/phases/05-keyboard-extension/05-UI-SPEC.md
+Last session: 2026-07-06T04:15:27.048Z
+Stopped at: Completed 05-01-PLAN.md
+Resume file: None
