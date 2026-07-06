@@ -11,6 +11,11 @@ struct HomeView: View {
     @State private var model = HomeModel()
     @State private var showPaywall = false
     @State private var showKeyboardEnable = false
+    /// Bumped on foreground so shouldShowKeyboardEnableBanner re-evaluates
+    /// after the user returns from Settings (WR-05) — without it the stale
+    /// banner lingers until an unrelated state change re-runs body.
+    @State private var keyboardCheckTick = 0
+    @Environment(\.scenePhase) private var scenePhase
 
     /// BanterKeyboard's bundle id — the explicit PRODUCT_BUNDLE_IDENTIFIER
     /// set in project.yml (nested under the containing app's bundle id, as
@@ -19,6 +24,7 @@ struct HomeView: View {
     private static let keyboardExtensionBundleID = "com.banter.BanterApp.BanterKeyboard"
 
     private var shouldShowKeyboardEnableBanner: Bool {
+        _ = keyboardCheckTick // re-evaluate on foreground (see scenePhase onChange)
         let dismissed = AppGroupStore.read(Bool.self, forKey: KeyboardEnableBannerStorageKey.dismissed) ?? false
         if dismissed { return false }
         // Fail-open (05-RESEARCH.md Assumption A1): an uncertain/false read
@@ -73,9 +79,18 @@ struct HomeView: View {
         }
         .sheet(isPresented: $showKeyboardEnable) {
             PermissionPrimingView.keyboard(
-                onContinue: { openKeyboardSettings() },
+                onContinue: {
+                    // Close the sheet BEFORE leaving for Settings so the
+                    // user doesn't return to a stale priming sheet whose
+                    // only exit ("Not Now") permanently dismisses the banner.
+                    showKeyboardEnable = false
+                    openKeyboardSettings()
+                },
                 onSkip: { dismissKeyboardBanner() }
             )
+        }
+        .onChange(of: scenePhase) { _, phase in
+            if phase == .active { keyboardCheckTick += 1 }
         }
     }
 
