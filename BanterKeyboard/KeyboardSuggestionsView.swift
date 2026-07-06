@@ -39,6 +39,7 @@ struct KeyboardSuggestionsView: View {
                     } label: {
                         Text(suggestion.text)
                             .font(Banter.TextStyle.label)
+                            .foregroundStyle(Banter.Colors.textPrimary) // not button tint — 05-UI-SPEC.md Color
                             .lineLimit(2)
                             .frame(maxWidth: .infinity, alignment: .leading)
                             .padding(Banter.Spacing.sm)
