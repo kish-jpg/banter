@@ -64,6 +64,8 @@ final class HomeModel {
             onAnalysisRecorded: { HomeModel.makeCapTracker().recordAnalysis() },
             onResponse: { [sentimentStore, conversationId, importModel] response in
                 sentimentStore.append(from: response, conversationId: conversationId, messageIndex: max(0, importModel.transcript.count - 1), speaker: .match)
+                // Caches the latest suggestions for the keyboard to read (KEYS-01).
+                AppGroupStore.write(response.replies, forKey: CachedSuggestionsStorageKey.suggestions)
             }
         )
         coaching = model
