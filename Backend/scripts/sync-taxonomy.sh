@@ -19,6 +19,7 @@ SOURCE="$REPO_ROOT/Backend/functions/coaching/taxonomy.json"
 DESTS=(
   "$REPO_ROOT/BanterApp/Resources/taxonomy.json"
   "$REPO_ROOT/BanterShared/Sources/BanterShared/Resources/taxonomy.json"
+  "$REPO_ROOT/web/src/lib/taxonomy.json"
 )
 
 CHECK_ONLY=false

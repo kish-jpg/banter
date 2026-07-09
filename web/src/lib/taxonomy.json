@@ -1,0 +1,57 @@
+{
+  "version": "2026-07-04",
+  "allowed": [
+    {
+      "framework": "Gottman Method",
+      "technique": "turning-toward-bids",
+      "tagName": "Turning toward a bid",
+      "explanation": "Responding to a small connection attempt instead of ignoring it - builds trust over time.",
+      "citation": "Gottman & Levenson; Gottman Institute, 'The Four Horsemen'"
+    },
+    {
+      "framework": "Gottman Method",
+      "technique": "repair-attempts",
+      "tagName": "Repair attempt",
+      "explanation": "A short, de-escalating move that defuses tension before criticism or contempt take hold.",
+      "citation": "Gottman & Levenson; Gottman Institute, 'The Four Horsemen'"
+    },
+    {
+      "framework": "Attachment theory",
+      "technique": "secure-base-framing",
+      "tagName": "Secure-base framing",
+      "explanation": "Understanding your own pattern around closeness and distance - never used to read or exploit the match's attachment style.",
+      "citation": "Bowlby/Ainsworth; Vanderbilt et al. 2025, Sage Journals; Luo & Slatcher, PubMed"
+    },
+    {
+      "framework": "Aron self-disclosure",
+      "technique": "reciprocal-escalation",
+      "tagName": "Reciprocal self-disclosure",
+      "explanation": "Matching their openness with a bit of your own - closeness grows through mutual sharing, not guaranteed attraction.",
+      "citation": "Aron et al. 1997, Personality and Social Psychology Bulletin ('36 Questions')"
+    },
+    {
+      "framework": "Reciprocity norm",
+      "technique": "descriptive-mutual-exchange",
+      "tagName": "Mutual exchange",
+      "explanation": "Naturally giving back after receiving something (a question, a compliment) - descriptive rapport-building, not manufactured indebtedness.",
+      "citation": "Cialdini, 'Influence'"
+    },
+    {
+      "framework": "Active listening / validation",
+      "technique": "reflective-validation",
+      "tagName": "Reflective validation",
+      "explanation": "Reflecting back what they said to show you heard them - a standard, well-established communication technique.",
+      "citation": "Rogers-derived active-listening research, standard in couples/communication therapy"
+    }
+  ],
+  "bannedTerms": [
+    "negging",
+    "scarcity",
+    "alpha male",
+    "beta male",
+    "push-pull",
+    "last-minute resistance",
+    "neuro-linguistic programming",
+    "neg"
+  ]
+}
