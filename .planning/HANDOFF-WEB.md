@@ -51,12 +51,14 @@ Everything below is staged and waits on it:
 7. Then Supabase Postgres/auth sync for threads+XP (shapes in `web/src/lib/threads.ts`
    and `useXP.ts` are row-ready; localStorage is the current store)
 
-## Remaining v1 spec items (not yet built)
+## Remaining v1 spec items
 
-- Profile personalization (spec item 5): capture goals/style AFTER first value moment,
-  send as `profileSummary` (backend already accepts it end-to-end, incl. grading).
-- Watch-out notes (spec item 3 partial): needs a small additive backend schema field.
-- Wispr polish pass (loading-state shimmer, transitions, copy audit) before shipping URL.
+- ~~Profile personalization~~ DONE (ProfileCard post-first-value, picked-style drift,
+  profileSummary injected into coach+grade AND into buildSystemInstruction server-side).
+- ~~Watch-out notes~~ DONE (client-derived from the engine's own signal factors,
+  lowest factor < 0.5, no invented claims).
+- Final Wispr polish audit (loading shimmer, copy pass) before shipping the URL —
+  entrance animations are in.
 
 ## Conventions that bit previous sessions
 
