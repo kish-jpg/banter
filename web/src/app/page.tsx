@@ -6,6 +6,7 @@ import { Capture } from "@/components/capture";
 import { Confirm } from "@/components/confirm";
 import { Coach } from "@/components/coach";
 import { useXP } from "@/lib/useXP";
+import { useProfile } from "@/lib/profile";
 import {
   clearAll,
   defaultLabel,
@@ -28,6 +29,7 @@ export default function Home() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const xp = useXP();
+  const { summary, recordPick } = useProfile();
   const threads = useSyncExternalStore(subscribeThreads, getThreadsSnapshot, getThreadsServerSnapshot);
 
   async function coach(entries: TranscriptEntry[], tone?: Tone) {
@@ -42,6 +44,7 @@ export default function Home() {
           conversationId: threadId,
           messages: ordered,
           ...(tone ? { tone } : {}),
+          ...(summary ? { profileSummary: summary } : {}),
         }),
       });
       const data = await res.json();
@@ -175,6 +178,7 @@ export default function Home() {
           onAddMore={() => setStep("append")}
           onRecoach={(tone) => coach(messages, tone)}
           onXP={xp.award}
+          onPickStyle={recordPick}
           loading={loading}
           error={error}
         />

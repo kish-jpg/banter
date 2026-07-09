@@ -4,6 +4,8 @@ import { useState } from "react";
 import type { CoachingResponse, GradeResponse, Tone, TranscriptEntry } from "@/lib/types";
 import { explain } from "@/lib/taxonomy";
 import { attemptXP, copyXP, isNearDuplicate } from "@/lib/xp";
+import { ProfileCard } from "@/components/profile-card";
+import { useProfile } from "@/lib/profile";
 
 const TONES: Tone[] = ["playful", "sincere", "witty", "direct"];
 
@@ -14,8 +16,27 @@ const FACTOR_LABELS: Record<string, string> = {
   responsiveness: "momentum",
 };
 
+// Teaching moments grounded in the engine's own signal read - the lowest weak
+// factor gets one plain-language note. No claims beyond what the numbers say.
+const WATCH_OUTS: Record<string, string> = {
+  interest:
+    "Interest is reading low. Short answers, not many questions back. Match their energy instead of chasing.",
+  reciprocity:
+    "The back-and-forth is lopsided. One side is carrying the questions. Give something they can respond to.",
+  warmth:
+    "The tone is running cool. One genuinely warm line could open this up.",
+  responsiveness:
+    "Momentum is dipping. A fresh topic or a concrete plan beats another routine question.",
+};
+
+function watchOut(factors: Record<string, number>): string | null {
+  const [key, value] = Object.entries(factors).sort((a, b) => a[1] - b[1])[0];
+  return value < 0.5 ? WATCH_OUTS[key] ?? null : null;
+}
+
 function SignalRead({ coaching }: { coaching: CoachingResponse }) {
   const { sentiment } = coaching;
+  const note = watchOut(sentiment.factors);
   return (
     <section className="rounded-2xl border border-border bg-card p-4">
       <div className="flex items-baseline justify-between">
@@ -25,6 +46,12 @@ function SignalRead({ coaching }: { coaching: CoachingResponse }) {
         </span>
       </div>
       <p className="mt-1 text-[15px]">{sentiment.signal}</p>
+      {note && (
+        <p className="mt-2 rounded-xl bg-secondary/60 p-3 text-sm text-muted-foreground">
+          <span className="font-medium text-foreground">watch out · </span>
+          {note}
+        </p>
+      )}
       <div className="mt-4 grid grid-cols-2 gap-x-6 gap-y-3">
         {Object.entries(sentiment.factors).map(([key, value]) => (
           <div key={key}>
@@ -170,6 +197,7 @@ function YourTurn({
   const [copyNote, setCopyNote] = useState(false);
   const [grading, setGrading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const { summary } = useProfile();
 
   async function submit() {
     setError(null);
@@ -191,6 +219,7 @@ function YourTurn({
           attemptText: attempt,
           messages,
           conversationId,
+          ...(summary ? { profileSummary: summary } : {}),
         }),
       });
       const data = await res.json();
@@ -260,6 +289,7 @@ export function Coach({
   onAddMore,
   onRecoach,
   onXP,
+  onPickStyle,
   loading,
   error,
 }: {
@@ -270,13 +300,16 @@ export function Coach({
   onAddMore: () => void;
   onRecoach: (tone: Tone) => void;
   onXP: (points: number) => void;
+  onPickStyle: (style: string) => void;
   loading: boolean;
   error: string | null;
 }) {
   const [tone, setTone] = useState<Tone | null>(null);
 
   return (
-    <div className={`flex flex-1 flex-col gap-4 ${loading ? "opacity-50" : ""}`}>
+    <div
+      className={`flex flex-1 flex-col gap-4 animate-in fade-in slide-in-from-bottom-2 duration-300 ${loading ? "opacity-50" : ""}`}
+    >
       <div className="flex items-center justify-between gap-3">
         <input
           value={threadLabel ?? ""}
@@ -295,8 +328,17 @@ export function Coach({
 
       <h2 className="mt-2 text-sm font-medium text-muted-foreground">what I&apos;d send</h2>
       {coaching.replies.map((r, i) => (
-        <ReplyCard key={i} reply={r} onCopied={() => onXP(copyXP())} />
+        <ReplyCard
+          key={i}
+          reply={r}
+          onCopied={() => {
+            onXP(copyXP());
+            onPickStyle(r.style);
+          }}
+        />
       ))}
+
+      <ProfileCard />
 
       <div className="mt-2">
         <p className="text-xs text-muted-foreground">want a different vibe?</p>

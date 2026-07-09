@@ -35,7 +35,7 @@ export function Confirm({
   }
 
   return (
-    <div className="flex flex-1 flex-col">
+    <div className="flex flex-1 flex-col animate-in fade-in slide-in-from-bottom-2 duration-300">
       <h1 className="text-2xl font-semibold tracking-tight">Did I get this right?</h1>
       <p className="mt-1.5 text-sm text-muted-foreground">
         Your messages on the right, theirs on the left. Tap a bubble to swap sides, tap ✎ to fix

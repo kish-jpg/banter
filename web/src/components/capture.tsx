@@ -62,7 +62,7 @@ export function Capture({
   }
 
   return (
-    <div className="flex flex-1 flex-col">
+    <div className="flex flex-1 flex-col animate-in fade-in slide-in-from-bottom-2 duration-300">
       <h1 className="text-3xl font-semibold leading-tight tracking-tight">
         {append ? "What happened since?" : "Stuck on what to say?"}
       </h1>

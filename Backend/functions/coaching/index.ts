@@ -52,6 +52,9 @@ function validateCoachingRequestBody(body: any): { error: string } | { request: 
   if (body.tone !== undefined && !TONE_VALUES.includes(body.tone)) {
     return { error: `tone must be one of ${TONE_VALUES.join(", ")}` };
   }
+  if (body.profileSummary !== undefined && (typeof body.profileSummary !== "string" || body.profileSummary.length > 1000)) {
+    return { error: "profileSummary must be a string of at most 1000 chars" };
+  }
   return {
     request: {
       transcript: body.messages as TranscriptEntry[],
