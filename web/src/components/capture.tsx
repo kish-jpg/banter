@@ -4,6 +4,15 @@ import { useRef, useState } from "react";
 import type { TranscriptEntry } from "@/lib/types";
 import { fileToDataUrl } from "@/lib/image";
 
+// First-run demo: coached on a real-feeling conversation in seconds, zero typing.
+const EXAMPLE: TranscriptEntry[] = [
+  { speaker: "match", text: "okay important question. pineapple on pizza, yes or no", order: 0 },
+  { speaker: "user", text: "strong yes and I will not be apologising for it", order: 1 },
+  { speaker: "match", text: "wow. bold of you to admit that on day one", order: 2 },
+  { speaker: "user", text: "I believe in honesty from message one", order: 3 },
+  { speaker: "match", text: "respect. okay what else should I know about you then", order: 4 },
+];
+
 export function Capture({
   onExtracted,
   append = false,
@@ -112,6 +121,14 @@ export function Capture({
       >
         {loading ? "Reading the room…" : "Read my conversation"}
       </button>
+      {!append && !hasInput && (
+        <button
+          onClick={() => onExtracted(EXAMPLE)}
+          className="mt-3 text-center text-sm text-muted-foreground underline-offset-4 transition-colors hover:text-foreground hover:underline"
+        >
+          no conversation handy? try an example
+        </button>
+      )}
       <p className="mt-3 text-center text-xs text-muted-foreground">
         Screenshots are read once and never stored.
       </p>

@@ -10,3 +10,8 @@ Banter.xcodeproj/
 .planning/research/.cache/
 infra/supabase/
 .env.local
+
+# Supabase cloud deploy: functions/coaching is a sync target (deploy-cloud.sh),
+# Backend/functions/coaching is the tracked source of truth
+supabase/functions/coaching/
+supabase/.temp/
