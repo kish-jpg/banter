@@ -4,7 +4,13 @@ import { useRef, useState } from "react";
 import type { TranscriptEntry } from "@/lib/types";
 import { fileToDataUrl } from "@/lib/image";
 
-export function Capture({ onExtracted }: { onExtracted: (msgs: TranscriptEntry[]) => void }) {
+export function Capture({
+  onExtracted,
+  append = false,
+}: {
+  onExtracted: (msgs: TranscriptEntry[]) => void;
+  append?: boolean;
+}) {
   const [text, setText] = useState("");
   const [images, setImages] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
@@ -49,11 +55,12 @@ export function Capture({ onExtracted }: { onExtracted: (msgs: TranscriptEntry[]
   return (
     <div className="flex flex-1 flex-col">
       <h1 className="text-3xl font-semibold leading-tight tracking-tight">
-        Stuck on what to say?
+        {append ? "What happened since?" : "Stuck on what to say?"}
       </h1>
       <p className="mt-2 text-muted-foreground">
-        Drop in the conversation. You&apos;ll get replies worth sending, and the read on how
-        it&apos;s going.
+        {append
+          ? "Drop in just the new messages. I remember the rest."
+          : "Drop in the conversation. You'll get replies worth sending, and the read on how it's going."}
       </p>
 
       <textarea

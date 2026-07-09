@@ -255,6 +255,9 @@ function YourTurn({
 export function Coach({
   coaching,
   messages,
+  threadLabel,
+  onRename,
+  onAddMore,
   onRecoach,
   onXP,
   loading,
@@ -262,6 +265,9 @@ export function Coach({
 }: {
   coaching: CoachingResponse;
   messages: TranscriptEntry[];
+  threadLabel: string | null;
+  onRename: (label: string) => void;
+  onAddMore: () => void;
   onRecoach: (tone: Tone) => void;
   onXP: (points: number) => void;
   loading: boolean;
@@ -271,6 +277,20 @@ export function Coach({
 
   return (
     <div className={`flex flex-1 flex-col gap-4 ${loading ? "opacity-50" : ""}`}>
+      <div className="flex items-center justify-between gap-3">
+        <input
+          value={threadLabel ?? ""}
+          onChange={(e) => onRename(e.target.value)}
+          aria-label="conversation name"
+          className="w-full truncate bg-transparent text-sm font-medium text-muted-foreground focus:text-foreground focus:outline-none"
+        />
+        <button
+          onClick={onAddMore}
+          className="shrink-0 rounded-full border border-border px-3 py-1.5 text-xs text-muted-foreground transition-colors hover:border-primary/40 hover:text-foreground"
+        >
+          + add new messages
+        </button>
+      </div>
       <SignalRead coaching={coaching} />
 
       <h2 className="mt-2 text-sm font-medium text-muted-foreground">what I&apos;d send</h2>
