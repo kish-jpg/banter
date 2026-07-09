@@ -50,6 +50,37 @@ export const COACHING_RESPONSE_SCHEMA = {
   propertyOrdering: ["replies", "sentiment"],
 };
 
+// Per 06-RESEARCH: reasoning BEFORE score inside each dimension (propertyOrdering
+// controls generation order - reasoning-first reduces judge variance).
+const GRADE_DIMENSION_SCHEMA = {
+  type: "OBJECT",
+  properties: {
+    dimension: { type: "STRING", enum: ["warmth", "specificity", "reciprocity", "naturalness"] },
+    reasoning: { type: "STRING" },
+    score: { type: "NUMBER" },
+  },
+  required: ["dimension", "reasoning", "score"],
+  propertyOrdering: ["dimension", "reasoning", "score"],
+};
+
+export const GRADE_RESPONSE_SCHEMA = {
+  type: "OBJECT",
+  properties: {
+    dimensions: {
+      type: "ARRAY",
+      minItems: 4,
+      maxItems: 4,
+      items: GRADE_DIMENSION_SCHEMA,
+    },
+    overallScore: { type: "NUMBER" },
+    strengthNote: { type: "STRING" },
+    improvementNote: { type: "STRING" },
+    citedTag: { type: "STRING" },
+  },
+  required: ["dimensions", "overallScore", "strengthNote", "improvementNote", "citedTag"],
+  propertyOrdering: ["dimensions", "overallScore", "strengthNote", "improvementNote", "citedTag"],
+};
+
 export const OPENER_RESPONSE_SCHEMA = {
   type: "OBJECT",
   properties: {

@@ -1,7 +1,13 @@
 import { taxonomy, allowedTagNames, containsBannedTerm } from "./taxonomy.ts";
-import { validateCoachingResponse } from "./validate.ts";
+import { validateCoachingResponse, validateGradeResponse } from "./validate.ts";
 import { GeminiAdapter } from "./llm/GeminiAdapter.ts";
-import type { CoachingRequest, CoachingResponse, LLMProvider, TranscriptEntry } from "./llm/LLMProvider.ts";
+import type {
+  CoachingRequest,
+  CoachingResponse,
+  GradeResponse,
+  LLMProvider,
+  TranscriptEntry,
+} from "./llm/LLMProvider.ts";
 
 // V5 / T-03-08: request-size DoS cap, checked before any Gemini call.
 const MAX_MESSAGES = 50;
@@ -56,14 +62,15 @@ function validateCoachingRequestBody(body: any): { error: string } | { request: 
 }
 
 /** Retries a gate-checked generation once with a stricter reminder; returns null if it still fails (including provider errors). */
-async function generateAndGate<T extends { replies: { text: string; psychologyTag: string }[] }>(
+async function generateAndGate<T>(
   generate: (stricter: boolean) => Promise<T>,
+  validate: (candidate: T, allowed: Set<string>) => { valid: boolean; reason?: string },
 ): Promise<T | null> {
   const allowed = allowedTagNames();
   for (const stricter of [false, true]) {
     try {
       const candidate = await generate(stricter);
-      const result = validateCoachingResponse(candidate, allowed, containsBannedTerm);
+      const result = validate(candidate, allowed);
       if (result.valid) return candidate;
     } catch {
       // provider error (network, non-ok, safety-blocked, malformed JSON) - treat as a failed attempt, not a crash
@@ -71,6 +78,11 @@ async function generateAndGate<T extends { replies: { text: string; psychologyTa
   }
   return null;
 }
+
+const validateReplies = (
+  candidate: { replies: { text: string; psychologyTag: string }[] },
+  allowed: Set<string>,
+) => validateCoachingResponse(candidate, allowed, containsBannedTerm);
 
 const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
@@ -113,7 +125,7 @@ export async function handleCoachingRequest(req: Request, provider: LLMProvider)
         allowedTags,
       );
       return { replies: openers };
-    });
+    }, validateReplies);
     if (!result) return jsonResponse({ error: "gate rejected generated content" }, 502);
     return jsonResponse({ openers: result.replies, conversationId }, 200);
   }
@@ -121,14 +133,39 @@ export async function handleCoachingRequest(req: Request, provider: LLMProvider)
   const parsed = validateCoachingRequestBody(body);
   if ("error" in parsed) return badRequest(parsed.error);
 
+  // Grade path (GROW-01, 06-RESEARCH Pattern 1): own attempt + confirmed transcript context.
+  if (body.mode === "grade") {
+    if (typeof body.attemptText !== "string" || body.attemptText.length === 0) {
+      return badRequest("attemptText must be a non-empty string");
+    }
+    if (body.attemptText.length > MAX_TOTAL_CHARS) {
+      return badRequest(`attemptText exceeds max length of ${MAX_TOTAL_CHARS} chars`);
+    }
+    // ponytail: stricter has no prompt-level effect here (temperature 0 judge) - the
+    // second pass still catches transient provider errors and schema misses.
+    const graded = await generateAndGate<GradeResponse>(
+      () =>
+        adapter.gradeAttempt(
+          {
+            attemptText: body.attemptText,
+            transcript: parsed.request.transcript,
+            profileSummary: parsed.request.profileSummary,
+          },
+          allowedTags,
+        ),
+      (candidate, allowed) => validateGradeResponse(candidate, allowed, containsBannedTerm),
+    );
+    if (!graded) return jsonResponse({ error: "gate rejected generated content" }, 502);
+    return jsonResponse({ ...graded, conversationId }, 200);
+  }
+
   const result = await generateAndGate<CoachingResponse>((stricter) =>
     adapter.generateCoaching(
       stricter
         ? { ...parsed.request, tone: parsed.request.tone ?? "sincere" }
         : parsed.request,
       allowedTags,
-    )
-  );
+    ), validateReplies);
   if (!result) return jsonResponse({ error: "gate rejected generated content" }, 502);
 
   // Server-stateless per Phase 3 scope (Open Q2): no SentimentEvent persistence here.

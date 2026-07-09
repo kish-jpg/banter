@@ -1,7 +1,19 @@
 import type { TaxonomyEntry } from "../taxonomy.ts";
-import { buildSystemInstruction, formatTranscript } from "../promptAssembly.ts";
-import type { CoachingRequest, CoachingResponse, LLMProvider, OpenerRequest } from "./LLMProvider.ts";
-import { COACHING_RESPONSE_SCHEMA, OPENER_RESPONSE_SCHEMA } from "./schema.ts";
+import {
+  buildGradingInstruction,
+  buildSystemInstruction,
+  formatAttempt,
+  formatTranscript,
+} from "../promptAssembly.ts";
+import type {
+  CoachingRequest,
+  CoachingResponse,
+  GradeRequest,
+  GradeResponse,
+  LLMProvider,
+  OpenerRequest,
+} from "./LLMProvider.ts";
+import { COACHING_RESPONSE_SCHEMA, GRADE_RESPONSE_SCHEMA, OPENER_RESPONSE_SCHEMA } from "./schema.ts";
 
 // Pinned per RESEARCH Assumption A4: -image/-lite variants differ in structured-output
 // support - do not substitute without re-verifying.
@@ -74,5 +86,40 @@ export class GeminiAdapter implements LLMProvider {
 
     const data = await response.json();
     return JSON.parse(extractJsonText(data)) as { openers: CoachingResponse["replies"] };
+  }
+
+  async gradeAttempt(
+    req: GradeRequest,
+    allowedTags: TaxonomyEntry[],
+  ): Promise<GradeResponse> {
+    const systemInstruction = buildGradingInstruction(allowedTags, req.profileSummary);
+    const contents = [
+      {
+        role: "user",
+        parts: [{ text: `${formatTranscript(req.transcript)}\n\n${formatAttempt(req.attemptText)}` }],
+      },
+    ];
+
+    const response = await fetch(GEMINI_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "x-goog-api-key": this.apiKey },
+      body: JSON.stringify({
+        contents,
+        systemInstruction: { parts: [{ text: systemInstruction }] },
+        generationConfig: {
+          responseMimeType: "application/json",
+          responseSchema: GRADE_RESPONSE_SCHEMA,
+          // temperature 0 per 06-RESEARCH: judge calls want minimum variance, unlike generation.
+          temperature: 0,
+        },
+      }),
+    });
+
+    if (!response.ok) {
+      throw new Error(`Gemini API error: ${response.status} ${await response.text()}`);
+    }
+
+    const data = await response.json();
+    return JSON.parse(extractJsonText(data)) as GradeResponse;
   }
 }

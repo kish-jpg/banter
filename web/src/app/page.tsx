@@ -5,6 +5,7 @@ import type { CoachingResponse, Tone, TranscriptEntry } from "@/lib/types";
 import { Capture } from "@/components/capture";
 import { Confirm } from "@/components/confirm";
 import { Coach } from "@/components/coach";
+import { useXP } from "@/lib/useXP";
 
 type Step = "capture" | "confirm" | "coach";
 
@@ -15,6 +16,7 @@ export default function Home() {
   const [conversationId] = useState(() => crypto.randomUUID());
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const xp = useXP();
 
   async function coach(entries: TranscriptEntry[], tone?: Tone) {
     setLoading(true);
@@ -52,14 +54,24 @@ export default function Home() {
         <button className="text-lg font-semibold tracking-tight" onClick={reset}>
           banter<span className="text-primary">.</span>
         </button>
-        {step !== "capture" && (
-          <button
-            className="text-sm text-muted-foreground transition-colors hover:text-foreground"
-            onClick={reset}
-          >
-            start over
-          </button>
-        )}
+        <div className="flex items-center gap-3">
+          {xp.total > 0 && (
+            <span
+              className="rounded-full bg-secondary px-2.5 py-1 text-xs text-muted-foreground"
+              title={`${xp.into}/${xp.toNext} xp to level ${xp.level + 1}`}
+            >
+              lv {xp.level} · {xp.total} xp
+            </span>
+          )}
+          {step !== "capture" && (
+            <button
+              className="text-sm text-muted-foreground transition-colors hover:text-foreground"
+              onClick={reset}
+            >
+              start over
+            </button>
+          )}
+        </div>
       </header>
 
       {step === "capture" && (
@@ -84,7 +96,9 @@ export default function Home() {
       {step === "coach" && coaching && (
         <Coach
           coaching={coaching}
+          messages={messages}
           onRecoach={(tone) => coach(messages, tone)}
+          onXP={xp.award}
           loading={loading}
           error={error}
         />

@@ -1,7 +1,14 @@
 import { assertEquals } from "jsr:@std/assert@1";
 import sampleFixture from "./fixtures/coaching-response.sample.json" with { type: "json" };
 import { handleCoachingRequest } from "../functions/coaching/index.ts";
-import type { CoachingRequest, CoachingResponse, LLMProvider, OpenerRequest } from "../functions/coaching/llm/LLMProvider.ts";
+import type {
+  CoachingRequest,
+  CoachingResponse,
+  GradeRequest,
+  GradeResponse,
+  LLMProvider,
+  OpenerRequest,
+} from "../functions/coaching/llm/LLMProvider.ts";
 
 // These tests call the REAL Deno.serve handler (handleCoachingRequest), exported from
 // index.ts specifically so it can be exercised directly here instead of reimplemented.
@@ -31,13 +38,28 @@ const OPENER_RESPONSE: CoachingResponse["replies"] = [
   { text: "what got you into climbing", psychologyTag: "Reciprocal self-disclosure", style: "direct" },
 ];
 
+const VALID_GRADE: GradeResponse = {
+  dimensions: [
+    { dimension: "warmth", reasoning: "engaged and friendly", score: 4 },
+    { dimension: "specificity", reasoning: "references the bungee story", score: 5 },
+    { dimension: "reciprocity", reasoning: "asks a question back", score: 4 },
+    { dimension: "naturalness", reasoning: "reads like a real text", score: 4 },
+  ],
+  overallScore: 4,
+  strengthNote: "You kept their energy and gave them something to respond to.",
+  improvementNote: "Add one concrete detail of your own next time.",
+  citedTag: "Mutual exchange",
+};
+
 /** Stub LLMProvider: returns a canned sequence of coaching responses (one per generateAndGate attempt), or throws. */
 function stubProvider(
   coachingSequence: (CoachingResponse | "throw")[],
   openerSequence: (CoachingResponse["replies"] | "throw")[] = [],
+  gradeSequence: (GradeResponse | "throw")[] = [],
 ): LLMProvider {
   let coachingCall = 0;
   let openerCall = 0;
+  let gradeCall = 0;
   return {
     generateCoaching(_req: CoachingRequest) {
       const next = coachingSequence[Math.min(coachingCall, coachingSequence.length - 1)];
@@ -50,6 +72,12 @@ function stubProvider(
       openerCall++;
       if (next === "throw") return Promise.reject(new Error("simulated provider failure"));
       return Promise.resolve({ openers: next });
+    },
+    gradeAttempt(_req: GradeRequest) {
+      const next = gradeSequence[Math.min(gradeCall, gradeSequence.length - 1)];
+      gradeCall++;
+      if (next === "throw") return Promise.reject(new Error("simulated provider failure"));
+      return Promise.resolve(next);
     },
   };
 }
@@ -171,6 +199,42 @@ Deno.test("a valid 200 response body matches coaching-response.sample.json's sha
     assertEquals(Object.keys(reply).sort(), ["psychologyTag", "style", "text"]);
   }
   assertEquals(Object.keys(body.sentiment).sort(), Object.keys(sampleFixture.sentiment).sort());
+});
+
+Deno.test("grade path (GROW-01): mode=grade + attemptText returns rubric grade through the gate", async () => {
+  const req = makeRequest({ ...sampleCoachingRequest, mode: "grade", attemptText: "haha yes I screamed. what about you, ever done something wild?" });
+  const res = await handleCoachingRequest(req, stubProvider([], [], [VALID_GRADE]));
+  assertEquals(res.status, 200);
+  const body = await res.json();
+  assertEquals(body.dimensions.length, 4);
+  assertEquals(typeof body.overallScore, "number");
+  assertEquals(body.citedTag, "Mutual exchange");
+});
+
+Deno.test("grade path: off-allowlist citedTag on both attempts -> 502, never reaches the user", async () => {
+  const badGrade = { ...VALID_GRADE, citedTag: "Alpha dominance" };
+  const req = makeRequest({ ...sampleCoachingRequest, mode: "grade", attemptText: "some attempt" });
+  const res = await handleCoachingRequest(req, stubProvider([], [], [badGrade, badGrade]));
+  assertEquals(res.status, 502);
+});
+
+Deno.test("grade path: banned term in feedback text on both attempts -> 502 (COAC-06 gates ALL generation)", async () => {
+  const badGrade = { ...VALID_GRADE, improvementNote: "try some negging next time" };
+  const req = makeRequest({ ...sampleCoachingRequest, mode: "grade", attemptText: "some attempt" });
+  const res = await handleCoachingRequest(req, stubProvider([], [], [badGrade, badGrade]));
+  assertEquals(res.status, 502);
+});
+
+Deno.test("grade path: empty attemptText is rejected with 400", async () => {
+  const req = makeRequest({ ...sampleCoachingRequest, mode: "grade", attemptText: "" });
+  const res = await handleCoachingRequest(req, stubProvider([], [], [VALID_GRADE]));
+  assertEquals(res.status, 400);
+});
+
+Deno.test("grade path: oversized attemptText is rejected with 400 (V5 cost cap)", async () => {
+  const req = makeRequest({ ...sampleCoachingRequest, mode: "grade", attemptText: "x".repeat(8001) });
+  const res = await handleCoachingRequest(req, stubProvider([], [], [VALID_GRADE]));
+  assertEquals(res.status, 400);
 });
 
 Deno.test("valid UUID conversationId is echoed back (WR-05)", async () => {

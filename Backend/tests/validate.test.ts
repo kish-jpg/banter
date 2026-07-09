@@ -104,3 +104,54 @@ Deno.test("validate.ts imports nothing Gemini-specific (structural type only)", 
   // validateCoachingResponse's first param accepts any { replies: {text, psychologyTag}[] } shape.
   assert(true);
 });
+
+// --- validateGradeResponse (GROW-01) ---
+
+import { validateGradeResponse } from "../functions/coaching/validate.ts";
+
+const validGrade = {
+  dimensions: [
+    { dimension: "warmth", reasoning: "engaged", score: 4 },
+    { dimension: "specificity", reasoning: "concrete", score: 5 },
+    { dimension: "reciprocity", reasoning: "asks back", score: 4 },
+    { dimension: "naturalness", reasoning: "reads real", score: 4 },
+  ],
+  overallScore: 4,
+  strengthNote: "You matched their energy.",
+  improvementNote: "Add a detail of your own.",
+  citedTag: validTag1,
+};
+
+Deno.test("grade: valid 4-dimension rubric with allowlisted citedTag passes", () => {
+  assertEquals(validateGradeResponse(validGrade, allowedTags, containsBannedTerm), { valid: true });
+});
+
+Deno.test("grade: off-allowlist citedTag is rejected and named", () => {
+  const result = validateGradeResponse({ ...validGrade, citedTag: "Alpha dominance" }, allowedTags, containsBannedTerm);
+  assertEquals(result.valid, false);
+  assertStringIncludes(result.reason ?? "", "Alpha dominance");
+});
+
+Deno.test("grade: missing rubric dimension is rejected", () => {
+  const result = validateGradeResponse(
+    { ...validGrade, dimensions: validGrade.dimensions.slice(0, 3) },
+    allowedTags,
+    containsBannedTerm,
+  );
+  assertEquals(result.valid, false);
+});
+
+Deno.test("grade: dimension score outside 1-5 is rejected", () => {
+  const bad = { ...validGrade, dimensions: validGrade.dimensions.map((d, i) => i === 0 ? { ...d, score: 7 } : d) };
+  assertEquals(validateGradeResponse(bad, allowedTags, containsBannedTerm).valid, false);
+});
+
+Deno.test("grade: banned term inside dimension reasoning is rejected (feedback is gated too)", () => {
+  const bad = { ...validGrade, dimensions: validGrade.dimensions.map((d, i) => i === 1 ? { ...d, reasoning: "classic push-pull energy" } : d) };
+  assertEquals(validateGradeResponse(bad, allowedTags, containsBannedTerm).valid, false);
+});
+
+Deno.test("grade: AI-tell punctuation in notes is rejected", () => {
+  const bad = { ...validGrade, improvementNote: "Good start; add more detail" };
+  assertEquals(validateGradeResponse(bad, allowedTags, containsBannedTerm).valid, false);
+});

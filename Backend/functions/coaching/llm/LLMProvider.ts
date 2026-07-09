@@ -46,6 +46,26 @@ export interface OpenerRequest {
   profileText: string;
 }
 
+/** Request to grade the user's own reply attempt against the conversation context (GROW-01). */
+export interface GradeRequest {
+  attemptText: string;
+  transcript: TranscriptEntry[];
+  profileSummary?: string;
+}
+
+/** Rubric-level, reasoning-first grade per 06-RESEARCH - never a bare holistic score. */
+export interface GradeResponse {
+  dimensions: {
+    dimension: "warmth" | "specificity" | "reciprocity" | "naturalness";
+    reasoning: string;
+    score: number;
+  }[];
+  overallScore: number;
+  strengthNote: string;
+  improvementNote: string;
+  citedTag: string;
+}
+
 /** Provider-abstracted LLM interface - the swap seam (D-03). Callers depend only on this, never on a specific adapter. */
 export interface LLMProvider {
   generateCoaching(
@@ -56,4 +76,8 @@ export interface LLMProvider {
     req: OpenerRequest,
     allowedTags: TaxonomyEntry[],
   ): Promise<{ openers: CoachingResponse["replies"] }>;
+  gradeAttempt(
+    req: GradeRequest,
+    allowedTags: TaxonomyEntry[],
+  ): Promise<GradeResponse>;
 }
