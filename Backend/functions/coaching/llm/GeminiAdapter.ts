@@ -31,7 +31,13 @@ export class GeminiAdapter implements LLMProvider {
     req: CoachingRequest,
     allowedTags: TaxonomyEntry[],
   ): Promise<CoachingResponse> {
-    const systemInstruction = buildSystemInstruction(allowedTags, req.tone, req.profileSummary);
+    const systemInstruction = buildSystemInstruction(
+      allowedTags,
+      req.tone,
+      req.profileSummary,
+      req.personaFacts,
+      req.paceContext,
+    );
     const contents = [{ role: "user", parts: [{ text: formatTranscript(req.transcript) }] }];
 
     const response = await fetch(GEMINI_URL, {

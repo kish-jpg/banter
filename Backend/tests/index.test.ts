@@ -251,3 +251,19 @@ Deno.test("malformed conversationId is dropped, not echoed back (WR-05)", async 
   const body = await res.json();
   assertEquals(body.conversationId, undefined);
 });
+
+Deno.test("personaFacts over the cap (9 items) are rejected with 400 (V5 cost cap)", async () => {
+  const req = makeRequest({ ...sampleCoachingRequest, personaFacts: Array(9).fill("a fact") });
+  const res = await handleCoachingRequest(req, stubProvider([sampleFixture as CoachingResponse]));
+  assertEquals(res.status, 400);
+});
+
+Deno.test("valid personaFacts + paceContext pass through to a 200", async () => {
+  const req = makeRequest({
+    ...sampleCoachingRequest,
+    personaFacts: ["has a dog named Biscuit"],
+    paceContext: "both replying quickly",
+  });
+  const res = await handleCoachingRequest(req, stubProvider([sampleFixture as CoachingResponse]));
+  assertEquals(res.status, 200);
+});

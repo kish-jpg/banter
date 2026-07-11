@@ -55,11 +55,23 @@ function validateCoachingRequestBody(body: any): { error: string } | { request: 
   if (body.profileSummary !== undefined && (typeof body.profileSummary !== "string" || body.profileSummary.length > 1000)) {
     return { error: "profileSummary must be a string of at most 1000 chars" };
   }
+  if (
+    body.personaFacts !== undefined &&
+    (!Array.isArray(body.personaFacts) || body.personaFacts.length > 8 ||
+      !body.personaFacts.every((f: unknown) => typeof f === "string" && f.length <= 300))
+  ) {
+    return { error: "personaFacts must be at most 8 strings of at most 300 chars each" };
+  }
+  if (body.paceContext !== undefined && (typeof body.paceContext !== "string" || body.paceContext.length > 300)) {
+    return { error: "paceContext must be a string of at most 300 chars" };
+  }
   return {
     request: {
       transcript: body.messages as TranscriptEntry[],
       tone: body.tone,
       profileSummary: body.profileSummary,
+      personaFacts: body.personaFacts,
+      paceContext: body.paceContext,
     },
   };
 }

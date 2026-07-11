@@ -17,6 +17,14 @@ export interface CoachingRequest {
   tone?: "playful" | "sincere" | "witty" | "direct";
   /** Stub until Phase 6's profile engine exists - pass whatever the client sends (currently nothing durable). */
   profileSummary?: string;
+  /**
+   * Salience-selected persona facts about the OTHER person, each derived from their own
+   * words (strict provenance per INTENT-PERSONA-ENGINE). Client pre-selects top 3-5;
+   * the prompt instructs natural use of at most 1-2, never forced.
+   */
+  personaFacts?: string[];
+  /** One-line pace/timing context (e.g. "they reply slowly and are slowing; it is 1am for the user"). */
+  paceContext?: string;
 }
 
 /**

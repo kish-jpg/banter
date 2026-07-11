@@ -86,3 +86,48 @@ Deno.test("CoachingResponse shape type-checks: replies (text/psychologyTag/style
     assert(!("confidence" in reply));
   }
 });
+
+// --- persona facts + pace context (INTENT-PERSONA-ENGINE) ---
+
+Deno.test("personaFacts are injected with the at-most-1-2 natural-use rule; omitted when absent", () => {
+  const withFacts = buildSystemInstruction(allowedTags, undefined, undefined, [
+    'mentioned she loves bouldering ("I basically live at the climbing gym")',
+    "has a dog named Biscuit",
+  ]);
+  assertStringIncludes(withFacts, "bouldering");
+  assertStringIncludes(withFacts, "Biscuit");
+  assertStringIncludes(withFacts.toLowerCase(), "at most one or two");
+  assertStringIncludes(withFacts.toLowerCase(), "never stack callbacks");
+
+  const without = buildSystemInstruction(allowedTags);
+  assert(!without.toLowerCase().includes("known about the other person"));
+});
+
+Deno.test("paceContext injects the anti-scarcity timing rule; omitted when absent", () => {
+  const withPace = buildSystemInstruction(
+    allowedTags,
+    undefined,
+    undefined,
+    undefined,
+    "they reply slowly and are slowing; it is 1am for the user",
+  );
+  assertStringIncludes(withPace, "1am");
+  assertStringIncludes(withPace.toLowerCase(), "never suggest waiting to reply");
+  assertStringIncludes(withPace.toLowerCase(), "mirror their energy");
+
+  const without = buildSystemInstruction(allowedTags);
+  assert(!without.toLowerCase().includes("pace and timing context"));
+});
+
+Deno.test("persona/pace additions never introduce a banned term or AI-tell punctuation into the instruction", () => {
+  const instruction = buildSystemInstruction(
+    allowedTags,
+    "playful",
+    "context: dating apps",
+    ["loves hiking"],
+    "both replying quickly",
+  );
+  for (const banned of taxonomy.bannedTerms) {
+    assert(!instruction.toLowerCase().includes(banned.toLowerCase()));
+  }
+});
