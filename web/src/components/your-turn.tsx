@@ -5,6 +5,7 @@ import type { GradeResponse, TranscriptEntry } from "@/lib/types";
 import { explain } from "@/lib/taxonomy";
 import { attemptXP, copyXP, isNearDuplicate } from "@/lib/xp";
 import { useProfile } from "@/lib/profile";
+import { recordGrade } from "@/lib/grades";
 
 const DIMENSION_HINTS: Record<string, string> = {
   warmth: "does it feel engaged?",
@@ -111,6 +112,7 @@ export function YourTurn({
       const points = attemptXP(g.overallScore, false);
       setGrade(g);
       setEarned(points);
+      recordGrade(g);
       onXP(points);
       onGraded();
     } catch (e) {
@@ -155,10 +157,7 @@ export function YourTurn({
               try another
             </button>
             {onContinue && (
-              <button
-                onClick={onContinue}
-                className="rounded-full bg-primary px-4 py-2 text-xs font-semibold text-primary-foreground"
-              >
+              <button onClick={onContinue} className="btn-primary !rounded-full px-4 py-2 text-xs">
                 now see what I&apos;d send →
               </button>
             )}
@@ -168,7 +167,7 @@ export function YourTurn({
         <button
           onClick={submit}
           disabled={attempt.trim().length === 0 || grading}
-          className="mt-3 w-full rounded-2xl bg-secondary py-3 text-sm font-semibold transition-opacity disabled:opacity-30"
+          className="btn-secondary mt-3 w-full py-3 text-sm"
         >
           {grading ? "Grading…" : "Grade my reply"}
         </button>

@@ -43,11 +43,7 @@ export function PersonaPicker({
           <button
             key={p.id}
             onClick={() => onSelect(selectedId === p.id ? null : p.id)}
-            className={`rounded-full border px-3 py-1.5 text-sm transition-colors ${
-              selectedId === p.id
-                ? "border-primary/60 bg-primary/10 text-primary"
-                : "border-border text-muted-foreground hover:text-foreground"
-            }`}
+            className={`px-3 py-1.5 text-sm ${selectedId === p.id ? "chip-active" : "chip"}`}
           >
             {p.name}
           </button>
@@ -73,9 +69,7 @@ export function PersonaPicker({
               <button
                 key={c}
                 onClick={() => setContext(c)}
-                className={`rounded-full border px-2 py-1 text-xs ${
-                  context === c ? "border-primary/60 text-primary" : "border-border text-muted-foreground"
-                }`}
+                className={`px-2 py-1 text-xs ${context === c ? "chip-active" : "chip"}`}
               >
                 {c}
               </button>
@@ -123,11 +117,7 @@ export function PersonaPanel({ personaId }: { personaId: string }) {
               <button
                 key={c}
                 onClick={() => updatePersona(persona.id, { contextType: c })}
-                className={`rounded-full border px-2.5 py-1 text-xs ${
-                  persona.contextType === c
-                    ? "border-primary/60 bg-primary/10 text-primary"
-                    : "border-border text-muted-foreground"
-                }`}
+                className={`px-2.5 py-1 text-xs ${persona.contextType === c ? "chip-active" : "chip"}`}
               >
                 {c}
               </button>

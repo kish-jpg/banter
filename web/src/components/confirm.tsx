@@ -96,7 +96,7 @@ export function Confirm({
       <button
         onClick={onConfirm}
         disabled={loading || messages.length === 0}
-        className="mt-8 w-full rounded-2xl bg-primary py-4 text-base font-semibold text-primary-foreground transition-opacity disabled:opacity-30"
+        className="btn-primary mt-8 w-full py-4 text-base"
       >
         {loading ? "Thinking it through…" : "Looks right — coach me"}
       </button>

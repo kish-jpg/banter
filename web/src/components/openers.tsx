@@ -117,10 +117,7 @@ export function Openers({
             );
           })}
         </div>
-        <button
-          onClick={onDone}
-          className="mt-6 w-full rounded-2xl bg-secondary py-3.5 text-sm font-semibold"
-        >
+        <button onClick={onDone} className="btn-secondary mt-6 w-full py-3.5 text-sm">
           done for now
         </button>
       </div>
@@ -148,9 +145,7 @@ export function Openers({
           <button
             key={c}
             onClick={() => setContext(c)}
-            className={`rounded-full border px-3 py-2 text-sm ${
-              context === c ? "border-primary/60 bg-primary/10 text-primary" : "border-border text-muted-foreground"
-            }`}
+            className={`px-3 py-2 text-sm ${context === c ? "chip-active" : "chip"}`}
           >
             {c}
           </button>
@@ -202,7 +197,7 @@ export function Openers({
       <button
         onClick={generate}
         disabled={!hasInput || loading !== null}
-        className="mt-8 w-full rounded-2xl bg-primary py-4 text-base font-semibold text-primary-foreground transition-opacity disabled:opacity-30"
+        className="btn-primary mt-8 w-full py-4 text-base"
       >
         {loading ?? "Find my opener"}
       </button>

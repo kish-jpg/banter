@@ -117,7 +117,7 @@ export function Capture({
       <button
         onClick={extract}
         disabled={!hasInput || loading}
-        className="mt-8 w-full rounded-2xl bg-primary py-4 text-base font-semibold text-primary-foreground transition-opacity disabled:opacity-30"
+        className="btn-primary mt-8 w-full py-4 text-base"
       >
         {loading ? "Reading the room…" : "Read my conversation"}
       </button>

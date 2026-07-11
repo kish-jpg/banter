@@ -238,13 +238,13 @@ function ReplyCard({
           <div className="flex items-center gap-2">
             <button
               onClick={copy}
-              className={`rounded-full border border-border px-3 py-1.5 text-xs font-medium transition-colors ${copied ? "text-primary" : "text-muted-foreground hover:text-foreground"}`}
+              className={`chip px-3 py-1.5 text-xs font-medium ${copied ? "!text-primary" : ""}`}
             >
               {copied ? "copied" : "copy"}
             </button>
             <button
               onClick={onSent}
-              className="rounded-full bg-primary px-3 py-1.5 text-xs font-semibold text-primary-foreground"
+              className="btn-primary !rounded-full px-3 py-1.5 text-xs"
             >
               I sent this
             </button>
@@ -324,7 +324,7 @@ export function Coach({
   }
 
   return (
-    <div className="flex flex-1 flex-col gap-4 animate-in fade-in duration-300">
+    <div className="flex flex-1 flex-col gap-5 animate-in fade-in duration-300">
       {checkInDue && (
         <section className="rounded-2xl border border-primary/25 bg-card p-4">
           <h2 className="text-sm font-medium">quick one, did you two meet up?</h2>
@@ -334,16 +334,16 @@ export function Coach({
                 onCheckIn("met");
                 onXP(100);
               }}
-              className="flex-1 rounded-xl bg-primary py-2.5 text-sm font-semibold text-primary-foreground"
+              className="btn-primary flex-1 !rounded-xl py-2.5 text-sm"
             >
               we met 🎉
             </button>
-            <button onClick={() => onCheckIn(null)} className="flex-1 rounded-xl bg-secondary py-2.5 text-sm">
+            <button onClick={() => onCheckIn(null)} className="btn-secondary flex-1 !rounded-xl py-2.5 text-sm !font-normal">
               not yet
             </button>
             <button
               onClick={() => onCheckIn("fizzled")}
-              className="flex-1 rounded-xl bg-secondary py-2.5 text-sm text-muted-foreground"
+              className="btn-secondary flex-1 !rounded-xl py-2.5 text-sm !font-normal text-muted-foreground"
             >
               it fizzled
             </button>
@@ -375,24 +375,35 @@ export function Coach({
         </section>
       ) : (
         <>
-          <div className={loading ? "opacity-50" : ""}>
-            <h2 className="mb-3 text-sm font-medium text-muted-foreground">what I&apos;d send</h2>
-            <div className="flex flex-col gap-3">
-              {coaching.replies.map((r, i) => (
-                <ReplyCard
-                  key={`${coaching.conversationId}-${i}-${r.text.slice(0, 12)}`}
-                  reply={r}
-                  index={i}
-                  sent={sentIndex === i}
-                  dimmed={sentIndex !== null && sentIndex !== i}
-                  onCopied={() => {
-                    onXP(copyXP());
-                    onPickStyle(r.style);
-                  }}
-                  onSent={() => handleSent(i)}
-                />
-              ))}
-            </div>
+          <div>
+            <h2 className="mb-3 text-[13px] font-medium lowercase text-muted-foreground">
+              what I&apos;d send
+            </h2>
+            {loading ? (
+              /* Skeletons in place while re-coaching - the shape of what's coming. */
+              <div className="flex flex-col gap-3">
+                <div className="skeleton h-28" />
+                <div className="skeleton h-28 [animation-delay:120ms]" />
+                <div className="skeleton h-28 [animation-delay:240ms]" />
+              </div>
+            ) : (
+              <div className="flex flex-col gap-3">
+                {coaching.replies.map((r, i) => (
+                  <ReplyCard
+                    key={`${coaching.conversationId}-${i}-${r.text.slice(0, 12)}`}
+                    reply={r}
+                    index={i}
+                    sent={sentIndex === i}
+                    dimmed={sentIndex !== null && sentIndex !== i}
+                    onCopied={() => {
+                      onXP(copyXP());
+                      onPickStyle(r.style);
+                    }}
+                    onSent={() => handleSent(i)}
+                  />
+                ))}
+              </div>
+            )}
           </div>
 
           {sentIndex !== null ? (
@@ -436,11 +447,7 @@ export function Coach({
                           setTone(t);
                           onRecoach(t);
                         }}
-                        className={`rounded-full border px-3.5 py-1.5 text-sm transition-colors ${
-                          tone === t
-                            ? "border-primary/60 bg-primary/10 text-primary"
-                            : "border-border text-muted-foreground hover:text-foreground"
-                        }`}
+                        className={`px-3.5 py-1.5 text-sm ${tone === t ? "chip-active" : "chip"}`}
                       >
                         {t}
                       </button>

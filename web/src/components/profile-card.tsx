@@ -55,11 +55,7 @@ export function ProfileCard({ persistent = false }: { persistent?: boolean }) {
           <button
             key={g}
             onClick={() => pickGoal(g)}
-            className={`rounded-full border px-3 py-1.5 text-sm transition-colors ${
-              activeGoal === g
-                ? "border-primary/60 bg-primary/10 text-primary"
-                : "border-border text-muted-foreground hover:text-foreground"
-            }`}
+            className={`px-3 py-1.5 text-sm ${activeGoal === g ? "chip-active" : "chip"}`}
           >
             {g}
           </button>
@@ -71,11 +67,7 @@ export function ProfileCard({ persistent = false }: { persistent?: boolean }) {
           <button
             key={s}
             onClick={() => pickStyle(s)}
-            className={`rounded-full border px-3 py-1.5 text-sm transition-colors ${
-              activeStyle === s
-                ? "border-primary/60 bg-primary/10 text-primary"
-                : "border-border text-muted-foreground hover:text-foreground"
-            }`}
+            className={`px-3 py-1.5 text-sm ${activeStyle === s ? "chip-active" : "chip"}`}
           >
             {s}
           </button>

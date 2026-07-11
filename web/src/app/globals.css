@@ -84,24 +84,25 @@
 }
 
 .dark {
-  /* Banter dark palette — coral accent matches BanterTokens (#FF5C7A). */
-  --background: #0b0b0f;
-  --foreground: #f4f4f6;
-  --card: #14141a;
-  --card-foreground: #f4f4f6;
-  --popover: #14141a;
-  --popover-foreground: #f4f4f6;
+  /* Banter dark palette (DESIGN.md): warm near-black tinted toward the coral hue,
+     never blue-black. Scene: in bed at 11pm, low glare. Coral #ff5c7a accent. */
+  --background: oklch(0.147 0.008 15);
+  --foreground: oklch(0.955 0.004 15);
+  --card: oklch(0.185 0.009 15);
+  --card-foreground: oklch(0.955 0.004 15);
+  --popover: oklch(0.185 0.009 15);
+  --popover-foreground: oklch(0.955 0.004 15);
   --primary: #ff5c7a;
-  --primary-foreground: #1c060d;
-  --secondary: #1d1d25;
-  --secondary-foreground: #f4f4f6;
-  --muted: #1d1d25;
-  --muted-foreground: #9b9ba6;
-  --accent: #1d1d25;
-  --accent-foreground: #f4f4f6;
+  --primary-foreground: oklch(0.17 0.03 13);
+  --secondary: oklch(0.235 0.01 15);
+  --secondary-foreground: oklch(0.955 0.004 15);
+  --muted: oklch(0.235 0.01 15);
+  --muted-foreground: oklch(0.68 0.012 15);
+  --accent: oklch(0.235 0.01 15);
+  --accent-foreground: oklch(0.955 0.004 15);
   --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
+  --border: oklch(0.955 0.01 15 / 10%);
+  --input: oklch(0.955 0.01 15 / 15%);
   --ring: #ff5c7a;
   --chart-1: oklch(0.87 0 0);
   --chart-2: oklch(0.556 0 0);
@@ -128,6 +129,32 @@
   html {
     @apply font-sans;
   }
+  /* Every interactive element gets a visible keyboard focus, nothing gets a mouse one. */
+  :where(button, a, input, textarea, select, summary):focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
+    border-radius: 8px;
+  }
+}
+
+@layer components {
+  /* DESIGN.md component vocabulary - one button/chip language everywhere. */
+  .btn-primary {
+    @apply rounded-2xl bg-primary font-semibold text-primary-foreground transition-[transform,filter] duration-150 ease-out hover:brightness-110 active:scale-[0.98] disabled:pointer-events-none disabled:opacity-30;
+  }
+  .btn-secondary {
+    @apply rounded-2xl bg-secondary font-semibold transition-[transform,filter] duration-150 ease-out hover:brightness-110 active:scale-[0.98] disabled:pointer-events-none disabled:opacity-30;
+  }
+  .chip {
+    @apply rounded-full border border-border text-muted-foreground transition-colors duration-150 hover:text-foreground active:scale-[0.97] disabled:pointer-events-none disabled:opacity-40;
+  }
+  .chip-active {
+    @apply rounded-full border border-primary/60 bg-primary/10 text-primary transition-colors duration-150 active:scale-[0.97];
+  }
+  /* Interactive card: tappable surfaces lift on hover, settle on press. */
+  .card-tap {
+    @apply rounded-2xl border border-border bg-card transition-[border-color,transform] duration-150 ease-out hover:border-primary/40 active:scale-[0.995];
+  }
 }
 
 /* Analysis-in-progress scan sweep (conversation shimmer + loading bar). */
@@ -138,4 +165,19 @@
   100% {
     transform: translateX(400%);
   }
+}
+
+/* Skeleton pulse for in-place loading (never a spinner over content). */
+@keyframes skeleton {
+  0%,
+  100% {
+    opacity: 0.55;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+.skeleton {
+  animation: skeleton 1.3s cubic-bezier(0.25, 1, 0.5, 1) infinite;
+  @apply rounded-2xl bg-secondary/60;
 }

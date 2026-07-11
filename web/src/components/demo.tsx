@@ -35,7 +35,7 @@ export function Demo() {
   }, [step]);
 
   return (
-    <div className="rounded-3xl border border-border bg-card/60 p-4" aria-hidden>
+    <div className="rounded-[calc(1.5rem-1px)] bg-card/70 p-4" aria-hidden>
       <div className="flex min-h-[290px] flex-col gap-1.5">
         {SCRIPT.bubbles.map(
           (b, i) =>

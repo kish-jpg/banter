@@ -35,37 +35,52 @@ export default function Home() {
 
   if (threads.length === 0) {
     return (
-      <main className="mx-auto flex w-full max-w-lg flex-1 flex-col px-4 pb-10 pt-6">
+      <main className="relative mx-auto flex w-full max-w-lg flex-1 flex-col overflow-x-clip px-4 pb-10 pt-6">
+        {/* The one Committed brand moment: a low coral glow behind the fold. */}
+        <div
+          aria-hidden
+          className="pointer-events-none absolute -top-32 left-1/2 h-[420px] w-[560px] -translate-x-1/2 rounded-full opacity-100"
+          style={{ background: "radial-gradient(closest-side, oklch(0.68 0.19 13 / 0.13), transparent 70%)" }}
+        />
+
         <p className="text-lg font-semibold tracking-tight">
           banter<span className="text-primary">.</span>
         </p>
 
-        <h1 className="mt-8 text-4xl font-semibold leading-[1.1] tracking-tight">
-          Know what to say.
+        <h1 className="mt-9 text-[2.5rem] font-semibold leading-[1.05] tracking-[-0.02em]">
+          Know what
+          <br />
+          to say<span className="text-primary">.</span>
         </h1>
-        <p className="mt-3 text-muted-foreground">
+        <p className="mt-4 max-w-[34ch] text-[15px] leading-relaxed text-muted-foreground">
           Your texting coach. It reads the conversation, tells you what&apos;s working, and helps
           you say it like you, not like a bot.
         </p>
 
-        <div className="mt-6">
-          <Demo />
+        <div className="relative mt-7">
+          <div className="rounded-3xl bg-gradient-to-b from-primary/25 via-border to-border p-px">
+            <div className="rounded-[calc(1.5rem-1px)] bg-background">
+              <Demo />
+            </div>
+          </div>
         </div>
 
         <Link
           href="/new"
-          className="mt-6 w-full rounded-2xl bg-primary py-4 text-center text-base font-semibold text-primary-foreground"
+          className="btn-primary mt-7 w-full py-4 text-center text-base shadow-[0_8px_32px_-8px_oklch(0.68_0.19_13/0.45)]"
         >
           Coach my conversation
         </Link>
         <Link
           href="/openers"
-          className="mt-3 text-center text-sm text-muted-foreground underline-offset-4 transition-colors hover:text-foreground hover:underline"
+          className="mt-4 text-center text-sm text-muted-foreground underline-offset-4 transition-colors hover:text-foreground hover:underline"
         >
           haven&apos;t messaged them yet? start from their profile
         </Link>
-        <p className="mt-4 text-center text-xs text-muted-foreground/70">
-          Screenshots are read once and never stored. Delete everything anytime.
+        <p className="mt-5 text-center text-xs leading-relaxed text-muted-foreground/70">
+          Screenshots are read once and never stored.
+          <br />
+          Delete everything anytime.
         </p>
       </main>
     );
@@ -77,40 +92,42 @@ export default function Home() {
 
       <h1 className="text-2xl font-semibold tracking-tight">your conversations</h1>
 
-      <div className="mt-4 flex flex-col gap-2">
+      {/* Avatar rows, not a card grid: each conversation is a person, not a tile. */}
+      <div className="mt-3 flex flex-col divide-y divide-border/60">
         {threads.map((t) => {
           const last = t.analyses?.[t.analyses.length - 1];
           const stage = stageFor(t.messages.length, t.analyses ?? []);
+          const interestBand = last ? band(last.factors.interest) : null;
           return (
-            <div key={t.id} className="group flex items-center gap-2">
+            <div key={t.id} className="group flex items-center gap-1">
               <Link
                 href={`/t/${t.id}`}
-                className="flex-1 rounded-2xl border border-border bg-card px-4 py-3 transition-colors hover:border-primary/40"
+                className="flex flex-1 items-center gap-3 rounded-xl px-1 py-3 transition-colors hover:bg-secondary/40 active:bg-secondary/60"
               >
-                <div className="flex items-center justify-between gap-2">
-                  <span className="truncate text-[15px]">{t.label}</span>
-                  {last && (
-                    <span
-                      className={`h-2 w-2 shrink-0 rounded-full ${
-                        band(last.factors.interest) === "strong"
-                          ? "bg-primary"
-                          : band(last.factors.interest) === "warming"
-                            ? "bg-primary/50"
-                            : "bg-muted-foreground/40"
-                      }`}
-                      title={`interest: ${band(last.factors.interest)}`}
-                    />
-                  )}
-                </div>
-                <span className="mt-0.5 block text-xs text-muted-foreground">
-                  {t.messages.length} messages · {STAGE_LABELS[stage]}
-                  {t.outcome === "met" ? " · you met 🎉" : ""}
+                <span
+                  className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-sm font-semibold ${
+                    interestBand === "strong"
+                      ? "bg-primary/20 text-primary"
+                      : interestBand === "warming"
+                        ? "bg-primary/10 text-primary/80"
+                        : "bg-secondary text-muted-foreground"
+                  }`}
+                >
+                  {t.label.slice(0, 1).toUpperCase()}
+                </span>
+                <span className="min-w-0 flex-1">
+                  <span className="block truncate text-[15px]">{t.label}</span>
+                  <span className="mt-0.5 block truncate text-xs text-muted-foreground">
+                    {STAGE_LABELS[stage]}
+                    {interestBand ? ` · interest ${interestBand}` : ""}
+                    {t.outcome === "met" ? " · you met 🎉" : ""}
+                  </span>
                 </span>
               </Link>
               <button
                 aria-label={`delete ${t.label}`}
                 onClick={() => deleteThread(t.id)}
-                className="px-1 text-muted-foreground/40 transition-colors hover:text-destructive"
+                className="px-2 py-3 text-muted-foreground/40 transition-colors hover:text-destructive"
               >
                 ×
               </button>
@@ -119,15 +136,12 @@ export default function Home() {
         })}
       </div>
 
-      <Link
-        href="/new"
-        className="mt-6 w-full rounded-2xl bg-primary py-4 text-center text-base font-semibold text-primary-foreground"
-      >
+      <Link href="/new" className="btn-primary mt-7 w-full py-4 text-center text-base">
         ＋ new conversation
       </Link>
       <Link
         href="/openers"
-        className="mt-3 text-center text-sm text-muted-foreground underline-offset-4 transition-colors hover:text-foreground hover:underline"
+        className="mt-4 text-center text-sm text-muted-foreground underline-offset-4 transition-colors hover:text-foreground hover:underline"
       >
         or start from a profile
       </Link>
