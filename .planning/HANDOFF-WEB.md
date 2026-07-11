@@ -80,17 +80,34 @@ Full INTENT-PERSONA-ENGINE build (see that doc for confirmed intent) deployed to
 - Gotcha fixed: StrictMode mount-cleanup-mount cancelled the auto-coach; the
   started-ref guard must live INSIDE the deferred timeout callback
 
+## PHASES D+E SHIPPED (2026-07-12, second push of the day)
+
+- Phase D via the **impeccable skill**: PRODUCT.md + DESIGN.md now live at web/
+  root (context for all future design work - read them first). Warm OKLCH palette
+  (coral-hue-tinted neutrals, no more blue-black; theme-color #151112 everywhere),
+  component vocabulary in globals.css @layer components (.btn-primary/.btn-secondary/
+  .chip/.chip-active/.card-tap - use these, never inline button styles), focus-visible
+  base rule, landing brand moment (glow + gradient demo frame), threads home = avatar
+  rows (identical-card grid is a banned pattern), skeleton loading (.skeleton class).
+  Framer Motion deliberately NOT added (product register: 150-250ms state motion,
+  CSS covers it).
+- Phase E: lib/grades.ts (grade history + textingDNA + practiceStreak), DnaRadar
+  SVG component, /you rebuilt (level bar + streak, DNA card, sent/dates/attempts
+  stats). recordGrade() fires inside YourTurn on every successful grade.
+- Stitch skill evaluated and skipped: direction was fully determined by
+  impeccable's laws + DESIGN.md; external mockups added no information.
+- Note: preview-browser screenshots are broken in this harness session (DOM/style
+  verification works); visual QA on a real phone still pending - Kish should look.
+
 ## Next phase (not yet built)
 
-- Phase D: design-system/motion polish pass (Framer Motion, type scale, use
-  impeccable/emil-design-eng skills) - explicitly planned, not started
-- Phase E: /you progression (Texting DNA radar from grade history, streak,
-  shareable signal card); grade history isn't persisted yet - add store first
 - Phase F: PostHog funnel analytics; paywall skeleton at value moments
-- Supabase Postgres/auth sync for threads+XP+personas (row-ready shapes)
-- Fact promotion loop: sentReplies ground truth now exists; score fact ->
+- Shareable signal-read card (image export) - deferred from E
+- Supabase Postgres/auth sync for threads+XP+personas+grades (row-ready shapes)
+- Fact promotion loop: sentReplies ground truth exists; score fact ->
   next-turn signal delta and promote/demote
 - Business-context technique set (currently a tone tag only, by design)
+- Replace native confirm() dialogs with inline confirmation (harden pass)
 
 ## Remaining v1 spec items
 
