@@ -65,12 +65,31 @@ Full INTENT-PERSONA-ENGINE build (see that doc for confirmed intent) deployed to
 - Backend engine: personaFacts + paceContext additive fields, 56 Deno tests; web 22
   unit tests. Prod smoke: coach+personaFacts, extract-profile, facts all 200.
 
+## IA + ONBOARDING + COACH REDESIGN SHIPPED (2026-07-12, phases A/B/C of the
+## billion-dollar-journey plan; Kish approved A,B,C explicitly)
+
+- Real routes: / (auto-demo landing for new users, threads home for returning),
+  /new, /t/[id] (refresh-safe, auto-coaches fresh threads), /openers, /you
+- Landing = scripted 8s product demo (components/demo.tsx, no LLM)
+- PWA: manifest + ImageResponse-generated icons (coral speech-bubble mark)
+- Coach redesign: conversation bubbles + scan shimmer, compact expandable read
+  strip, replies-as-hero with **"I sent this"** (persists thread.sentReplies,
+  fires markFactsUsed on thread.injectedFactIds -> callback ledger CLOSED, +10xp),
+  secondary controls behind disclosure
+- lib/coaching.ts = single requestCoaching() (salience+pace+context assembly)
+- Gotcha fixed: StrictMode mount-cleanup-mount cancelled the auto-coach; the
+  started-ref guard must live INSIDE the deferred timeout callback
+
 ## Next phase (not yet built)
 
-- Supabase Postgres/auth sync for threads+XP+personas (shapes are row-ready;
-  localStorage is the current store)
-- Callback-ledger outcome scoring (facts marked used exist via markFactsUsed; the
-  used->signal-delta promotion loop isn't wired yet)
+- Phase D: design-system/motion polish pass (Framer Motion, type scale, use
+  impeccable/emil-design-eng skills) - explicitly planned, not started
+- Phase E: /you progression (Texting DNA radar from grade history, streak,
+  shareable signal card); grade history isn't persisted yet - add store first
+- Phase F: PostHog funnel analytics; paywall skeleton at value moments
+- Supabase Postgres/auth sync for threads+XP+personas (row-ready shapes)
+- Fact promotion loop: sentReplies ground truth now exists; score fact ->
+  next-turn signal delta and promote/demote
 - Business-context technique set (currently a tone tag only, by design)
 
 ## Remaining v1 spec items
