@@ -49,10 +49,29 @@ mode:"grade" returns 5/5 rubric. Kish provided a Supabase access token
   (`web/.vercel/project.json`); prod env vars GEMINI_API_KEY, COACHING_URL,
   SUPABASE_ANON_KEY (legacy anon JWT); redeploy = `vercel deploy --prod` from `web/`
 
+## PERSONA ENGINE SHIPPED (2026-07-10, third session)
+
+Full INTENT-PERSONA-ENGINE build (see that doc for confirmed intent) deployed to prod:
+- Receiver personas: typed facts w/ exact-quote provenance, sensitive blocklist,
+  visible/editable panel, picker on confirm screen (`lib/persona.ts`, `persona-panel.tsx`)
+- Salience retrieval: relevance x recency x novelty x stage, top-4 -> engine's new
+  personaFacts field (`lib/salience.ts`); /api/facts extraction w/ keep/drop review
+- Openers: /api/extract-profile -> hooks seed persona -> COAC-07 opener path w/ UI
+- Timing: optional ts on TranscriptEntry, pace analysis + anti-scarcity gated advice,
+  late-night notes (`lib/timing.ts`)
+- Stage machine (opening/rapport/depth/momentum), banded reads, walk-away card,
+  own-attempt gate w/ adaptive cadence (5->2 by level, holds until explicit unlock),
+  date check-in (+100xp) (`lib/stage.ts`)
+- Backend engine: personaFacts + paceContext additive fields, 56 Deno tests; web 22
+  unit tests. Prod smoke: coach+personaFacts, extract-profile, facts all 200.
+
 ## Next phase (not yet built)
 
-- Supabase Postgres/auth sync for threads+XP (shapes in `web/src/lib/threads.ts`
-  and `useXP.ts` are row-ready; localStorage is the current store)
+- Supabase Postgres/auth sync for threads+XP+personas (shapes are row-ready;
+  localStorage is the current store)
+- Callback-ledger outcome scoring (facts marked used exist via markFactsUsed; the
+  used->signal-delta promotion loop isn't wired yet)
+- Business-context technique set (currently a tone tag only, by design)
 
 ## Remaining v1 spec items
 
