@@ -33,23 +33,26 @@ and has UNPUSHED Phase-6 planning docs — `.planning/phases/06-profile-engine-x
 - GEMINI_API_KEY recovered from the old worktree's `.env.local`, verified live, copied
   to both `banter/.env.local` and `banter/web/.env.local` (gitignored).
 
-## The ONE blocker: Supabase cloud access
+## DEPLOYED TO PRODUCTION (2026-07-10, second session)
 
-`supabase login` (CLI v2.109.1 installed at `C:\Users\Nexdo\.local\bin\supabase.exe`)
-needs Kish's browser to authorize. No access token exists anywhere on this machine.
-Everything below is staged and waits on it:
+**Live URL: https://banter-tau.vercel.app** — publicly smoke-tested: home 200,
+/api/extract parses, /api/coach returns 3 gated replies (via Supabase cloud),
+mode:"grade" returns 5/5 rubric. Kish provided a Supabase access token
+(stored in user env SUPABASE_ACCESS_TOKEN via setx).
 
-1. `supabase login` (Kish, ~1 min, browser)
-2. Create project (dashboard or `supabase projects create banter --org-id ...`),
-   then `supabase link --project-ref <ref>`
-3. `supabase secrets set GEMINI_API_KEY=<key from .env.local>`
-4. `bash Backend/scripts/deploy-cloud.sh` (syncs tracked source → `supabase/functions/coaching`, deploys)
-5. Smoke: POST to `https://<ref>.supabase.co/functions/v1/coaching` with anon-key Bearer
-6. Vercel deploy (`vercel` CLI already authed as kish-5252): set env
-   `GEMINI_API_KEY`, `COACHING_URL=https://<ref>.supabase.co/functions/v1/coaching`,
-   `SUPABASE_ANON_KEY` → ship URL to test users
-7. Then Supabase Postgres/auth sync for threads+XP (shapes in `web/src/lib/threads.ts`
-   and `useXP.ts` are row-ready; localStorage is the current store)
+- Supabase project: org "Banter", ref `wfqmgnczeeqwzjksxdpz` (ap-south-1,
+  Kish created it 2026-07-10; repo linked via `supabase link`)
+- Function URL: `https://wfqmgnczeeqwzjksxdpz.supabase.co/functions/v1/coaching`
+  (GEMINI_API_KEY set via `supabase secrets set`; deploy via
+  `bash Backend/scripts/deploy-cloud.sh`)
+- Vercel: project `banter` (team kish-5252s-projects), linked from `web/`
+  (`web/.vercel/project.json`); prod env vars GEMINI_API_KEY, COACHING_URL,
+  SUPABASE_ANON_KEY (legacy anon JWT); redeploy = `vercel deploy --prod` from `web/`
+
+## Next phase (not yet built)
+
+- Supabase Postgres/auth sync for threads+XP (shapes in `web/src/lib/threads.ts`
+  and `useXP.ts` are row-ready; localStorage is the current store)
 
 ## Remaining v1 spec items
 
