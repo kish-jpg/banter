@@ -20,6 +20,7 @@ const EXTRACT_SCHEMA = {
         properties: {
           speaker: { type: "STRING", enum: ["user", "match"] },
           text: { type: "STRING" },
+          time: { type: "STRING" },
         },
         required: ["speaker", "text"],
       },
@@ -34,7 +35,11 @@ Rules:
 - speaker "match" = the other person (left-aligned bubbles, or lines marked them/their name).
 - Preserve exact message text. Do not paraphrase, correct spelling, or merge messages.
 - Order messages top-to-bottom; when multiple screenshots are given, they are in chronological order.
-- Skip timestamps, read receipts, typing indicators, and UI text. Only actual messages.`;
+- When a timestamp is visible or clearly attributable to a message (chat apps show them
+  as separators or next to bubbles), set "time" to ISO 8601 (e.g. 2026-07-09T21:41:00).
+  Use today's date context only when the app shows relative labels you can resolve
+  confidently (e.g. "Yesterday"). Omit "time" entirely when unsure - never guess.
+- Skip read receipts, typing indicators, and UI text. Only actual messages.`;
 
 interface ExtractBody {
   images?: string[]; // data URLs
@@ -95,11 +100,14 @@ export async function POST(req: NextRequest) {
   try {
     const data = await res.json();
     const raw = JSON.parse(data.candidates[0].content.parts[0].text) as {
-      messages: { speaker: "user" | "match"; text: string }[];
+      messages: { speaker: "user" | "match"; text: string; time?: string }[];
     };
     const messages: TranscriptEntry[] = raw.messages
       .filter((m) => (m.speaker === "user" || m.speaker === "match") && typeof m.text === "string" && m.text.length > 0)
-      .map((m, i) => ({ speaker: m.speaker, text: m.text, order: i }));
+      .map((m, i) => {
+        const ts = m.time ? Date.parse(m.time) : NaN;
+        return { speaker: m.speaker, text: m.text, order: i, ...(Number.isFinite(ts) ? { ts } : {}) };
+      });
     if (messages.length === 0) {
       return NextResponse.json({ error: "no messages found, try a clearer screenshot" }, { status: 422 });
     }

@@ -4,6 +4,8 @@ export interface TranscriptEntry {
   speaker: "user" | "match";
   text: string;
   order: number;
+  /** Epoch ms, present only when a timestamp was visible in the import (additive, optional). */
+  ts?: number;
 }
 
 export type Tone = "playful" | "sincere" | "witty" | "direct";

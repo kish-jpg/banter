@@ -1,9 +1,10 @@
-import type { CoachingResponse, TranscriptEntry } from "./types";
+import type { CoachingResponse, Sentiment, TranscriptEntry } from "./types";
 
 /**
  * Thread persistence. localStorage-first so the whole loop works before any
  * signup (first-value-before-auth is the UX bar); the same shapes move to
  * Supabase Postgres rows when auth lands. Strictly user-keyed, wiped by clearAll.
+ * Persona-engine fields are additive - old stored threads simply lack them.
  */
 export interface Thread {
   id: string;
@@ -11,6 +12,13 @@ export interface Thread {
   messages: TranscriptEntry[];
   lastCoaching: CoachingResponse | null;
   updatedAt: number;
+  personaId?: string;
+  /** Last few signal reads - the trajectory feeding stage + walk-away. */
+  analyses?: Sentiment[];
+  /** Assisted coaching rounds since the user last wrote their own attempt (cadence counter). */
+  assistsSinceOwnAttempt?: number;
+  /** Date check-in outcome: undefined = never asked, null = asked/dismissed. */
+  outcome?: "met" | "fizzled" | null;
 }
 
 const KEY = "banter.threads";
@@ -82,6 +90,15 @@ export function renameThread(id: string, label: string) {
     t.label = label;
     write(threads);
   }
+}
+
+/**
+ * Partial update for persona-engine fields (analyses, cadence counter, outcome,
+ * personaId). Deliberately does NOT bump updatedAt - "thread has gone quiet" drives
+ * the date check-in, and bookkeeping writes must not look like activity.
+ */
+export function patchThread(id: string, patch: Partial<Thread>) {
+  write(read().map((t) => (t.id === id ? { ...t, ...patch } : t)));
 }
 
 export function deleteThread(id: string) {
