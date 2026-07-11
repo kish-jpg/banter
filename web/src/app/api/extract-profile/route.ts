@@ -1,11 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
+import { callGemini } from "@/lib/gemini";
 
 // Reads a dating/social profile (screenshots and/or pasted bio) into (1) structured
 // profileText for the engine's opener path (COAC-07) and (2) hook-type persona seed
 // facts. Same privacy posture as /api/extract: images live only in this request.
-
-const GEMINI_URL =
-  "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent";
 
 const MAX_IMAGES = 6;
 const MAX_TEXT_CHARS = 8000;
@@ -82,10 +80,9 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "provide profile screenshots and/or pasted text" }, { status: 400 });
   }
 
-  const res = await fetch(GEMINI_URL, {
-    method: "POST",
-    headers: { "Content-Type": "application/json", "x-goog-api-key": apiKey },
-    body: JSON.stringify({
+  const result = await callGemini(
+    apiKey,
+    {
       contents: [{ role: "user", parts }],
       systemInstruction: { parts: [{ text: SYSTEM }] },
       generationConfig: {
@@ -93,14 +90,13 @@ export async function POST(req: NextRequest) {
         responseSchema: PROFILE_SCHEMA,
         temperature: 0,
       },
-    }),
-  });
-
-  if (!res.ok) return NextResponse.json({ error: "profile reading failed, try again" }, { status: 502 });
+    },
+    "extract-profile",
+  );
+  if (!result.ok) return NextResponse.json({ error: result.message }, { status: result.status });
 
   try {
-    const data = await res.json();
-    const parsed = JSON.parse(data.candidates[0].content.parts[0].text) as {
+    const parsed = JSON.parse(result.text) as {
       profileText: string;
       hooks: { text: string; quote: string }[];
     };
@@ -111,7 +107,8 @@ export async function POST(req: NextRequest) {
       profileText: parsed.profileText.slice(0, MAX_TEXT_CHARS),
       hooks: (parsed.hooks ?? []).slice(0, 5),
     });
-  } catch {
+  } catch (e) {
+    console.error("[extract-profile] JSON.parse of Gemini text failed:", e);
     return NextResponse.json({ error: "profile reading failed, try again" }, { status: 502 });
   }
 }

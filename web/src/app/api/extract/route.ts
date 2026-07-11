@@ -1,11 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 import type { TranscriptEntry } from "@/lib/types";
+import { callGemini } from "@/lib/gemini";
 
 // Hard constraint: screenshots exist only in this request's memory. Nothing here
 // writes them to disk, storage, or logs.
-
-const GEMINI_URL =
-  "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent";
 
 const MAX_IMAGES = 6;
 const MAX_TEXT_CHARS = 8000;
@@ -83,23 +81,19 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "provide screenshots and/or pasted text" }, { status: 400 });
   }
 
-  const res = await fetch(GEMINI_URL, {
-    method: "POST",
-    headers: { "Content-Type": "application/json", "x-goog-api-key": apiKey },
-    body: JSON.stringify({
+  const result = await callGemini(
+    apiKey,
+    {
       contents: [{ role: "user", parts }],
       systemInstruction: { parts: [{ text: SYSTEM }] },
       generationConfig: { responseMimeType: "application/json", responseSchema: EXTRACT_SCHEMA },
-    }),
-  });
-
-  if (!res.ok) {
-    return NextResponse.json({ error: "extraction failed, try again" }, { status: 502 });
-  }
+    },
+    "extract",
+  );
+  if (!result.ok) return NextResponse.json({ error: result.message }, { status: result.status });
 
   try {
-    const data = await res.json();
-    const raw = JSON.parse(data.candidates[0].content.parts[0].text) as {
+    const raw = JSON.parse(result.text) as {
       messages: { speaker: "user" | "match"; text: string; time?: string }[];
     };
     const messages: TranscriptEntry[] = raw.messages
@@ -112,7 +106,8 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "no messages found, try a clearer screenshot" }, { status: 422 });
     }
     return NextResponse.json({ messages });
-  } catch {
+  } catch (e) {
+    console.error("[extract] JSON.parse of Gemini text failed:", e);
     return NextResponse.json({ error: "extraction failed, try again" }, { status: 502 });
   }
 }

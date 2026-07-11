@@ -1,13 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
 import type { TranscriptEntry } from "@/lib/types";
+import { callGemini } from "@/lib/gemini";
 
 // Extracts persona facts from NEW conversation messages (INTENT-PERSONA-ENGINE #1).
 // Strict provenance: every fact must carry the exact quote it came from. Facts are
 // SUGGESTED to the user for review, never silently saved. Sensitive inferences are
 // excluded by prompt AND re-filtered client-side (lib/persona.ts blocklist).
-
-const GEMINI_URL =
-  "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent";
 
 const FACTS_SCHEMA = {
   type: "OBJECT",
@@ -63,10 +61,9 @@ export async function POST(req: NextRequest) {
     .map((m) => `${m.speaker === "user" ? "User" : "Match"}: ${m.text}`)
     .join("\n");
 
-  const res = await fetch(GEMINI_URL, {
-    method: "POST",
-    headers: { "Content-Type": "application/json", "x-goog-api-key": apiKey },
-    body: JSON.stringify({
+  const result = await callGemini(
+    apiKey,
+    {
       contents: [{ role: "user", parts: [{ text: `[TRANSCRIPT]\n${transcript}\n[/TRANSCRIPT]` }] }],
       systemInstruction: { parts: [{ text: SYSTEM }] },
       generationConfig: {
@@ -74,18 +71,18 @@ export async function POST(req: NextRequest) {
         responseSchema: FACTS_SCHEMA,
         temperature: 0,
       },
-    }),
-  });
-
-  if (!res.ok) return NextResponse.json({ error: "extraction failed" }, { status: 502 });
+    },
+    "facts",
+  );
+  if (!result.ok) return NextResponse.json({ error: result.message }, { status: result.status });
 
   try {
-    const data = await res.json();
-    const parsed = JSON.parse(data.candidates[0].content.parts[0].text) as {
+    const parsed = JSON.parse(result.text) as {
       facts: { type: string; text: string; quote: string }[];
     };
     return NextResponse.json({ facts: parsed.facts.slice(0, 5) });
-  } catch {
+  } catch (e) {
+    console.error("[facts] JSON.parse of Gemini text failed:", e);
     return NextResponse.json({ error: "extraction failed" }, { status: 502 });
   }
 }
