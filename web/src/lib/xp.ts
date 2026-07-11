@@ -33,6 +33,11 @@ export function copyXP(): number {
   return COPY_XP;
 }
 
+/** XP for confirming a reply was actually sent - the outcome the app optimizes for. */
+export function sentXP(): number {
+  return 10;
+}
+
 /** XP for an own attempt: base scaled by grade quality; near-duplicates earn copy XP only. */
 export function attemptXP(overallScore: number, wasNearDuplicate: boolean): number {
   if (wasNearDuplicate) return COPY_XP;

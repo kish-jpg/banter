@@ -129,3 +129,13 @@
     @apply font-sans;
   }
 }
+
+/* Analysis-in-progress scan sweep (conversation shimmer + loading bar). */
+@keyframes scan {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(400%);
+  }
+}
