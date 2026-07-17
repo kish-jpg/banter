@@ -13,6 +13,10 @@ import { useProfile } from "@/lib/profile";
 import { markFactsUsed, type FactType } from "@/lib/persona";
 import { LoopSuggestions } from "@/components/loop-suggestions";
 import type { LoopKind, LoopOwner } from "@/lib/loops";
+import { ShareCard } from "@/components/share-card";
+import { fadeSeries } from "@/lib/readiness";
+import { useGrades } from "@/lib/grades";
+import { track } from "@/lib/analytics";
 import { requestCoaching } from "@/lib/coaching";
 import { analyzePace, timingWatchOut } from "@/lib/timing";
 import { needsOwnAttemptFirst, shouldWalkAway, stageFor } from "@/lib/stage";
@@ -54,6 +58,7 @@ export default function ThreadPage({ params }: { params: Promise<{ id: string }>
   const [pendingMessages, setPendingMessages] = useState<TranscriptEntry[]>([]);
   const started = useRef(false);
   const xp = useXP();
+  const grades = useGrades();
   const { summary, recordPick } = useProfile();
 
   async function coach(t: Thread, messages: TranscriptEntry[], tone?: Tone) {
@@ -78,6 +83,7 @@ export default function ThreadPage({ params }: { params: Promise<{ id: string }>
         assistsSinceOwnAttempt: (t.assistsSinceOwnAttempt ?? 0) + 1,
         injectedFactIds,
       });
+      track("read_shown", { messages: ordered.length });
       setAppend(null);
       if (t.personaId) {
         fetch("/api/facts", {
@@ -147,7 +153,7 @@ export default function ThreadPage({ params }: { params: Promise<{ id: string }>
             const v = e.target.value.trim();
             if (v && v !== thread.label) renameThread(thread.id, v);
           }}
-          className="w-full truncate bg-transparent text-xl font-semibold tracking-tight focus:outline-none"
+          className="w-full truncate bg-transparent text-2xl font-semibold tracking-tight focus:outline-none"
         />
         {thread.personaId && (
           <Link
@@ -218,6 +224,41 @@ export default function ThreadPage({ params }: { params: Promise<{ id: string }>
         </div>
       )}
 
+      {append === null && thread.outcome === "met" && (
+        <section className="mb-5 rounded-2xl border border-primary/25 bg-card p-4">
+          <h2 className="text-sm font-medium">you two met 🎉</h2>
+          <p className="mt-0.5 text-xs text-muted-foreground">
+            That&apos;s the whole point of this app. Want the receipt?
+          </p>
+          <div className="mt-1">
+            {(() => {
+              const firstTs = thread.messages.find((m) => m.ts)?.ts;
+              const days =
+                firstTs && thread.outcomeAt
+                  ? Math.max(1, Math.round((thread.outcomeAt - firstTs) / 86_400_000))
+                  : null;
+              const fade = fadeSeries([
+                ...(thread.sentReplies ?? []).map((r) => ({ at: r.at, assisted: true })),
+                ...grades.filter((g) => g.threadId === thread.id).map((g) => ({ at: g.at, assisted: false })),
+              ]);
+              return (
+                <ShareCard
+                  kind="met"
+                  label="share the we-met card"
+                  params={{
+                    ...(days ? { d: String(days) } : {}),
+                    ...(fade.length > 0 ? { f: fade.join(",") } : {}),
+                  }}
+                  consentNote="Nothing about them is on this card. Just that it happened, and how the coaching faded on the way."
+                  xpOnShare
+                  onXP={xp.award}
+                />
+              );
+            })()}
+          </div>
+        </section>
+      )}
+
       {append === null && thread.personaId && loopSuggestions.length > 0 && (
         <div className="mb-5">
           <LoopSuggestions
@@ -243,7 +284,10 @@ export default function ThreadPage({ params }: { params: Promise<{ id: string }>
           onFactsDone={() => setFactSuggestions([])}
           checkInDue={checkInDue}
           onCheckIn={(outcome) => {
-            patchThread(thread.id, { outcome });
+            patchThread(thread.id, {
+              outcome,
+              ...(outcome === "met" ? { outcomeAt: Date.now() } : {}),
+            });
             setCheckInDue(false);
           }}
           onAppend={() => {

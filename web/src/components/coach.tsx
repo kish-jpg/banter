@@ -10,6 +10,7 @@ import type { Stage } from "@/lib/salience";
 import { FactSuggestions, PersonaPanel } from "@/components/persona-panel";
 import type { FactType } from "@/lib/persona";
 import { YourTurn } from "@/components/your-turn";
+import { ShareCard } from "@/components/share-card";
 
 const TONES: Tone[] = ["playful", "sincere", "witty", "direct"];
 
@@ -100,11 +101,13 @@ function Conversation({
 /** Compact read: one line + stage + four band dots; detail on demand. */
 function ReadStrip({
   coaching,
+  messages,
   stage,
   walkAway,
   timingNote,
 }: {
   coaching: CoachingResponse;
+  messages: TranscriptEntry[];
   stage: Stage;
   walkAway: boolean;
   timingNote: string | null;
@@ -174,6 +177,25 @@ function ReadStrip({
               who matches it. Your call, no judgement.
             </p>
           )}
+          <div className="mt-3">
+            <ShareCard
+              kind="read"
+              label="share this read"
+              params={{
+                sig: sentiment.signal,
+                stage: STAGE_LABELS[stage],
+                i: band(sentiment.factors.interest),
+                w: band(sentiment.factors.warmth),
+                r: band(sentiment.factors.reciprocity),
+                m: band(sentiment.factors.responsiveness),
+              }}
+              quoteOptions={messages
+                .filter((m) => m.speaker === "match")
+                .slice(-6)
+                .map((m) => m.text)}
+              consentNote="No names on the card, bands only. Their words appear only if you pick a line below, and you see the exact image before anything leaves this device."
+            />
+          </div>
         </div>
       )}
     </section>
@@ -353,7 +375,7 @@ export function Coach({
 
       <Conversation messages={messages} loading={loading} onAppend={onAppend} />
 
-      <ReadStrip coaching={coaching} stage={stage} walkAway={walkAway} timingNote={timingNote} />
+      <ReadStrip coaching={coaching} messages={messages} stage={stage} walkAway={walkAway} timingNote={timingNote} />
 
       {personaId && factSuggestions.length > 0 && (
         <FactSuggestions personaId={personaId} suggestions={factSuggestions} onDone={onFactsDone} />

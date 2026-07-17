@@ -1,7 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { useSyncExternalStore } from "react";
+import { useEffect, useSyncExternalStore } from "react";
+import { track } from "@/lib/analytics";
 import { Demo } from "@/components/demo";
 import { AppHeader } from "@/components/app-header";
 import { band, STAGE_LABELS, stageFor } from "@/lib/stage";
@@ -22,6 +23,11 @@ export default function Home() {
     () => true,
     () => false,
   );
+
+  const landing = hydrated && threads.length === 0;
+  useEffect(() => {
+    if (landing) track("landing_view");
+  }, [landing]);
 
   if (!hydrated) {
     return (

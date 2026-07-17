@@ -90,11 +90,15 @@ date check-in · routes (`/`, `/new`, `/t/[id]`, `/openers`, `/you`) · auto-pla
 landing · PWA (manifest + icons) · warm design system + component classes · Texting DNA
 radar + practice streak on `/you` · **R2 Bridge (2026-07-17)**: draft coach (live
 pre-send checks incl. frame classifier) · open-loop ledger + debt list (`/api/loops`) ·
-spaced fact quiz (Leitner 1/3/7/14d) · readiness score · date brief at `/t/[id]/brief`
-(36 web unit tests). All browser-verified. Details: HANDOFF-WEB.md "R2 BRIDGE SHIPPED".
+spaced fact quiz (Leitner 1/3/7/14d) · readiness score · date brief at `/t/[id]/brief` ·
+**R1 Loop (2026-07-17, same day)**: The Read / Texting DNA / We-Met share cards
+(`/api/card/[kind]`, consent preview, quote picker, bands only) · 12-archetype DNA
+table (`lib/dna.ts`) · referral `/r/[code]` · PostHog funnel (env-gated,
+**NEXT_PUBLIC_POSTHOG_KEY not set yet — ask Kish**) · design polish pass
+(40 web unit tests). All browser-verified. Details: HANDOFF-WEB.md R2/R1 sections.
 
-**NEXT — the roadmap is PRD §13 (R1–R5). R2 is DONE (lean slice; rehearsal recording
-and LLM frame classification deferred per handoff). Summary:**
+**NEXT — the roadmap is PRD §13 (R1–R5). R1 and R2 are DONE (lean slices; deferred:
+rehearsal recording, LLM frame classifier, sharer-XP settlement → R3/R4). Summary:**
 - **R1 Loop (growth):** 3 share cards (The Read / DNA / We-Met) via @vercel/og,
   referral plumbing, consent+redaction gate, PostHog funnel. Spec in PRD §7.8 + the
   cached growth-expert brief (see §8 below).
@@ -108,9 +112,11 @@ and LLM frame classification deferred per handoff). Summary:**
   Fluent graduation tier. (PRD §9.)
 - **R5 Reach:** PWA share-target, Friend/Reconnect mode, desktop extension spike.
 
-R2 shipped 2026-07-17. Ask Kish which release is next: **R1 Loop** (growth/distribution)
-or **R3 Depth** are the natural candidates; R4 accounts unlocks revenue. The R2
-deferred items (story rehearsal recording, LLM frame classifier) fold into R3.
+R2 and R1 both shipped 2026-07-17. Next is **R3 Depth** (Kish described its exact
+feature set unprompted: dual personas, resonance map, self-learning loop — it's the
+vision he cares about) or **R4 accounts/revenue** (also unlocks sharer-side referral
+XP). Blocked on Kish: PostHog key (Vercel env `NEXT_PUBLIC_POSTHOG_KEY`), real-phone
+visual QA of cards + brief.
 
 ---
 

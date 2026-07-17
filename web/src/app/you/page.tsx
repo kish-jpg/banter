@@ -7,6 +7,8 @@ import { PersonaPanel, usePersonas } from "@/components/persona-panel";
 import { DnaRadar } from "@/components/dna-radar";
 import { useXP } from "@/lib/useXP";
 import { practiceStreak, textingDNA, useGrades } from "@/lib/grades";
+import { archetypeFor } from "@/lib/dna";
+import { ShareCard } from "@/components/share-card";
 import {
   clearAll,
   getThreadsServerSnapshot,
@@ -52,6 +54,31 @@ export default function YouPage() {
             <p className="mt-3 text-center text-xs text-muted-foreground">
               averaged from your last {Math.min(dna.count, 10)} graded attempts
             </p>
+            <div className="mt-3 flex justify-center">
+              {(() => {
+                const arch = archetypeFor(dna);
+                return (
+                  <ShareCard
+                    kind="dna"
+                    label={`share your dna · ${arch.name}`}
+                    params={{
+                      a: arch.name,
+                      t: arch.tagline,
+                      s1: arch.strengths[0],
+                      s2: arch.strengths[1],
+                      g: arch.growth,
+                      w: String(dna.warmth),
+                      sp: String(dna.specificity),
+                      rc: String(dna.reciprocity),
+                      n: String(dna.naturalness),
+                    }}
+                    consentNote="This card is about you only: your skill map and archetype. Nothing from any conversation is on it."
+                    xpOnShare
+                    onXP={xp.award}
+                  />
+                );
+              })()}
+            </div>
           </div>
         ) : (
           <div className="mt-3 rounded-2xl border border-border bg-card p-5 text-center">

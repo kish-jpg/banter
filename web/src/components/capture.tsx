@@ -1,8 +1,9 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { TranscriptEntry } from "@/lib/types";
 import { fileToDataUrl } from "@/lib/image";
+import { track } from "@/lib/analytics";
 
 // First-run demo: coached on a real-feeling conversation in seconds, zero typing.
 const EXAMPLE: TranscriptEntry[] = [
@@ -27,6 +28,10 @@ export function Capture({
   const fileRef = useRef<HTMLInputElement>(null);
 
   const hasInput = text.trim().length > 0 || images.length > 0;
+
+  useEffect(() => {
+    if (!append) track("capture_start");
+  }, [append]);
 
   async function addFiles(files: FileList | null) {
     if (!files) return;

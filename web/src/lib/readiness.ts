@@ -39,6 +39,31 @@ export function readinessScore(r: ReadinessInputs): number {
 
 export type ReadinessBand = "not yet" | "getting there" | "ready";
 
+/**
+ * The fade curve for one thread (PRD §7.7): % of activity that was assisted,
+ * bucketed over the thread's lifetime. Downward slope = the product working.
+ * Returns [] when there's too little data to draw honestly (<4 events or <2
+ * populated buckets) — we never fabricate a curve.
+ */
+export function fadeSeries(
+  events: { at: number; assisted: boolean }[],
+  buckets = 5,
+): number[] {
+  if (events.length < 4) return [];
+  const sorted = [...events].sort((a, b) => a.at - b.at);
+  const start = sorted[0].at;
+  const span = sorted[sorted.length - 1].at - start;
+  if (span <= 0) return [];
+  const counts = Array.from({ length: buckets }, () => ({ assisted: 0, total: 0 }));
+  for (const e of sorted) {
+    const i = Math.min(buckets - 1, Math.floor(((e.at - start) / span) * buckets));
+    counts[i].total++;
+    if (e.assisted) counts[i].assisted++;
+  }
+  const points = counts.filter((c) => c.total > 0).map((c) => Math.round((c.assisted / c.total) * 100));
+  return points.length >= 2 ? points : [];
+}
+
 /** Same cutoffs as signal bands (0.45 / 0.70) so the product speaks one language. */
 export function readinessBand(score: number): ReadinessBand {
   return score < 0.45 ? "not yet" : score < 0.7 ? "getting there" : "ready";

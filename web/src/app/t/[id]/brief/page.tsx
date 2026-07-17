@@ -45,7 +45,7 @@ function QuizDrill({ facts, personaId }: { facts: PersonaFact[]; personaId: stri
   if (!card) {
     return (
       <p className="mt-3 rounded-2xl bg-secondary/50 p-4 text-sm text-muted-foreground">
-        Nothing due right now. Cards come back on a 1 → 3 → 7 → 14 day rhythm — spaced beats crammed.
+        Nothing due right now. Cards come back on a 1, 3, 7, 14 day rhythm: spaced beats crammed.
       </p>
     );
   }
@@ -155,7 +155,7 @@ export default function BriefPage({ params }: { params: Promise<{ id: string }> 
     <main className="mx-auto flex w-full max-w-lg flex-1 flex-col px-4 pb-10 pt-6">
       <AppHeader backHref={`/t/${thread.id}`} />
 
-      <h1 className="text-xl font-semibold tracking-tight">meeting {persona.name}</h1>
+      <h1 className="text-2xl font-semibold tracking-tight">meeting {persona.name}</h1>
 
       <section className="mt-4 rounded-2xl border border-border bg-card p-4">
         <div className="flex items-baseline justify-between">
@@ -180,7 +180,7 @@ export default function BriefPage({ params }: { params: Promise<{ id: string }> 
 
       {debt.length > 0 && (
         <section className="mt-7">
-          <SectionLabel>stories you owe — own them out loud</SectionLabel>
+          <SectionLabel>stories you owe: own them out loud</SectionLabel>
           <p className="mt-1 text-xs text-muted-foreground">
             Said while assisted, so real-you delivers them. Tell each one out loud, 60–90 seconds,
             until it&apos;s yours. Not memorized: owned.

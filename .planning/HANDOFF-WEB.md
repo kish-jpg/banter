@@ -140,9 +140,54 @@ Kish picked R2 over R1 explicitly. All web-side; the Deno engine is untouched
   PRD), LLM frame classification (R3 rides with Framework Library v2), quiz XP
   (Goodhart guard until Practice Gym defines practice XP properly).
 
+## R1 LOOP SHIPPED (2026-07-17, same session as R2 — Kish said "go ahead with R1"
+## and asked for a design relook)
+
+Deployed to prod, all three cards smoke-tested live. Design relook ran under the
+impeccable skill: verdict was polish-and-elevate, NOT a rebrand (the warm-coral
+OKLCH system is deliberate; a new identity would need mockups + a Kish decision).
+
+- **Design polish**: global `prefers-reduced-motion` support in globals.css,
+  em-dash removals from UI copy (the app's own anti-AI-tell rule), screen-h1
+  scale drift fixed (thread title input + brief h1 → text-2xl per DESIGN.md).
+- **Share cards** (`/api/card/[kind]`, kinds read|dna|met, fmt story 9:16 |
+  post 4:5): next/og ImageResponse, node runtime, Geist TTFs from the new
+  `geist` npm dep. All card content arrives via query params the client chose
+  AFTER the consent preview — the route never sees threads/personas. Bands
+  only, never percentages. Verified by eye: all three rendered and reviewed.
+- **Texting DNA archetypes**: `lib/dna.ts` — 12-entry table keyed by top-two
+  grading dims, growth edge from the lowest (the Tamsyn corpus profile maps to
+  The Rememberer / "less polish, more you"). Qualitative rarity cues, no
+  fabricated stats.
+- **ShareCard component**: inline preview-before-share (the preview IS the
+  exact PNG), quote picker for the Read card (their words only if explicitly
+  chosen), 9:16/4:5 toggle, navigator.share files with download fallback.
+  XP rule per growth brief: DNA + We-Met earn +5 share XP; the Read card earns
+  NOTHING (other-party content is never XP-rewarded).
+- **We-Met card wiring**: thread page celebration section when outcome="met";
+  new additive `Thread.outcomeAt` (set at check-in) gives days-to-date;
+  `fadeSeries()` in lib/readiness.ts buckets assisted-vs-own events into the
+  fade sparkline, returns [] rather than fabricate a curve from thin data.
+- **Referral**: `lib/referral.ts` (banter.ref.code / banter.ref.by),
+  `/r/[code]` records referrer + drops into the landing auto-demo. Sharer-side
+  XP settlement NEEDS ACCOUNTS — deferred to R4, honestly noted.
+- **PostHog**: `lib/analytics.ts`, posthog-js, hard-gated on
+  NEXT_PUBLIC_POSTHOG_KEY (no key = every call no-ops; key not set yet — Kish
+  needs to create the PostHog project and add the env var in Vercel).
+  Events: landing_view, capture_start, read_shown, own_attempt_graded,
+  card_previewed, card_shared, ref_visit. autocapture OFF, no message content
+  in any event, ever.
+- Tests: 40 web units green (dna + fade added), tsc/lint/build clean.
+- Verified in browser via DOM (preview-pane CLICKS are flaky in this harness,
+  use javascript_tool dispatch — get_page_text/DOM work fine): read strip →
+  share preview loads, quote picker + consent + fmt chips render, ref code in
+  URL, /r/[code] → banter.ref.by set + redirect to /.
+- NOT built: featured-story human-review pipeline (needs content ops), sharer
+  XP settlement (R4), PostHog dashboards (need the key first).
+
 ## Next phase (not yet built)
 
-- Phase F: PostHog funnel analytics; paywall skeleton at value moments
+- Phase F: paywall skeleton at value moments (PostHog now DONE, key pending)
 - Shareable signal-read card (image export) - deferred from E
 - Supabase Postgres/auth sync for threads+XP+personas+grades (row-ready shapes)
 - Fact promotion loop: sentReplies ground truth exists; score fact ->

@@ -19,6 +19,8 @@ export interface Thread {
   assistsSinceOwnAttempt?: number;
   /** Date check-in outcome: undefined = never asked, null = asked/dismissed. */
   outcome?: "met" | "fizzled" | null;
+  /** When "met" was confirmed (additive; feeds the We-Met card's days-to-date). */
+  outcomeAt?: number;
   /** Replies the user explicitly confirmed sending - the flywheel's ground truth. */
   sentReplies?: { text: string; style: string; at: number }[];
   /** Persona fact ids injected into the LAST coaching round, so "I sent this" can mark them used. */

@@ -7,6 +7,7 @@ import { attemptXP, copyXP, isNearDuplicate } from "@/lib/xp";
 import { useProfile } from "@/lib/profile";
 import { recordGrade } from "@/lib/grades";
 import { checkDraft } from "@/lib/draft";
+import { track } from "@/lib/analytics";
 
 const DIMENSION_HINTS: Record<string, string> = {
   warmth: "does it feel engaged?",
@@ -114,6 +115,7 @@ export function YourTurn({
       setGrade(g);
       setEarned(points);
       recordGrade(g, conversationId);
+      track("own_attempt_graded", { score: g.overallScore });
       onXP(points);
       onGraded();
     } catch (e) {
