@@ -112,11 +112,11 @@ rehearsal recording, LLM frame classifier, sharer-XP settlement → R3/R4). Summ
   Fluent graduation tier. (PRD §9.)
 - **R5 Reach:** PWA share-target, Friend/Reconnect mode, desktop extension spike.
 
-R2 and R1 both shipped 2026-07-17. Next is **R3 Depth** (Kish described its exact
-feature set unprompted: dual personas, resonance map, self-learning loop — it's the
-vision he cares about) or **R4 accounts/revenue** (also unlocks sharer-side referral
-XP). Blocked on Kish: PostHog key (Vercel env `NEXT_PUBLIC_POSTHOG_KEY`), real-phone
-visual QA of cards + brief.
+R2 and R1 both shipped 2026-07-17. Next is **R3 Depth — PLANNED AND DECISIONS LOCKED:
+read `.planning/R3-PLAN.md`** (3 sessions: A+B+C foundations · D+E engine · F+G
+gym+learning; decisions 1–6 locked on recommendations, reviewed by Kish via the
+workflow-map artifact). Start Session 1 unless Kish redirects. Blocked on Kish:
+PostHog key (Vercel env `NEXT_PUBLIC_POSTHOG_KEY`), real-phone visual QA of cards + brief.
 
 ---
 
