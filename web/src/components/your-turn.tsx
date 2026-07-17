@@ -2,10 +2,11 @@
 
 import { useState } from "react";
 import type { GradeResponse, TranscriptEntry } from "@/lib/types";
-import { explain } from "@/lib/taxonomy";
+import { bannedTerms, explain } from "@/lib/taxonomy";
 import { attemptXP, copyXP, isNearDuplicate } from "@/lib/xp";
 import { useProfile } from "@/lib/profile";
 import { recordGrade } from "@/lib/grades";
+import { checkDraft } from "@/lib/draft";
 
 const DIMENSION_HINTS: Record<string, string> = {
   warmth: "does it feel engaged?",
@@ -112,7 +113,7 @@ export function YourTurn({
       const points = attemptXP(g.overallScore, false);
       setGrade(g);
       setEarned(points);
-      recordGrade(g);
+      recordGrade(g, conversationId);
       onXP(points);
       onGraded();
     } catch (e) {
@@ -137,6 +138,15 @@ export function YourTurn({
         rows={2}
         className="mt-3 w-full resize-none rounded-2xl border border-border bg-card p-3.5 text-[15px] placeholder:text-muted-foreground/60 focus:outline-none focus:ring-2 focus:ring-ring/60"
       />
+      {/* Draft coach (PRD §7.4): instant checks before send. Warn, never block. */}
+      {!grade &&
+        attempt.trim().length > 5 &&
+        checkDraft(attempt, bannedTerms).map((c) => (
+          <p key={c.kind} className="mt-2 rounded-xl bg-secondary/60 p-2.5 text-xs text-muted-foreground animate-in fade-in">
+            <span className="font-medium text-foreground">before you send · </span>
+            {c.note}
+          </p>
+        ))}
       {copyNote && (
         <p className="mt-2 text-xs text-muted-foreground">
           That&apos;s one of mine 😉 +{copyXP()} xp. Say it your way for the real points.

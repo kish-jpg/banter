@@ -99,6 +99,47 @@ Full INTENT-PERSONA-ENGINE build (see that doc for confirmed intent) deployed to
 - Note: preview-browser screenshots are broken in this harness session (DOM/style
   verification works); visual QA on a real phone still pending - Kish should look.
 
+## R2 BRIDGE SHIPPED (2026-07-17 — the founder's release, PRD §7.3–7.5)
+
+Kish picked R2 over R1 explicitly. All web-side; the Deno engine is untouched
+(no engine deploy this session). Deployed to prod, smoke-tested live.
+
+- **Draft coach (F5)**: `lib/draft.ts` — pure pre-send checks shown live in
+  YourTurn as "before you send ·" notes. Banned-term scan (taxonomy bannedTerms,
+  now exported from `lib/taxonomy.ts` and injected — node --test can't import
+  JSON), frame classifier (prize-framing regexes incl. the case study's
+  "'re earned" pattern), question-stacking (>1 `?`-group), em-dash/semicolon
+  AI-tells. Warn-never-block; the deep read stays the mode:"grade" round-trip.
+- **Open-loop ledger + debt list (F4)**: `lib/loops.ts` store (`banter.loops`;
+  kinds story/plan/bit/claim, owner user/match/mutual, status
+  open/owned/closed/dismissed) + `/api/loops` Gemini temp-0 extraction route
+  (modeled on /api/facts, quote provenance, suggested-never-silently-saved) +
+  `LoopSuggestions` component wired into /t/[id] after coaching (persona
+  threads only). Debt list = user-owned story/claim loops.
+- **Spaced fact quiz**: `lib/quiz.ts` — Leitner boxes over persona facts,
+  intervals 1/3/7/14d, 5 cards/day, self-graded ("say it out loud, then check"
+  → had it cold / not yet). Mastery = fraction of facts at box ≥2.
+- **Readiness score**: `lib/readiness.ts` — 0.4·factsCold + 0.35·storiesOwned +
+  0.25·independence, banded with the shared 0.45/0.70 cutoffs (never a raw
+  percentage headline). Independence uses new optional `GradeRecord.threadId`
+  (recordGrade now takes threadId; older records simply lack it) vs
+  thread.sentReplies.
+- **Date brief**: `/t/[id]/brief` — readiness band, quiz drill, debt list with
+  owned-it toggle, loops to close + bits as safety net, do-not-force (boundary
+  facts), their comfort logistics. Entry: "date brief" pill on /t/[id] header
+  (persona threads). Empty state teaches.
+- Tests: 36 web units green (was 22; +draft/quiz/readiness), 56 backend
+  untouched-green, tsc + lint clean, prod build clean.
+- Browser-verified via DOM (seeded localStorage): brief sections, quiz
+  reveal→answer→next card, owned-it toggle, draft-coach notes firing live,
+  /api/loops extraction correct on the caffeine-story/paper-planes/hot-chocolate
+  fixture — owners and quotes exact.
+- Gotcha honored: Date.now() deferred off the render path in QuizDrill
+  (React Compiler purity lint — TRANSFER §6 pattern).
+- NOT built (R2 slice deliberately lean): story rehearsal recording (v2.1 per
+  PRD), LLM frame classification (R3 rides with Framework Library v2), quiz XP
+  (Goodhart guard until Practice Gym defines practice XP properly).
+
 ## Next phase (not yet built)
 
 - Phase F: PostHog funnel analytics; paywall skeleton at value moments

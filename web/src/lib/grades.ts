@@ -12,6 +12,8 @@ export interface GradeRecord {
   at: number;
   overall: number;
   dims: { warmth: number; specificity: number; reciprocity: number; naturalness: number };
+  /** Thread the attempt belonged to (additive; older records lack it). Feeds readiness. */
+  threadId?: string;
 }
 
 const KEY = "banter.grades";
@@ -27,12 +29,12 @@ function read(): GradeRecord[] {
   }
 }
 
-export function recordGrade(grade: GradeResponse) {
+export function recordGrade(grade: GradeResponse, threadId?: string) {
   const dims = { warmth: 3, specificity: 3, reciprocity: 3, naturalness: 3 };
   for (const d of grade.dimensions) {
     if (d.dimension in dims) dims[d.dimension as keyof typeof dims] = d.score;
   }
-  const next = [...read(), { at: Date.now(), overall: grade.overallScore, dims }];
+  const next = [...read(), { at: Date.now(), overall: grade.overallScore, dims, ...(threadId ? { threadId } : {}) }];
   localStorage.setItem(KEY, JSON.stringify(next.slice(-200)));
   cache = null;
   listeners.forEach((cb) => cb());

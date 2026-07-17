@@ -88,9 +88,13 @@ coach-mode gate · personas + salience-scored fact injection + fact extraction �
 flow from profile screenshots · localStorage threads (refresh-safe) · walk-away card ·
 date check-in · routes (`/`, `/new`, `/t/[id]`, `/openers`, `/you`) · auto-playing demo
 landing · PWA (manifest + icons) · warm design system + component classes · Texting DNA
-radar + practice streak on `/you` (22 web unit tests). All browser-verified.
+radar + practice streak on `/you` · **R2 Bridge (2026-07-17)**: draft coach (live
+pre-send checks incl. frame classifier) · open-loop ledger + debt list (`/api/loops`) ·
+spaced fact quiz (Leitner 1/3/7/14d) · readiness score · date brief at `/t/[id]/brief`
+(36 web unit tests). All browser-verified. Details: HANDOFF-WEB.md "R2 BRIDGE SHIPPED".
 
-**NEXT — the roadmap is PRD §13 (R1–R5). Summary:**
+**NEXT — the roadmap is PRD §13 (R1–R5). R2 is DONE (lean slice; rehearsal recording
+and LLM frame classification deferred per handoff). Summary:**
 - **R1 Loop (growth):** 3 share cards (The Read / DNA / We-Met) via @vercel/og,
   referral plumbing, consent+redaction gate, PostHog funnel. Spec in PRD §7.8 + the
   cached growth-expert brief (see §8 below).
@@ -104,10 +108,9 @@ radar + practice streak on `/you` (22 web unit tests). All browser-verified.
   Fluent graduation tier. (PRD §9.)
 - **R5 Reach:** PWA share-target, Friend/Reconnect mode, desktop extension spike.
 
-Ask Kish which release to start. My recommendation if he's undecided: **R2 Bridge** —
-it's the feature he personally asked for (get chat-self skill into real-life before a
-date), it's differentiated, and it directly serves the founder-user. R1 is the growth
-play if he wants distribution first.
+R2 shipped 2026-07-17. Ask Kish which release is next: **R1 Loop** (growth/distribution)
+or **R3 Depth** are the natural candidates; R4 accounts unlocks revenue. The R2
+deferred items (story rehearsal recording, LLM frame classifier) fold into R3.
 
 ---
 
