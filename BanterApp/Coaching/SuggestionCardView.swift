@@ -1,3 +1,4 @@
+import PostHog
 import SwiftUI
 import BanterShared
 
@@ -63,6 +64,10 @@ struct SuggestionCardView: View {
     private var copyButton: some View {
         Button {
             UIPasteboard.general.string = reply.text
+            PostHogSDK.shared.capture("reply_copied", properties: [
+                "psychology_tag": reply.psychologyTag,
+                "reply_index": index
+            ])
             withAnimation(reduceMotionAwareAnimation) {
                 showCopiedToast = true
             }

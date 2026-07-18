@@ -1,6 +1,7 @@
 import Foundation
 import Observation
 import BanterShared
+import PostHog
 
 /// State for the coaching result surface: 3 tagged suggestion cards,
 /// steerable by tone (COAC-02). Mutated only via methods, mirroring
@@ -62,10 +63,18 @@ public final class CoachingResultModel {
 
     public func selectTone(_ tone: ReplyStyle) async {
         if let capGate, !capGate() {
+            if !dailyCapReached {
+                PostHogSDK.shared.capture("daily_cap_reached")
+            }
             dailyCapReached = true
             return
         }
         dailyCapReached = false
+
+        let isFirstRequest = replies.isEmpty
+        if !isFirstRequest {
+            PostHogSDK.shared.capture("tone_changed", properties: ["tone": tone.rawValue])
+        }
 
         selectedTone = tone
         isLoading = true
@@ -81,6 +90,12 @@ public final class CoachingResultModel {
             let response = try await client.send(request)
             guard generation == requestGeneration else { return }
             replies = response.replies
+            if isFirstRequest {
+                PostHogSDK.shared.capture("coaching_requested", properties: [
+                    "tone": tone.rawValue,
+                    "message_count": messages.count
+                ])
+            }
             onAnalysisRecorded?()
             onResponse?(response)
         } catch {

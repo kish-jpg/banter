@@ -1,5 +1,6 @@
 import SwiftUI
 import BanterShared
+import PostHog
 
 /// App root. A fresh install enters the onboarding coordinator (Welcome ->
 /// Photos priming -> real import/confirm/coaching demo loop, ONBD-01/02)
@@ -19,7 +20,10 @@ struct ContentView: View {
                 if hasCompletedOnboarding && !forcesOnboarding {
                     HomeView()
                 } else {
-                    ValueDemoCoordinatorView(onComplete: { hasCompletedOnboarding = true })
+                    ValueDemoCoordinatorView(onComplete: {
+                        PostHogSDK.shared.capture("onboarding_completed")
+                        hasCompletedOnboarding = true
+                    })
                 }
             }
             .navigationBarTitleDisplayMode(.inline)

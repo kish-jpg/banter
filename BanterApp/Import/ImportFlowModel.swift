@@ -2,6 +2,7 @@ import CoreGraphics
 import Foundation
 import Observation
 import BanterShared
+import PostHog
 
 /// State machine driving the Import Entry -> Parsing Progress -> Confirm
 /// Transcript flow. Both the screenshot path (OCRPipeline + BubbleAttributor)
@@ -51,12 +52,14 @@ final class ImportFlowModel {
             let lines = try await OCRPipeline.recognize(in: cgImage)
             let messages = BubbleAttributor.attribute(lines)
             guard !messages.isEmpty else {
+                PostHogSDK.shared.capture("import_failed", properties: ["source": "screenshot"])
                 state = .failure(source: .screenshot)
                 return
             }
             transcript = messages
             state = .confirm
         } catch {
+            PostHogSDK.shared.capture("import_failed", properties: ["source": "screenshot"])
             state = .failure(source: .screenshot)
         }
     }
@@ -68,6 +71,7 @@ final class ImportFlowModel {
         state = .parsing(source: .pasteText)
         let messages = PasteTextParser.parse(raw)
         guard !messages.isEmpty else {
+            PostHogSDK.shared.capture("import_failed", properties: ["source": "paste_text"])
             state = .failure(source: .pasteText)
             return
         }
@@ -106,6 +110,9 @@ final class ImportFlowModel {
         // consent. No network call here; downstream observes the
         // .confirm -> .confirmed transition and starts coaching from it.
         guard !transcript.isEmpty else { return }
+        PostHogSDK.shared.capture("conversation_confirmed", properties: [
+            "message_count": transcript.count
+        ])
         state = .confirmed
     }
 
