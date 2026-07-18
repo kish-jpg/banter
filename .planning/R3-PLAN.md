@@ -61,6 +61,10 @@ workflow: 3 sessions, each shipped + verified independently.**
 **Done when:** tests green (target ~50 web units), tsc/lint/build clean, browser
 verify with the Tamsyn-shaped seed, deploy, HANDOFF-WEB + TRANSFER updated.
 
+**✅ SESSION 1 SHIPPED 2026-07-19** (45 tests; details in HANDOFF-WEB.md).
+Note: built on the new Mono design system (see web/DESIGN.md — full reskin
+happened between planning and this session).
+
 ---
 
 ## Session 2 — Engine (workstreams D + E, ONE engine deploy)

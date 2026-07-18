@@ -25,6 +25,8 @@ export interface LoopItem {
   status: LoopStatus;
   addedAt: number;
   resolvedAt: number | null;
+  /** Times extraction re-detected this loop (R3: a bit seen ≥2 is ALIVE). Absent = 1. */
+  seenCount?: number;
 }
 
 const KEY = "banter.loops";
@@ -67,24 +69,37 @@ export function useLoops(): LoopItem[] {
   return useSyncExternalStore(subscribeLoops, getLoopsSnapshot, getLoopsServerSnapshot);
 }
 
-/** Adds suggested loops the user kept, skipping near-duplicate texts per persona. */
+/**
+ * Adds suggested loops the user kept. A re-detected duplicate is not dropped —
+ * its seenCount increments (recurrence is the signal that a bit is ALIVE).
+ */
 export function addLoops(
-  loops: Omit<LoopItem, "id" | "addedAt" | "status" | "resolvedAt">[],
+  loops: Omit<LoopItem, "id" | "addedAt" | "status" | "resolvedAt" | "seenCount">[],
 ): number {
-  const all = getLoopsSnapshot();
-  const existing = new Set(all.map((l) => `${l.personaId}:${l.text.toLowerCase().trim()}`));
-  const fresh = loops
-    .filter((l) => !existing.has(`${l.personaId}:${l.text.toLowerCase().trim()}`))
-    .map((l) => ({
-      ...l,
-      id: crypto.randomUUID(),
-      status: "open" as LoopStatus,
-      addedAt: Date.now(),
-      resolvedAt: null,
-    }));
-  if (fresh.length === 0) return 0;
-  write([...all, ...fresh]);
-  return fresh.length;
+  let all = getLoopsSnapshot();
+  const keyOf = (personaId: string, text: string) => `${personaId}:${text.toLowerCase().trim()}`;
+  const existing = new Map(all.map((l) => [keyOf(l.personaId, l.text), l.id]));
+  let added = 0;
+  for (const l of loops) {
+    const dupId = existing.get(keyOf(l.personaId, l.text));
+    if (dupId) {
+      all = all.map((x) => (x.id === dupId ? { ...x, seenCount: (x.seenCount ?? 1) + 1 } : x));
+    } else {
+      const fresh: LoopItem = {
+        ...l,
+        id: crypto.randomUUID(),
+        status: "open",
+        addedAt: Date.now(),
+        resolvedAt: null,
+        seenCount: 1,
+      };
+      all = [...all, fresh];
+      existing.set(keyOf(l.personaId, l.text), fresh.id);
+      added++;
+    }
+  }
+  write(all);
+  return added;
 }
 
 export function setLoopStatus(id: string, status: LoopStatus) {

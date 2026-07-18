@@ -13,6 +13,7 @@ import { useProfile } from "@/lib/profile";
 import { markFactsUsed, type FactType } from "@/lib/persona";
 import { LoopSuggestions } from "@/components/loop-suggestions";
 import type { LoopKind, LoopOwner } from "@/lib/loops";
+import { SelfFactSuggestions } from "@/components/self-panel";
 import { ShareCard } from "@/components/share-card";
 import { fadeSeries } from "@/lib/readiness";
 import { useGrades } from "@/lib/grades";
@@ -53,6 +54,7 @@ export default function ThreadPage({ params }: { params: Promise<{ id: string }>
   const [loopSuggestions, setLoopSuggestions] = useState<
     { kind: LoopKind; owner: LoopOwner; text: string; quote: string }[]
   >([]);
+  const [selfSuggestions, setSelfSuggestions] = useState<{ type: FactType; text: string; quote: string }[]>([]);
   const [checkInDue, setCheckInDue] = useState(false);
   const [append, setAppend] = useState<"capture" | "confirm" | null>(null);
   const [pendingMessages, setPendingMessages] = useState<TranscriptEntry[]>([]);
@@ -101,6 +103,14 @@ export default function ThreadPage({ params }: { params: Promise<{ id: string }>
         })
           .then((r) => (r.ok ? r.json() : { loops: [] }))
           .then((d) => setLoopSuggestions(d.loops ?? []))
+          .catch(() => {});
+        fetch("/api/self-facts", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ messages: ordered }),
+        })
+          .then((r) => (r.ok ? r.json() : { facts: [] }))
+          .then((d) => setSelfSuggestions(d.facts ?? []))
           .catch(() => {});
       }
     } catch (e) {
@@ -266,6 +276,16 @@ export default function ThreadPage({ params }: { params: Promise<{ id: string }>
             threadId={thread.id}
             suggestions={loopSuggestions}
             onDone={() => setLoopSuggestions([])}
+          />
+        </div>
+      )}
+
+      {append === null && thread.personaId && selfSuggestions.length > 0 && (
+        <div className="mb-5">
+          <SelfFactSuggestions
+            personaId={thread.personaId}
+            suggestions={selfSuggestions}
+            onDone={() => setSelfSuggestions([])}
           />
         </div>
       )}

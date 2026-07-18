@@ -8,6 +8,8 @@ import { ProfileCard } from "@/components/profile-card";
 import { band, STAGE_LABELS } from "@/lib/stage";
 import type { Stage } from "@/lib/salience";
 import { FactSuggestions, PersonaPanel } from "@/components/persona-panel";
+import { SelfPanel } from "@/components/self-panel";
+import { ResonancePanel } from "@/components/resonance-panel";
 import type { FactType } from "@/lib/persona";
 import { YourTurn } from "@/components/your-turn";
 import { ShareCard } from "@/components/share-card";
@@ -477,7 +479,16 @@ export function Coach({
                     ))}
                   </div>
                 </div>
-                {personaId && <PersonaPanel personaId={personaId} />}
+                {personaId && (
+                  <>
+                    <PersonaPanel personaId={personaId} />
+                    <SelfPanel personaId={personaId} />
+                    <div>
+                      <p className="mb-2 text-xs text-muted-foreground">resonance</p>
+                      <ResonancePanel personaId={personaId} />
+                    </div>
+                  </>
+                )}
               </div>
             )}
           </div>

@@ -9,6 +9,7 @@ import { bitsAlive, debtList, openLoops, setLoopStatus, useLoops, type LoopItem 
 import { dueCards, quizMastery, recordAnswer, useQuizStates } from "@/lib/quiz";
 import { independenceRatio, readinessBand, readinessScore, storiesOwnedRatio } from "@/lib/readiness";
 import { getThreadsServerSnapshot, getThreadsSnapshot, subscribeThreads } from "@/lib/threads";
+import { ResonancePanel } from "@/components/resonance-panel";
 
 /**
  * The date brief (PRD §7.5): one screen, 30 seconds, the night before or in the uber.
@@ -169,6 +170,13 @@ export default function BriefPage({ params }: { params: Promise<{ id: string }> 
           />
         </div>
         <p className="mt-2 text-xs text-muted-foreground">{BAND_COPY[bandWord]}</p>
+      </section>
+
+      <section className="mt-7">
+        <SectionLabel>resonance — what you two actually share</SectionLabel>
+        <div className="mt-3">
+          <ResonancePanel personaId={persona.id} />
+        </div>
       </section>
 
       {persona.facts.length > 0 && (

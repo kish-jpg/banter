@@ -1,4 +1,5 @@
 import { test } from "node:test";
+// R3 bucket weights are exercised at the bottom of this file.
 import assert from "node:assert/strict";
 // @ts-expect-error node's test runner needs the .ts extension; Next's tsc config disallows it
 import { noveltyWeight, recencyWeight, relevance, selectFacts } from "./salience.ts";
@@ -55,4 +56,24 @@ test("an overused relevant fact loses to a fresh stage-appropriate one", () => {
   const freshFact = fact({ id: "fresh", text: "training for a half marathon", quote: "" });
   const picked = selectFacts([wornOut, freshFact], msgs(["how was the dog park"]), "rapport", NOW, 1);
   assert.equal(picked[0].id, "fresh");
+});
+
+test("R3 buckets: style is never injected; food carries rapport; values peak at depth", () => {
+  const style = fact({ id: "style", type: "style", text: "morning texter, short messages" });
+  const food = fact({ id: "food", type: "food", text: "iced mocha, 2/3 chocolate, whipped cream" });
+  const values = fact({ id: "values", type: "values", text: "hates half-truths, honesty first" });
+  const rapport = selectFacts([style, food], msgs(["what should we grab"]), "rapport", NOW, 2);
+  assert.ok(!rapport.some((f) => f.id === "style"), "style must never surface");
+  assert.equal(rapport[0].id, "food");
+  const depth = selectFacts([food, values], msgs(["being real with you"]), "depth", NOW, 1);
+  assert.equal(depth[0].id, "values");
+});
+
+test("R3 buckets: open questions fuel the opening, fade by momentum", () => {
+  const oq = fact({ id: "oq", type: "open-question", text: "still unknown: her music taste" });
+  const logistics = fact({ id: "log2", type: "logistics", text: "off Mondays" });
+  const opening = selectFacts([oq, logistics], msgs(["hi"]), "opening", NOW, 1);
+  const momentum = selectFacts([oq, logistics], msgs(["hi"]), "momentum", NOW, 1);
+  assert.equal(opening[0].id, "oq");
+  assert.equal(momentum[0].id, "log2");
 });

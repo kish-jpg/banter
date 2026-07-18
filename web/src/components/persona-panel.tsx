@@ -88,7 +88,22 @@ export function PersonaPicker({
   );
 }
 
-const FACT_TYPES: FactType[] = ["interest", "dislike", "story", "inside-joke", "boundary", "logistics", "hook"];
+const FACT_TYPES: FactType[] = [
+  "interest", "dislike", "story", "inside-joke", "boundary", "logistics", "hook",
+  "food", "people-animals", "values", "humor", "love-language", "style", "open-question",
+];
+
+/** Display order + labels for bucket grouping (R3 A). Unlisted types fall to the end. */
+const BUCKET_ORDER: FactType[] = [
+  "food", "people-animals", "interest", "values", "boundary", "humor", "love-language",
+  "style", "logistics", "story", "inside-joke", "hook", "dislike", "open-question",
+];
+const BUCKET_LABELS: Partial<Record<FactType, string>> = {
+  "people-animals": "people & animals",
+  "inside-joke": "inside jokes",
+  "love-language": "love language",
+  "open-question": "still don't know — worth asking",
+};
 
 /** Collapsible view/edit surface - the transparency mechanism for strict provenance. */
 export function PersonaPanel({ personaId }: { personaId: string }) {
@@ -128,29 +143,42 @@ export function PersonaPanel({ personaId }: { personaId: string }) {
               Nothing yet. Facts appear here as conversations are imported, only from their own words.
             </p>
           )}
-          {persona.facts.map((f) => (
-            <div key={f.id} className="group rounded-xl bg-secondary/60 p-2.5">
-              <div className="flex items-start justify-between gap-2">
-                <input
-                  defaultValue={f.text}
-                  onBlur={(e) => {
-                    const t = e.target.value.trim();
-                    if (t && t !== f.text) updateFact(persona.id, f.id, t);
-                  }}
-                  className="w-full bg-transparent text-sm focus:outline-none"
-                />
-                <button
-                  aria-label="delete fact"
-                  onClick={() => deleteFact(persona.id, f.id)}
-                  className="text-muted-foreground/40 transition-colors hover:text-destructive"
-                >
-                  ×
-                </button>
-              </div>
-              <p className="mt-1 text-xs text-muted-foreground/70">
-                {f.type}
-                {f.quote ? ` · they said: "${f.quote}"` : f.source === "manual" ? " · added by you" : ""}
+          {/* Grouped by bucket (R3): the long list reads like a person, not a log. */}
+          {BUCKET_ORDER.filter((t) => persona.facts.some((f) => f.type === t)).map((t) => (
+            <div key={t}>
+              <p className="mb-1 mt-2 text-[11px] lowercase tracking-wide text-muted-foreground/70">
+                {BUCKET_LABELS[t] ?? t}
               </p>
+              <div className="flex flex-col gap-2">
+                {persona.facts
+                  .filter((f) => f.type === t)
+                  .map((f) => (
+                    <div key={f.id} className="group rounded-xl bg-secondary/60 p-2.5">
+                      <div className="flex items-start justify-between gap-2">
+                        <input
+                          defaultValue={f.text}
+                          onBlur={(e) => {
+                            const v = e.target.value.trim();
+                            if (v && v !== f.text) updateFact(persona.id, f.id, v);
+                          }}
+                          className="w-full bg-transparent text-sm focus:outline-none"
+                        />
+                        <button
+                          aria-label="delete fact"
+                          onClick={() => deleteFact(persona.id, f.id)}
+                          className="text-muted-foreground/40 transition-colors hover:text-destructive"
+                        >
+                          ×
+                        </button>
+                      </div>
+                      {f.type !== "open-question" && (
+                        <p className="mt-1 text-xs text-muted-foreground/70">
+                          {f.quote ? `they said: "${f.quote}"` : f.source === "manual" ? "added by you" : ""}
+                        </p>
+                      )}
+                    </div>
+                  ))}
+              </div>
             </div>
           ))}
           <div className="mt-1 flex items-center gap-2">

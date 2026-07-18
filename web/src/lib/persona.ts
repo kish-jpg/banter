@@ -4,6 +4,11 @@
  * external. Always visible/editable in the UI. localStorage, wiped by clearAll.
  */
 
+/**
+ * R3 bucket vocabulary (decision #1): the original 7 types stay valid — zero
+ * migration — and the case-study buckets are ADDED. New extractions use the
+ * full list; old stored facts load untouched.
+ */
 export type FactType =
   | "interest"
   | "dislike"
@@ -11,7 +16,14 @@ export type FactType =
   | "inside-joke"
   | "boundary"
   | "logistics"
-  | "hook";
+  | "hook"
+  | "food"
+  | "people-animals"
+  | "values"
+  | "humor"
+  | "love-language"
+  | "style"
+  | "open-question";
 
 export type ContextType = "date" | "friend" | "business";
 

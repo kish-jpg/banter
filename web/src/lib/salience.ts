@@ -11,11 +11,14 @@ export type Stage = "opening" | "rapport" | "depth" | "momentum";
 
 // Which fact types fit which stage. Light interests early; stories/boundaries at depth;
 // logistics when making plans. Hooks are opener fuel and fade after opening.
+// R3 buckets: food carries rapport (the corpus proved it), values/love-language peak at
+// depth, open-question is curiosity fuel early, style is NEVER injected (it tunes tone
+// via the profile, not content), humor feeds bits mid-arc.
 const STAGE_WEIGHTS: Record<Stage, Partial<Record<FactType, number>>> = {
-  opening: { hook: 1.0, interest: 0.9, "inside-joke": 0.2, story: 0.4, dislike: 0.5, logistics: 0.3, boundary: 1.0 },
-  rapport: { hook: 0.5, interest: 1.0, "inside-joke": 0.9, story: 0.7, dislike: 0.6, logistics: 0.4, boundary: 1.0 },
-  depth: { hook: 0.2, interest: 0.7, "inside-joke": 0.8, story: 1.0, dislike: 0.7, logistics: 0.5, boundary: 1.0 },
-  momentum: { hook: 0.1, interest: 0.6, "inside-joke": 0.7, story: 0.5, dislike: 0.8, logistics: 1.0, boundary: 1.0 },
+  opening: { hook: 1.0, interest: 0.9, "inside-joke": 0.2, story: 0.4, dislike: 0.5, logistics: 0.3, boundary: 1.0, food: 0.6, "people-animals": 0.7, values: 0.3, humor: 0.4, "love-language": 0.2, style: 0, "open-question": 0.9 },
+  rapport: { hook: 0.5, interest: 1.0, "inside-joke": 0.9, story: 0.7, dislike: 0.6, logistics: 0.4, boundary: 1.0, food: 1.0, "people-animals": 0.9, values: 0.5, humor: 0.8, "love-language": 0.4, style: 0, "open-question": 0.8 },
+  depth: { hook: 0.2, interest: 0.7, "inside-joke": 0.8, story: 1.0, dislike: 0.7, logistics: 0.5, boundary: 1.0, food: 0.6, "people-animals": 0.7, values: 1.0, humor: 0.6, "love-language": 0.9, style: 0, "open-question": 0.5 },
+  momentum: { hook: 0.1, interest: 0.6, "inside-joke": 0.7, story: 0.5, dislike: 0.8, logistics: 1.0, boundary: 1.0, food: 0.9, "people-animals": 0.5, values: 0.6, humor: 0.5, "love-language": 0.5, style: 0, "open-question": 0.3 },
 };
 
 const STOPWORDS = new Set(

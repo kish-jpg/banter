@@ -9,6 +9,7 @@ import { useXP } from "@/lib/useXP";
 import { practiceStreak, textingDNA, useGrades } from "@/lib/grades";
 import { archetypeFor } from "@/lib/dna";
 import { ShareCard } from "@/components/share-card";
+import { SelfPanel } from "@/components/self-panel";
 import {
   clearAll,
   getThreadsServerSnapshot,
@@ -108,6 +109,13 @@ export default function YouPage() {
         <h2 className="text-[13px] font-medium lowercase text-muted-foreground">how you sound</h2>
         <div className="mt-3">
           <ProfileCard persistent />
+        </div>
+      </section>
+
+      <section className="mt-8">
+        <h2 className="text-[13px] font-medium lowercase text-muted-foreground">who you are in chat</h2>
+        <div className="mt-3">
+          <SelfPanel personaId={null} />
         </div>
       </section>
 

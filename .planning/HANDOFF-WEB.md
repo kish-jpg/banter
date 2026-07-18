@@ -185,9 +185,45 @@ OKLCH system is deliberate; a new identity would need mockups + a Kish decision)
 - NOT built: featured-story human-review pipeline (needs content ops), sharer
   XP settlement (R4), PostHog dashboards (need the key first).
 
+## MONO RESKIN + R3 SESSION 1 SHIPPED (2026-07-18/19)
+
+**Mono identity (complete overhaul, Kish rejected the coral system entirely):**
+white/blacks, system-following light+dark (forced dark class REMOVED — media
+variant), ink-filled CTAs, Plus Jakarta Sans everywhere, violet signal
+(#6d4aff/#9b85ff) ONLY on genuinely good news (strong bands, ready, rare locks,
+wordmark dot). Cards/icons/manifest moved over; DESIGN.md rewritten. Gotcha:
+Turbopack served STALE CSS after the token rewrite — `rm -rf .next` before
+trusting dev-server verification of globals.css changes.
+
+**R3 Session 1 (workstreams A+B+C per R3-PLAN.md):**
+- A · buckets v2: FactType extended additively (food, people-animals, values,
+  humor, love-language, style, open-question — old 7 stay valid, zero
+  migration); salience stage-weights per bucket (style weight 0 everywhere: it
+  tunes tone, never content); /api/facts prompt v2 (max 8/pass); persona panel
+  grouped by bucket with "still don't know — worth asking".
+- B · self-persona: lib/self.ts (`banter.self`, facts tagged personaId|null),
+  /api/self-facts (user-side extraction, same blocklist/provenance),
+  SelfFactSuggestions ("this is how you showed up" — keep what real-you wants
+  to own), SelfPanel in thread coaching options + global on /you.
+- C · resonance: lib/resonance.ts — computeLocks (static rarity table;
+  rare-pattern hit on BOTH sides is evidence alone, fixing the
+  "drinking"/"drinker" morphology gap; generic needs 2+ shared keywords; every
+  lock carries both quotes or doesn't render), tension registry
+  (`banter.tensions`, candidates = boundary/values facts, user-confirmed
+  track/skip, states open→bridged→paused, lock-facts excluded from candidates),
+  bits gain seenCount (addLoops increments on re-detection instead of dropping
+  dupes; ResonancePanel shows ×N in signal violet). Surfaces: coaching options
+  + date brief.
+- 45 web tests green, tsc/lint/build clean, browser-verified on a Tamsyn-shaped
+  seed (lock computed rare with both quotes, tension track/cycle, bit ×4),
+  prod smoke: /api/self-facts extracting correctly, coach regression 200.
+
 ## Next phase (not yet built)
 
-- Phase F: paywall skeleton at value moments (PostHog now DONE, key pending)
+- R3 Session 2 (R3-PLAN.md): verify citations → Framework Library v2 +
+  gate v2 validators + conversationType — ONE engine deploy
+- R3 Session 3: Practice Gym + outcome attribution
+- Phase F: paywall skeleton at value moments (PostHog wired, key pending)
 - Shareable signal-read card (image export) - deferred from E
 - Supabase Postgres/auth sync for threads+XP+personas+grades (row-ready shapes)
 - Fact promotion loop: sentReplies ground truth exists; score fact ->
