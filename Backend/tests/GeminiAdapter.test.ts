@@ -15,6 +15,8 @@ const SAMPLE_COACHING_RESPONSE = {
     score: 0.7,
     factors: { interest: 0.6, reciprocity: 0.5, warmth: 0.8, responsiveness: 0.7 },
     signal: "warming up",
+    conversationType: "social" as const,
+    typeMismatch: false,
   },
 };
 

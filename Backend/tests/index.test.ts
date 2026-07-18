@@ -20,7 +20,7 @@ const OFF_ALLOWLIST_RESPONSE: CoachingResponse = {
     { text: "reply two", psychologyTag: "Reflective validation", style: "sincere" },
     { text: "reply three", psychologyTag: "Reciprocal self-disclosure", style: "direct" },
   ],
-  sentiment: sampleFixture.sentiment,
+  sentiment: sampleFixture.sentiment as CoachingResponse["sentiment"],
 };
 
 const BANNED_TERM_RESPONSE: CoachingResponse = {
@@ -29,7 +29,7 @@ const BANNED_TERM_RESPONSE: CoachingResponse = {
     { text: "reply two", psychologyTag: "Reflective validation", style: "sincere" },
     { text: "reply three", psychologyTag: "Reciprocal self-disclosure", style: "direct" },
   ],
-  sentiment: sampleFixture.sentiment,
+  sentiment: sampleFixture.sentiment as CoachingResponse["sentiment"],
 };
 
 const OPENER_RESPONSE: CoachingResponse["replies"] = [

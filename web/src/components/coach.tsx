@@ -128,6 +128,11 @@ function ReadStrip({
             <span className="rounded-full bg-secondary px-2 py-0.5 text-[11px] text-muted-foreground">
               {STAGE_LABELS[stage]}
             </span>
+            {sentiment.conversationType && (
+              <span className="rounded-full bg-secondary px-2 py-0.5 text-[11px] text-muted-foreground">
+                {sentiment.conversationType}
+              </span>
+            )}
             <span className="flex items-center gap-2">
               {Object.entries(sentiment.factors).map(([key, value]) => (
                 <span key={key} className="flex items-center gap-1" title={`${FACTOR_LABELS[key]}: ${band(value)}`}>
@@ -160,6 +165,16 @@ function ReadStrip({
               );
             })}
           </div>
+          {sentiment.typeMismatch && sentiment.conversationType && (
+            <p className="mt-3 rounded-xl bg-secondary/60 p-3 text-sm text-muted-foreground">
+              <span className="font-medium text-foreground">watch out · </span>
+              {sentiment.conversationType === "emotional"
+                ? "They're sharing feelings and you're solving logistics. Meet them where they are before moving anything forward."
+                : sentiment.conversationType === "practical"
+                  ? "They're trying to sort something practical. Help with the plan first, play after."
+                  : "They're in play and connection mode. Match the energy before getting practical."}
+            </p>
+          )}
           {note && (
             <p className="mt-3 rounded-xl bg-secondary/60 p-3 text-sm text-muted-foreground">
               <span className="font-medium text-foreground">watch out · </span>

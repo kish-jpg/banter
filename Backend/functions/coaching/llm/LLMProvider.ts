@@ -46,6 +46,10 @@ export interface CoachingResponse {
       responsiveness: number;
     };
     signal: string;
+    /** R3 (Duhigg matching principle): which conversation the MATCH is having right now. */
+    conversationType: "practical" | "emotional" | "social";
+    /** True when the user's recent messages are in a different conversation than the match's. */
+    typeMismatch: boolean;
   };
 }
 

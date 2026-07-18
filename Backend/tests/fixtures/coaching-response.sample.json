@@ -24,6 +24,8 @@
       "warmth": 0.75,
       "responsiveness": 0.7
     },
-    "signal": "warming up, engaged and asking questions back"
+    "signal": "warming up, engaged and asking questions back",
+    "conversationType": "social",
+    "typeMismatch": false
   }
 }

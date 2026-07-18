@@ -25,6 +25,10 @@ export interface Sentiment {
     responsiveness: number;
   };
   signal: string;
+  /** R3 (Duhigg): which conversation THEY are having. Optional — older stored reads lack it. */
+  conversationType?: "practical" | "emotional" | "social";
+  /** True when your recent messages sit in a different conversation than theirs. */
+  typeMismatch?: boolean;
 }
 
 export interface CoachingResponse {

@@ -91,6 +91,10 @@ happened between planning and this session).
 (3 replies + sentiment + conversationType), web chip live, docs updated.
 Client draft.ts stays as the instant pre-send path (fast, offline).
 
+**✅ SESSION 2 SHIPPED 2026-07-19** (61 Deno + 45 web tests; all four citations
+verified before ship, Giang material demoted to prompt directives; prod smoke
+returned the mismatch scenario perfectly. Details in HANDOFF-WEB.md).
+
 ---
 
 ## Session 3 — Gym + Learning (workstreams F + G, web only)

@@ -48,3 +48,10 @@ Deno.test("allowlist covers Gottman + attachment + Aron; banlist covers negging/
   assert(banned.includes("scarcity"));
   assert(banned.some((t) => t.includes("alpha")));
 });
+
+Deno.test("Framework Library v2: 10 entries, every one carries a non-empty citation", () => {
+  assertEquals(taxonomy.allowed.length, 10);
+  for (const entry of taxonomy.allowed) {
+    assert(entry.citation.trim().length > 0, `entry "${entry.tagName}" is missing a citation`);
+  }
+});

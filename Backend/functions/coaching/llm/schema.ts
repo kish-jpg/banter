@@ -30,9 +30,11 @@ const SENTIMENT_SCHEMA = {
       propertyOrdering: ["interest", "reciprocity", "warmth", "responsiveness"],
     },
     signal: { type: "STRING" },
+    conversationType: { type: "STRING", enum: ["practical", "emotional", "social"] },
+    typeMismatch: { type: "BOOLEAN" },
   },
-  required: ["score", "factors", "signal"],
-  propertyOrdering: ["score", "factors", "signal"],
+  required: ["score", "factors", "signal", "conversationType", "typeMismatch"],
+  propertyOrdering: ["score", "factors", "signal", "conversationType", "typeMismatch"],
 };
 
 export const COACHING_RESPONSE_SCHEMA = {

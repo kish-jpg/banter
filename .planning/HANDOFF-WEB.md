@@ -218,11 +218,37 @@ trusting dev-server verification of globals.css changes.
   seed (lock computed rare with both quotes, tension track/cycle, bit ×4),
   prod smoke: /api/self-facts extracting correctly, coach regression 200.
 
+## R3 SESSION 2 SHIPPED (2026-07-19 — the engine release, ONE deploy)
+
+- **Citations verified FIRST** (one targeted search each, all four confirmed):
+  ACR = Gable, Reis, Impett & Asher 2004 (JPSP 87, 228-245) · Five Secrets =
+  Burns, Feeling Good Together 2008 · observation-vs-evaluation = Rosenberg,
+  NVC ch.3 · matching principle = Duhigg, Supercommunicators 2024. The Giang
+  rhythm-variance material has NO research citation → shipped as prompt
+  directives (style rules 6-7), NOT taxonomy entries. Cut beats fudge.
+- **taxonomy.json v2**: 6 → 10 entries, version 2026-07-19, synced to all
+  three clients via sync-taxonomy.sh (CI byte-check intact).
+- **Gate v2 in validate.ts** (every generated reply): question-stacking
+  (>1 ?-group), frame classifier (prize-framing regexes incl. "'re earned"),
+  evaluation-language (narrow "you're so distant"-class patterns), plus
+  conversationType enum re-check. Violating replies discarded, never repaired.
+  Good-news-passed-over is a PROMPT preference (prefer ACR tag), not a
+  validator — it needs transcript context a reply-text check can't see.
+- **conversationType signal**: sentiment schema + LLMProvider gain
+  conversationType (practical|emotional|social) + typeMismatch (bool).
+  Web: chip in the read strip, mismatch watch-out with per-type copy.
+  Web Sentiment fields optional (old stored reads lack them).
+- Tests: 61 Deno (+5 gate-v2/taxonomy) · 45 web · tsc/lint/build clean.
+- Deployed: engine via deploy-cloud.sh + web. Prod smoke was the flagship
+  scenario — her good news + user's practical reply → conversationType:
+  emotional, typeMismatch: true, tags [Active-constructive response, Repair
+  attempt, Disarming empathy]. The new library is live and being selected.
+- Test-stub note: sentiment stubs in Backend/tests now carry the two new
+  fields; index.test.ts casts the JSON fixture (`as CoachingResponse["sentiment"]`).
+
 ## Next phase (not yet built)
 
-- R3 Session 2 (R3-PLAN.md): verify citations → Framework Library v2 +
-  gate v2 validators + conversationType — ONE engine deploy
-- R3 Session 3: Practice Gym + outcome attribution
+- R3 Session 3 (R3-PLAN.md): Practice Gym v1 + outcome attribution
 - Phase F: paywall skeleton at value moments (PostHog wired, key pending)
 - Shareable signal-read card (image export) - deferred from E
 - Supabase Postgres/auth sync for threads+XP+personas+grades (row-ready shapes)

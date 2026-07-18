@@ -155,3 +155,69 @@ Deno.test("grade: AI-tell punctuation in notes is rejected", () => {
   const bad = { ...validGrade, improvementNote: "Good start; add more detail" };
   assertEquals(validateGradeResponse(bad, allowedTags, containsBannedTerm).valid, false);
 });
+
+// ---- Gate v2 (R3 Session 2) ----
+
+function withReply(text: string) {
+  return {
+    replies: [
+      { text, psychologyTag: validTag1 },
+      { text: "Sounds good to me", psychologyTag: validTag2 },
+      { text: "What got you into that", psychologyTag: validTag3 },
+    ],
+  };
+}
+
+Deno.test("gate v2: question stacking (two questions in one reply) is rejected", () => {
+  const result = validateCoachingResponse(
+    withReply("How was work? Did you see Ruby?"),
+    allowedTags,
+    containsBannedTerm,
+  );
+  assertEquals(result.valid, false);
+  assertStringIncludes(result.reason ?? "", "question stacking");
+});
+
+Deno.test("gate v2: prize-framing is rejected (the case-study failure mode)", () => {
+  const result = validateCoachingResponse(
+    withReply("my best positions are never posted, they're earned"),
+    allowedTags,
+    containsBannedTerm,
+  );
+  assertEquals(result.valid, false);
+  assertStringIncludes(result.reason ?? "", "prize-framing");
+});
+
+Deno.test("gate v2: evaluation language is rejected, observation-shaped text passes", () => {
+  const rejected = validateCoachingResponse(
+    withReply("you're so distant lately"),
+    allowedTags,
+    containsBannedTerm,
+  );
+  assertEquals(rejected.valid, false);
+  assertStringIncludes(rejected.reason ?? "", "evaluation");
+
+  const passes = validateCoachingResponse(
+    withReply("noticed things went quiet this week, hope all is ok"),
+    allowedTags,
+    containsBannedTerm,
+  );
+  assertEquals(passes.valid, true);
+});
+
+Deno.test("gate v2: unknown conversationType is rejected, valid enum passes, absent is fine (openers)", () => {
+  const base = withReply("That hike sounds great");
+  const bad = validateCoachingResponse(
+    { ...base, sentiment: { conversationType: "romantic" } },
+    allowedTags,
+    containsBannedTerm,
+  );
+  assertEquals(bad.valid, false);
+  const good = validateCoachingResponse(
+    { ...base, sentiment: { conversationType: "emotional" } },
+    allowedTags,
+    containsBannedTerm,
+  );
+  assertEquals(good.valid, true);
+  assertEquals(validateCoachingResponse(base, allowedTags, containsBannedTerm).valid, true);
+});

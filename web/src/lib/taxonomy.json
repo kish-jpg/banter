@@ -1,5 +1,5 @@
 {
-  "version": "2026-07-04",
+  "version": "2026-07-19",
   "allowed": [
     {
       "framework": "Gottman Method",
@@ -42,6 +42,34 @@
       "tagName": "Reflective validation",
       "explanation": "Reflecting back what they said to show you heard them - a standard, well-established communication technique.",
       "citation": "Rogers-derived active-listening research, standard in couples/communication therapy"
+    },
+    {
+      "framework": "Capitalization research",
+      "technique": "active-constructive-responding",
+      "tagName": "Active-constructive response",
+      "explanation": "When they share good news, celebrate it actively and ask a question that lets them expand - deflating or changing the subject is the silent connection-killer.",
+      "citation": "Gable, Reis, Impett & Asher 2004, Journal of Personality and Social Psychology 87, 228-245"
+    },
+    {
+      "framework": "Burns' Five Secrets",
+      "technique": "disarming-empathy",
+      "tagName": "Disarming empathy",
+      "explanation": "Finding the genuine truth in what they said and reflecting the feeling behind it before adding your own view. Built for repair moments and hard conversations.",
+      "citation": "David D. Burns, 'Feeling Good Together' (2008), the Five Secrets of Effective Communication"
+    },
+    {
+      "framework": "Nonviolent Communication",
+      "technique": "observation-not-evaluation",
+      "tagName": "Observation, not evaluation",
+      "explanation": "Naming what happened ('you went quiet this week') instead of judging it ('you're distant'). Observations invite conversation, evaluations invite defensiveness.",
+      "citation": "Marshall Rosenberg, 'Nonviolent Communication: A Language of Life', ch. 3 (Observing Without Evaluating)"
+    },
+    {
+      "framework": "Conversation-type matching",
+      "technique": "matching-principle",
+      "tagName": "Matching the conversation",
+      "explanation": "Meeting them in the conversation they are actually having: emotional gets empathy, practical gets help, social gets recognition. Mismatch is the most common silent conversation-killer.",
+      "citation": "Charles Duhigg, 'Supercommunicators' (2024), the matching principle"
     }
   ],
   "bannedTerms": [
