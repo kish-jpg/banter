@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useSyncExternalStore } from "react";
+import { useEffect, useState, useSyncExternalStore } from "react";
 import { track } from "@/lib/analytics";
 import { Demo } from "@/components/demo";
 import { AppHeader } from "@/components/app-header";
@@ -14,6 +14,14 @@ import {
 } from "@/lib/threads";
 
 const noopSubscribe = () => () => {};
+
+/** Coarse relative time for the people list ("2h", "3d"). */
+function relTime(ts: number, now: number): string {
+  const s = Math.max(0, Math.floor((now - ts) / 1000));
+  if (s < 3600) return `${Math.max(1, Math.floor(s / 60))}m`;
+  if (s < 86400) return `${Math.floor(s / 3600)}h`;
+  return `${Math.floor(s / 86400)}d`;
+}
 
 export default function Home() {
   const threads = useSyncExternalStore(subscribeThreads, getThreadsSnapshot, getThreadsServerSnapshot);
@@ -28,6 +36,13 @@ export default function Home() {
   useEffect(() => {
     if (landing) track("landing_view");
   }, [landing]);
+
+  // Date.now() off the render path (React Compiler); relative times fill in a beat later.
+  const [now, setNow] = useState<number | null>(null);
+  useEffect(() => {
+    const t = setTimeout(() => setNow(Date.now()), 0);
+    return () => clearTimeout(t);
+  }, []);
 
   if (!hydrated) {
     return (
@@ -87,14 +102,15 @@ export default function Home() {
     <main className="mx-auto flex w-full max-w-lg flex-1 flex-col px-4 pb-10 pt-6">
       <AppHeader />
 
-      <h1 className="text-2xl font-semibold tracking-tight">your conversations</h1>
+      <h1 className="text-2xl font-semibold tracking-tight">your people</h1>
 
-      {/* Avatar rows, not a card grid: each conversation is a person, not a tile. */}
+      {/* Avatar rows, not a card grid: each row is a person and where things stand. */}
       <div className="mt-3 flex flex-col divide-y divide-border/60">
         {threads.map((t) => {
           const last = t.analyses?.[t.analyses.length - 1];
           const stage = stageFor(t.messages.length, t.analyses ?? []);
           const interestBand = last ? band(last.factors.interest) : null;
+          const met = t.outcome === "met";
           return (
             <div key={t.id} className="group flex items-center gap-1">
               <Link
@@ -104,9 +120,9 @@ export default function Home() {
                 <span
                   className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-sm font-semibold ${
                     interestBand === "strong"
-                      ? "bg-primary/20 text-primary"
+                      ? "bg-signal/15 text-signal"
                       : interestBand === "warming"
-                        ? "bg-primary/10 text-primary/80"
+                        ? "bg-secondary text-foreground/70"
                         : "bg-secondary text-muted-foreground"
                   }`}
                 >
@@ -115,11 +131,26 @@ export default function Home() {
                 <span className="min-w-0 flex-1">
                   <span className="block truncate text-[15px]">{t.label}</span>
                   <span className="mt-0.5 block truncate text-xs text-muted-foreground">
-                    {STAGE_LABELS[stage]}
-                    {interestBand ? ` · interest ${interestBand}` : ""}
-                    {t.outcome === "met" ? " · you met 🎉" : ""}
+                    {met ? (
+                      "you met 🎉"
+                    ) : (
+                      <>
+                        {STAGE_LABELS[stage]}
+                        {interestBand ? (
+                          <>
+                            {" · interest "}
+                            <span className={interestBand === "strong" ? "text-signal" : ""}>{interestBand}</span>
+                          </>
+                        ) : (
+                          ""
+                        )}
+                      </>
+                    )}
                   </span>
                 </span>
+                {now !== null && (
+                  <span className="shrink-0 text-[11px] text-muted-foreground">{relTime(t.updatedAt, now)}</span>
+                )}
               </Link>
               <button
                 aria-label={`delete ${t.label}`}

@@ -117,11 +117,14 @@ shipped 2026-07-19.** New identity per web/DESIGN.md; buckets v2 + self-persona
 + resonance; Framework Library v2 (10 verified-citation entries) + gate v2 +
 conversationType signal (engine deployed, 61 Deno tests); Practice Gym `/gym` +
 outcome-attribution flywheel with "landed ↑" transparency (57 web tests). R3 is
-DONE. Next candidates: **R4 Accounts & revenue** (PRD §9 — Supabase auth +
-Postgres sync, Plus subscription, Deep Thread Review SKU, unlocks sharer-side
-referral XP) or Phase F paywall skeleton. **PostHog is now LIVE** (key set
-2026-07-19, prod redeployed, verified in the shipped bundle + a real event
-accepted). Blocked on Kish: real-phone QA of the new design.
+DONE. **Person-first IA also shipped 2026-07-19** (founder-user friction fix from
+first real use): home = "your people", tap → a person HUB at `/t/[id]` (read +
+resonance + readiness + what-you-know + Continue), coach moved to `/t/[id]/chat`,
+/new leads with "who's this with?". Details in HANDOFF-WEB.md. Next candidates:
+**R4 Accounts & revenue** (PRD §9 — Supabase auth + Postgres sync, Plus
+subscription, Deep Thread Review SKU, unlocks sharer-side referral XP) or Phase F
+paywall skeleton. **PostHog is LIVE** (key set + verified). Blocked on Kish:
+real-phone QA of the new design + person-first flow.
 
 ---
 

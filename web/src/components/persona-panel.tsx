@@ -38,8 +38,7 @@ export function PersonaPicker({
 
   return (
     <div>
-      <p className="text-xs text-muted-foreground">who&apos;s this with?</p>
-      <div className="mt-2 flex flex-wrap items-center gap-2">
+      <div className="flex flex-wrap items-center gap-2">
         {personas.map((p) => (
           <button
             key={p.id}

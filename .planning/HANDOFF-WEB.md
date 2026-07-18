@@ -284,9 +284,41 @@ trusting dev-server verification of globals.css changes.
   +8 XP, DNA 6→7, done-state; daily cap holds on reload; persona panel
   "landed ↑" renders for a scored fact. Prod smoke: /gym, /you, grade path 200.
 
+## PERSON-FIRST IA SHIPPED (2026-07-19 — founder-user friction fix)
+
+Kish used the live app and hit two frictions: (1) expected a person hub when he
+tapped someone, got dumped in the coach; (2) resumed conversations via /new
+because tap-to-resume didn't exist. Root cause: app was thread-first, his model
+is person-first. Approached with the product-brainstorming PM skill, mocked
+first (artifact, he picked option A = hub as its own screen), then built.
+
+- **Route restructure**: coach moved `/t/[id]/page.tsx` → `/t/[id]/chat/page.tsx`
+  (git mv). New **hub** at `/t/[id]/page.tsx`: name + context chip, the read
+  (where things stand, bands), ResonancePanel (what you two share), a date-brief
+  link with readiness band, collapsible PersonaPanel (what you know), and a
+  pinned "Continue the conversation" → `/t/[id]/chat`. Graceful for
+  persona-less / never-coached threads.
+- **Home** = "your people" (was "your conversations"): rows gain a relative
+  timestamp (deferred `now`, purity-safe), signal-colored strong interest, met
+  state. Tap → hub (unchanged href, new destination).
+- **Coach**: back button now → hub (`/t/[id]`) not home; date-brief pill removed
+  from its header (lives on the hub now).
+- **/new** = person-first: step 1 "who's this with?" leads with PersonaPicker +
+  "just coach one exchange" skip, BEFORE the compose box. Picking someone who
+  already has a thread RESUMES (routes to their hub) instead of duplicating;
+  fresh person or skip → capture. New threads land on `/t/[id]/chat`.
+  Removed PersonaPicker's now-redundant internal "who's this with?" label.
+- Links audited: /new→chat, home→hub, brief back→hub, coach back→hub, delete→home.
+- 57 web tests green (logic untouched), tsc/lint/build clean. Browser-verified:
+  home people-list + relative time, hub (read/resonance/readiness/what-you-know/
+  Continue→chat), coach back→hub, /new who-step, resume-not-duplicate (tapping an
+  existing person routed to hub, thread count stayed 1). Prod: all routes 200.
+- **Watch (PostHog live):** read_shown-per-session for whether the hub tap costs
+  activation. Fallback if it drags: collapse hub into a pinned coach header.
+
 ## Next phase (not yet built)
 
-- Phase F: paywall skeleton at value moments (PostHog wired, key pending)
+- Phase F: paywall skeleton at value moments (PostHog wired, key LIVE)
 - R4 Accounts & revenue (PRD §9): Supabase auth + Postgres sync (all stores are
   row-ready), Plus subscription, Deep Thread Review SKU, sharer-side referral XP
 - R5 Reach: PWA share-target, Friend/Reconnect mode, desktop extension spike
