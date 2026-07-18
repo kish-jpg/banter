@@ -18,13 +18,15 @@ with the dating app open in the other hand. Slightly anxious, emotionally invest
 privacy-sensitive (they are pasting intimate conversations). Secondary: friend/business
 texters (shallow support v1).
 
-**Scene sentence (theme):** someone in bed at 11pm, phone on dark mode, a conversation
-that matters open in the other app, heart rate a little up. Forces: dark, calm, warm,
-low-glare, zero clutter.
+**Scene sentence (theme):** someone with a conversation that matters open in the other
+app, heart rate a little up — at 11pm in bed or on a lunch break. Forces: calm, quiet,
+zero clutter, trustworthy; theme follows their system (mono light + mono dark).
 
 ## Brand and tone
 
-- Wordmark: lowercase "banter." with a coral period. Coral #ff5c7a is the single accent.
+- Wordmark: lowercase "banter." with a violet period. Mono identity (2026-07-17):
+  white/blacks, ink-filled CTAs, one violet signal (#6d4aff / #9b85ff) reserved for
+  genuinely good news. Type: Plus Jakarta Sans.
 - Voice: a warm, direct friend looking over your shoulder. Never robotic, never clinical,
   never bro-y. Lowercase-leaning UI labels.
 - Ethics are part of the brand: evidence-based psychology with citations, PUA tactics

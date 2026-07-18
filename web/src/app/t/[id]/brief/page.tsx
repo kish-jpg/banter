@@ -160,11 +160,11 @@ export default function BriefPage({ params }: { params: Promise<{ id: string }> 
       <section className="mt-4 rounded-2xl border border-border bg-card p-4">
         <div className="flex items-baseline justify-between">
           <span className="text-sm font-medium">readiness</span>
-          <span className={`text-sm font-semibold ${bandWord === "ready" ? "text-primary" : ""}`}>{bandWord}</span>
+          <span className={`text-sm font-semibold ${bandWord === "ready" ? "text-signal" : ""}`}>{bandWord}</span>
         </div>
         <div className="mt-2 h-1.5 overflow-hidden rounded-full bg-secondary">
           <div
-            className="h-full rounded-full bg-primary transition-all duration-700"
+            className={`h-full rounded-full transition-all duration-700 ${bandWord === "ready" ? "bg-signal" : "bg-foreground/45"}`}
             style={{ width: `${Math.round(score * 100)}%` }}
           />
         </div>

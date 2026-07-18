@@ -55,10 +55,10 @@ export function DnaRadar({
       ))}
       <line x1={C} y1={C - R} x2={C} y2={C + R} stroke="currentColor" className="text-border" strokeWidth="1" />
       <line x1={C - R} y1={C} x2={C + R} y2={C} stroke="currentColor" className="text-border" strokeWidth="1" />
-      <polygon points={poly} fill="oklch(0.68 0.19 13 / 0.18)" stroke="#ff5c7a" strokeWidth="2" strokeLinejoin="round" />
+      <polygon points={poly} fill="var(--signal-dim)" stroke="var(--signal)" strokeWidth="2" strokeLinejoin="round" />
       {[pt(values.warmth, 0), pt(values.specificity, 1), pt(values.reciprocity, 2), pt(values.naturalness, 3)].map(
         ([x, y], i) => (
-          <circle key={i} cx={x} cy={y} r="3" fill="#ff5c7a" />
+          <circle key={i} cx={x} cy={y} r="3" fill="var(--signal)" />
         ),
       )}
       {labels.map((l) => (

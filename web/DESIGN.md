@@ -1,57 +1,69 @@
-# Banter — Design System
+# Banter — Design System ("Mono", 2026-07-17 overhaul)
+
+Kish rejected the warm-dark coral system outright (theme, color, typography).
+Direction he set: minimal, "white and blacks, one small accent". This file is the
+new source of truth; the old coral system is dead.
 
 ## Theme
 
-Dark only (v1). Scene: bed, 11pm, phone. Low-glare warm dark, never blue-black.
+**Both themes, system-following** (no forced dark class — Tailwind v4 media dark).
+Light: paper #fcfcfc, ink #141414. Dark: ground #0f0f0f, surface #1a1a1a,
+text #ececec. No hue tinting: true neutrals. The interface should read like a
+well-made notebook — the anti-RizzGPT (competitors are neon and loud; our users
+are the people repelled by that).
 
-## Color (OKLCH, warm-tinted neutrals toward the coral hue ~15)
+## Color
 
-- background: oklch(0.145 0.008 15) — warm near-black, NOT #0b0b0f blue-black
-- card: oklch(0.185 0.009 15)
-- secondary (chips, tints): oklch(0.235 0.01 15)
-- foreground: oklch(0.955 0.004 15)
-- muted-foreground: oklch(0.68 0.012 15)
-- primary (coral): #ff5c7a ≈ oklch(0.68 0.19 13); primary-foreground: near-black warm
-- Strategy: Restrained (accent ≤10%) on product surfaces; the landing hero may run
-  Committed (coral glow, filled CTA carrying the fold).
-- States: success shares the coral family (sent ✓ = coral, met 🎉 = coral); destructive
-  only on delete affordances; never full-saturation on inactive elements.
+- Chrome is monochrome. CTAs are ink-filled: black on light, white on dark
+  (`--primary` = ink; never a colored button).
+- **The signal**: electric violet — #6d4aff light / #9b85ff dark (`--signal`,
+  `--signal-dim`; Tailwind `text-signal` / `bg-signal`). The blend of the social
+  spectrum (IG magenta + TikTok cyan/pink + Twitter blue → violet). It appears
+  ONLY when the app has something genuinely good to say:
+  - strong signal bands (dots, bars, band words)
+  - readiness "ready"
+  - rare resonance locks
+  - the wordmark's period
+  Warming/low states are ink at reduced opacity (foreground/45,
+  muted-foreground/40). Never violet on neutral or negative information.
+- Destructive stays semantic red, delete affordances only.
 
 ## Typography
 
-- Geist only (product register: one well-tuned sans). Geist Mono unused in UI.
-- Scale (rem, ratio ~1.2): display 2.25/1.1 semibold tracking-[-0.02em] (landing h1),
-  title 1.5 semibold tracking-tight (screen h1), heading 1.0625 medium, body 0.9375
-  (15px), label 0.8125 (13px) muted, micro 0.6875 (11px) muted.
-- Section labels: lowercase, 13px, muted.
+- **Plus Jakarta Sans** everywhere (loaded via next/font on the legacy
+  `--font-geist-sans` var so tokens didn't move). Friendly geometric; the face
+  carries the whole mono design.
+- Display: bold (700) with tracking-[-0.03em]. Screen h1: text-2xl semibold.
+  Body 15px. Labels lowercase 13px muted. Micro 11px.
+- Geist Mono remains registered for data labels if needed.
 
-## Surfaces (three levels, no nesting)
+## Surfaces
 
-1. flat tint: bg-secondary/50, no border (inner panels, quotes, notes)
-2. card: bg-card + border-border, rounded-2xl (informational)
-3. interactive card: card + hover:border-primary/40 + press scale (tappable)
-Never a bordered card inside a bordered card.
+Same three levels as before (flat tint / card / interactive card), rounded-2xl,
+never nested borders. Cards are #ffffff on light (border rgba-ink-10%),
+#1a1a1a on dark.
 
 ## Components
 
-- .btn-primary: coral fill, rounded-2xl, press scale-[0.98], hover brightness-105,
-  focus-visible ring. Full-width on mobile primary actions.
-- .btn-secondary: bg-secondary fill, same states.
-- .chip / .chip-active: rounded-full border selectors (tones, contexts, goals).
-- All interactive elements: default/hover/focus-visible/active/disabled states.
-- Loading: skeletons in place (shimmer scan), never centered spinners over content.
-- Empty states teach ("Facts appear here as conversations are imported…").
+.btn-primary (ink fill) / .btn-secondary / .chip / .chip-active / .card-tap in
+globals.css @layer components — unchanged API, retinted by tokens. All
+interactive states preserved; focus ring is ink.
 
 ## Motion
 
-- 150-250ms, ease-out-quart `cubic-bezier(0.25, 1, 0.5, 1)`. State changes only:
-  reveal (fade-in + slide-in-from-bottom-1/2), expansion, press feedback.
-- Reply reveal staggers 60-90ms per card (state reveal, not decoration).
-- The landing demo is the one orchestrated sequence (brand register moment).
-- Scan shimmer keyframe = "analyzing" state.
+Unchanged rules: 150–250ms ease-out-quart, state changes only, skeletons in
+place, prefers-reduced-motion honored globally. No glows, no gradients — the
+landing hero is now type + the live demo in a plain border.
 
-## Bans (project-specific, on top of impeccable's)
+## Share cards (/api/card/*)
 
-- Raw percentages for reads of a person (bands only).
-- Neon, gradients-as-decoration, glassmorphism.
-- Identical card grids: thread list is avatar rows, not cards.
+Mono dark ground always (marketing surface): #0f0f0f, ink text, violet signal
+on strong bands / wordmark dot / ref pill. Font: Plus Jakarta woff from
+@fontsource (satori-compatible).
+
+## Bans
+
+- Raw percentages for reads of a person (bands only) — unchanged.
+- Colored buttons; violet on anything that isn't good news.
+- Neon, gradients-as-decoration, glassmorphism, glows.
+- Identical card grids; thread list stays avatar rows.

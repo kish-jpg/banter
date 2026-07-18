@@ -38,10 +38,11 @@ function watchOut(factors: Record<string, number>): string | null {
   return value < 0.5 ? WATCH_OUTS[key] ?? null : null;
 }
 
+// Mono rule: the signal color marks strong ONLY; everything else stays ink.
 const BAND_DOT: Record<string, string> = {
   low: "bg-muted-foreground/40",
-  warming: "bg-primary/50",
-  strong: "bg-primary",
+  warming: "bg-foreground/45",
+  strong: "bg-signal",
 };
 
 /** The conversation itself - the object being coached, always visible on top. */
@@ -145,11 +146,11 @@ function ReadStrip({
                 <div key={key}>
                   <div className="flex justify-between text-xs text-muted-foreground">
                     <span>{FACTOR_LABELS[key] ?? key}</span>
-                    <span className={b === "strong" ? "font-medium text-primary" : "font-medium"}>{b}</span>
+                    <span className={b === "strong" ? "font-medium text-signal" : "font-medium text-foreground"}>{b}</span>
                   </div>
                   <div className="mt-1 h-1.5 overflow-hidden rounded-full bg-secondary">
                     <div
-                      className="h-full rounded-full bg-primary transition-all duration-700"
+                      className={`h-full rounded-full transition-all duration-700 ${b === "strong" ? "bg-signal" : "bg-foreground/45"}`}
                       style={{ width: `${Math.round(value * 100)}%` }}
                     />
                   </div>

@@ -8,8 +8,8 @@ export default function manifest(): MetadataRoute.Manifest {
       "Your texting coach. Reads the conversation, tells you what's working, and helps you say it like you.",
     start_url: "/",
     display: "standalone",
-    background_color: "#151112",
-    theme_color: "#151112",
+    background_color: "#0f0f0f",
+    theme_color: "#0f0f0f",
     icons: [
       { src: "/icon", sizes: "512x512", type: "image/png" },
       { src: "/apple-icon", sizes: "180x180", type: "image/png" },

@@ -26,7 +26,7 @@ export default function ReferralPage({ params }: { params: Promise<{ code: strin
   return (
     <main className="mx-auto flex w-full max-w-lg flex-1 flex-col items-center justify-center px-4">
       <p className="text-lg font-semibold tracking-tight">
-        banter<span className="text-primary">.</span>
+        banter<span className="text-signal">.</span>
       </p>
     </main>
   );

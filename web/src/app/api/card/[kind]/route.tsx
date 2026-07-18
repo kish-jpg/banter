@@ -12,20 +12,28 @@ import path from "node:path";
 
 export const runtime = "nodejs";
 
-const BG = "#1c1416";
-const SURFACE = "#271d1f";
-const TRACK = "#342729";
-const BORDER = "rgba(243,237,237,0.10)";
-const FG = "#f3eded";
-const MUTED = "#ab9da0";
-const CORAL = "#ff5c7a";
-const CORAL_DIM = "rgba(255,92,122,0.16)";
+// Mono identity: near-black ground, ink text, one violet signal for the good news.
+const BG = "#0f0f0f";
+const SURFACE = "#1a1a1a";
+const TRACK = "#262626";
+const BORDER = "rgba(236,236,236,0.10)";
+const FG = "#ececec";
+const MUTED = "#9b9b9b";
+const CORAL = "#9b85ff"; // the signal violet (dark-ground variant)
+const CORAL_DIM = "rgba(155,133,255,0.14)";
 
 const BAND_FILL: Record<string, number> = { low: 0.3, warming: 0.62, strong: 0.92 };
 
-async function geist(weight: string) {
+async function jakarta(weight: string) {
   return readFile(
-    path.join(process.cwd(), "node_modules", "geist", "dist", "fonts", "geist-sans", `Geist-${weight}.ttf`),
+    path.join(
+      process.cwd(),
+      "node_modules",
+      "@fontsource",
+      "plus-jakarta-sans",
+      "files",
+      `plus-jakarta-sans-latin-${weight}-normal.woff`,
+    ),
   );
 }
 
@@ -70,7 +78,7 @@ function BandRow({ label, band }: { label: string; band: string }) {
             display: "flex",
             width: `${fill * 100}%`,
             height: 18,
-            backgroundColor: band === "low" ? MUTED : CORAL,
+            backgroundColor: band === "strong" ? CORAL : band === "warming" ? "#8a8a8a" : "#4a4a4a",
             borderRadius: 999,
           }}
         />
@@ -349,18 +357,18 @@ export async function GET(req: Request, ctx: { params: Promise<{ kind: string }>
   else return new Response("unknown card", { status: 404 });
 
   const [regular, semibold, bold] = await Promise.all([
-    geist("Regular"),
-    geist("SemiBold"),
-    geist("Bold"),
+    jakarta("400"),
+    jakarta("600"),
+    jakarta("700"),
   ]);
 
   return new ImageResponse(body, {
     width,
     height,
     fonts: [
-      { name: "Geist", data: regular, weight: 400, style: "normal" },
-      { name: "Geist", data: semibold, weight: 600, style: "normal" },
-      { name: "Geist", data: bold, weight: 700, style: "normal" },
+      { name: "Jakarta", data: regular, weight: 400, style: "normal" },
+      { name: "Jakarta", data: semibold, weight: 600, style: "normal" },
+      { name: "Jakarta", data: bold, weight: 700, style: "normal" },
     ],
   });
 }

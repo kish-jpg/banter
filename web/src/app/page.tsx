@@ -33,7 +33,7 @@ export default function Home() {
     return (
       <main className="mx-auto flex w-full max-w-lg flex-1 flex-col px-4 pt-6">
         <p className="text-lg font-semibold tracking-tight">
-          banter<span className="text-primary">.</span>
+          banter<span className="text-signal">.</span>
         </p>
       </main>
     );
@@ -42,21 +42,14 @@ export default function Home() {
   if (threads.length === 0) {
     return (
       <main className="relative mx-auto flex w-full max-w-lg flex-1 flex-col overflow-x-clip px-4 pb-10 pt-6">
-        {/* The one Committed brand moment: a low coral glow behind the fold. */}
-        <div
-          aria-hidden
-          className="pointer-events-none absolute -top-32 left-1/2 h-[420px] w-[560px] -translate-x-1/2 rounded-full opacity-100"
-          style={{ background: "radial-gradient(closest-side, oklch(0.68 0.19 13 / 0.13), transparent 70%)" }}
-        />
-
         <p className="text-lg font-semibold tracking-tight">
-          banter<span className="text-primary">.</span>
+          banter<span className="text-signal">.</span>
         </p>
 
-        <h1 className="mt-9 text-[2.5rem] font-semibold leading-[1.05] tracking-[-0.02em]">
+        <h1 className="mt-9 text-[2.5rem] font-bold leading-[1.05] tracking-[-0.03em]">
           Know what
           <br />
-          to say<span className="text-primary">.</span>
+          to say<span className="text-signal">.</span>
         </h1>
         <p className="mt-4 max-w-[34ch] text-[15px] leading-relaxed text-muted-foreground">
           Your texting coach. It reads the conversation, tells you what&apos;s working, and helps
@@ -64,16 +57,14 @@ export default function Home() {
         </p>
 
         <div className="relative mt-7">
-          <div className="rounded-3xl bg-gradient-to-b from-primary/25 via-border to-border p-px">
-            <div className="rounded-[calc(1.5rem-1px)] bg-background">
-              <Demo />
-            </div>
+          <div className="rounded-3xl border border-border bg-background">
+            <Demo />
           </div>
         </div>
 
         <Link
           href="/new"
-          className="btn-primary mt-7 w-full py-4 text-center text-base shadow-[0_8px_32px_-8px_oklch(0.68_0.19_13/0.45)]"
+          className="btn-primary mt-7 w-full py-4 text-center text-base"
         >
           Coach my conversation
         </Link>

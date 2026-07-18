@@ -2,7 +2,7 @@
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
 
-@custom-variant dark (&:is(.dark *));
+/* dark follows the system (Tailwind v4 default media variant) — no forced class */
 
 @theme inline {
   --color-background: var(--background);
@@ -39,6 +39,8 @@
   --color-popover: var(--popover);
   --color-card-foreground: var(--card-foreground);
   --color-card: var(--card);
+  --color-signal: var(--signal);
+  --color-signal-dim: var(--signal-dim);
   --radius-sm: calc(var(--radius) * 0.6);
   --radius-md: calc(var(--radius) * 0.8);
   --radius-lg: var(--radius);
@@ -49,24 +51,30 @@
 }
 
 :root {
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
+  /* Banter "Mono" (DESIGN.md): white and blacks, type does the work, ink-filled
+     CTAs. One signal color — electric violet, the blend of the social spectrum —
+     appears ONLY when the app has something genuinely good to say (strong bands,
+     readiness "ready", rare resonance locks, the win moments). Light theme. */
+  --background: #fcfcfc;
+  --foreground: #141414;
+  --card: #ffffff;
+  --card-foreground: #141414;
+  --popover: #ffffff;
+  --popover-foreground: #141414;
+  --primary: #141414;
+  --primary-foreground: #fcfcfc;
+  --secondary: #f1f1f1;
+  --secondary-foreground: #141414;
+  --muted: #f1f1f1;
+  --muted-foreground: #6f6f6f;
+  --accent: #f1f1f1;
+  --accent-foreground: #141414;
   --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.922 0 0);
-  --input: oklch(0.922 0 0);
-  --ring: oklch(0.708 0 0);
+  --border: rgba(20, 20, 20, 0.1);
+  --input: rgba(20, 20, 20, 0.14);
+  --ring: #141414;
+  --signal: #6d4aff;
+  --signal-dim: rgba(109, 74, 255, 0.1);
   --chart-1: oklch(0.87 0 0);
   --chart-2: oklch(0.556 0 0);
   --chart-3: oklch(0.439 0 0);
@@ -83,40 +91,30 @@
   --sidebar-ring: oklch(0.708 0 0);
 }
 
-.dark {
-  /* Banter dark palette (DESIGN.md): warm near-black tinted toward the coral hue,
-     never blue-black. Scene: in bed at 11pm, low glare. Coral #ff5c7a accent. */
-  --background: oklch(0.147 0.008 15);
-  --foreground: oklch(0.955 0.004 15);
-  --card: oklch(0.185 0.009 15);
-  --card-foreground: oklch(0.955 0.004 15);
-  --popover: oklch(0.185 0.009 15);
-  --popover-foreground: oklch(0.955 0.004 15);
-  --primary: #ff5c7a;
-  --primary-foreground: oklch(0.17 0.03 13);
-  --secondary: oklch(0.235 0.01 15);
-  --secondary-foreground: oklch(0.955 0.004 15);
-  --muted: oklch(0.235 0.01 15);
-  --muted-foreground: oklch(0.68 0.012 15);
-  --accent: oklch(0.235 0.01 15);
-  --accent-foreground: oklch(0.955 0.004 15);
-  --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(0.955 0.01 15 / 10%);
-  --input: oklch(0.955 0.01 15 / 15%);
-  --ring: #ff5c7a;
-  --chart-1: oklch(0.87 0 0);
-  --chart-2: oklch(0.556 0 0);
-  --chart-3: oklch(0.439 0 0);
-  --chart-4: oklch(0.371 0 0);
-  --chart-5: oklch(0.269 0 0);
-  --sidebar: oklch(0.205 0 0);
-  --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.269 0 0);
-  --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.556 0 0);
+/* Dark follows the system — same mono rules, ink CTA becomes white. */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0f0f0f;
+    --foreground: #ececec;
+    --card: #1a1a1a;
+    --card-foreground: #ececec;
+    --popover: #1a1a1a;
+    --popover-foreground: #ececec;
+    --primary: #ececec;
+    --primary-foreground: #0f0f0f;
+    --secondary: #242424;
+    --secondary-foreground: #ececec;
+    --muted: #242424;
+    --muted-foreground: #9b9b9b;
+    --accent: #242424;
+    --accent-foreground: #ececec;
+    --destructive: oklch(0.704 0.191 22.216);
+    --border: rgba(236, 236, 236, 0.1);
+    --input: rgba(236, 236, 236, 0.14);
+    --ring: #ececec;
+    --signal: #9b85ff;
+    --signal-dim: rgba(155, 133, 255, 0.13);
+  }
 }
 
 @layer base {
