@@ -126,6 +126,12 @@ returned the mismatch scenario perfectly. Details in HANDOFF-WEB.md).
 **Done when:** full-loop browser test (send → import reply → fact promoted),
 deploy, HANDOFF/TRANSFER/memory updated. R3 complete.
 
+**✅ SESSION 3 SHIPPED 2026-07-19 — R3 COMPLETE** (57 web tests; gym loop +
+flywheel attribution + "landed ↑" transparency all browser-verified. Details in
+HANDOFF-WEB.md). Render gotcha logged: don't generate store-derived values in a
+`[]`-deps effect (captures the empty hydration snapshot) — compute pure values
+in render, defer only Date.now().
+
 ---
 
 ## Carried invariants (every session)

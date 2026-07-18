@@ -3,6 +3,7 @@ import { getPersona } from "./persona";
 import { renderFact, selectFacts } from "./salience";
 import { analyzePace, paceContextLine } from "./timing";
 import { stageFor } from "./stage";
+import { getFlywheelSnapshot, scoreMapFor } from "./flywheel";
 
 /**
  * One place that assembles a coaching request (persona salience, pace, context tag)
@@ -20,8 +21,10 @@ export async function requestCoaching(args: {
   const ordered = args.messages.map((m, i) => ({ ...m, order: i }));
   const stage = stageFor(ordered.length, args.analyses);
   const persona = args.personaId ? getPersona(args.personaId) : undefined;
+  // Flywheel scores bend salience: facts that landed before surface more, flopped ones sink.
+  const outcomeScores = args.personaId ? scoreMapFor(getFlywheelSnapshot(), args.personaId) : undefined;
   const selected = persona
-    ? selectFacts(persona.facts, ordered.slice(-6), stage, Date.now())
+    ? selectFacts(persona.facts, ordered.slice(-6), stage, Date.now(), 4, outcomeScores)
     : [];
   const pace = paceContextLine(analyzePace(ordered), new Date());
   const contextLine = persona && persona.contextType !== "date"

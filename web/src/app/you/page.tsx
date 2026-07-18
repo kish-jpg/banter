@@ -7,9 +7,11 @@ import { PersonaPanel, usePersonas } from "@/components/persona-panel";
 import { DnaRadar } from "@/components/dna-radar";
 import { useXP } from "@/lib/useXP";
 import { practiceStreak, textingDNA, useGrades } from "@/lib/grades";
+import Link from "next/link";
 import { archetypeFor } from "@/lib/dna";
 import { ShareCard } from "@/components/share-card";
 import { SelfPanel } from "@/components/self-panel";
+import { drillDoneToday, useGymDrills } from "@/lib/gym";
 import {
   clearAll,
   getThreadsServerSnapshot,
@@ -23,10 +25,13 @@ export default function YouPage() {
   const grades = useGrades();
   const threads = useSyncExternalStore(subscribeThreads, getThreadsSnapshot, getThreadsServerSnapshot);
 
+  const gymDrills = useGymDrills();
+
   const dna = textingDNA(grades);
   const streak = practiceStreak(grades);
   const sentCount = threads.reduce((n, t) => n + (t.sentReplies?.length ?? 0), 0);
   const metCount = threads.filter((t) => t.outcome === "met").length;
+  const gymDue = dna !== null && !drillDoneToday(gymDrills);
 
   return (
     <main className="mx-auto flex w-full max-w-lg flex-1 flex-col px-4 pb-10 pt-6">
@@ -46,6 +51,23 @@ export default function YouPage() {
         {xp.into}/{xp.toNext} xp to level {xp.level + 1}
         {streak > 1 ? ` · ${streak} day practice streak 🔥` : ""}
       </p>
+
+      <Link
+        href="/gym"
+        className="card-tap mt-6 flex items-center justify-between p-4"
+      >
+        <div>
+          <p className="text-sm font-medium">the gym</p>
+          <p className="mt-0.5 text-xs text-muted-foreground">
+            {dna === null
+              ? "grade a few attempts to unlock daily drills"
+              : gymDue
+                ? "today's 3-minute drill is ready"
+                : "today's drill is done, back tomorrow"}
+          </p>
+        </div>
+        {gymDue && <span className="rounded-full bg-signal/12 px-2.5 py-0.5 text-xs font-medium text-signal">due</span>}
+      </Link>
 
       <section className="mt-8">
         <h2 className="text-[13px] font-medium lowercase text-muted-foreground">your texting dna</h2>

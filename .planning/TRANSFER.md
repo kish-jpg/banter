@@ -112,13 +112,15 @@ rehearsal recording, LLM frame classifier, sharer-XP settlement → R3/R4). Summ
   Fluent graduation tier. (PRD §9.)
 - **R5 Reach:** PWA share-target, Friend/Reconnect mode, desktop extension spike.
 
-R2 + R1 shipped 2026-07-17. Mono design overhaul + R3 Sessions 1 AND 2 shipped
-2026-07-19 (new identity per web/DESIGN.md; buckets v2 + self-persona +
-resonance; Framework Library v2 with 10 verified-citation entries, gate v2
-validators, conversationType/typeMismatch signal — engine 61 Deno tests,
-DEPLOYED). Next: **R3 Session 3 per `.planning/R3-PLAN.md`** — Practice Gym v1
-+ outcome attribution (web only, no engine deploy). Blocked on Kish: PostHog
-key (`NEXT_PUBLIC_POSTHOG_KEY` in Vercel), real-phone QA of the new design.
+R2 + R1 shipped 2026-07-17. **Mono design overhaul + ALL of R3 (Sessions 1-3)
+shipped 2026-07-19.** New identity per web/DESIGN.md; buckets v2 + self-persona
++ resonance; Framework Library v2 (10 verified-citation entries) + gate v2 +
+conversationType signal (engine deployed, 61 Deno tests); Practice Gym `/gym` +
+outcome-attribution flywheel with "landed ↑" transparency (57 web tests). R3 is
+DONE. Next candidates: **R4 Accounts & revenue** (PRD §9 — Supabase auth +
+Postgres sync, Plus subscription, Deep Thread Review SKU, unlocks sharer-side
+referral XP) or Phase F paywall skeleton. Blocked on Kish: PostHog key
+(`NEXT_PUBLIC_POSTHOG_KEY` in Vercel), real-phone QA of the new design.
 
 ---
 

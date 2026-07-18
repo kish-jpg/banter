@@ -18,6 +18,7 @@ import { ShareCard } from "@/components/share-card";
 import { fadeSeries } from "@/lib/readiness";
 import { useGrades } from "@/lib/grades";
 import { track } from "@/lib/analytics";
+import { responseDelta, scoreFacts } from "@/lib/flywheel";
 import { requestCoaching } from "@/lib/coaching";
 import { analyzePace, timingWatchOut } from "@/lib/timing";
 import { needsOwnAttemptFirst, shouldWalkAway, stageFor } from "@/lib/stage";
@@ -77,6 +78,26 @@ export default function ThreadPage({ params }: { params: Promise<{ id: string }>
       });
       const ordered = messages.map((m, i) => ({ ...m, order: i }));
       const history = [...(t.analyses ?? []), response.sentiment].slice(-5);
+
+      // Outcome attribution (R3 G): this import is the match's response to a round
+      // the user was assisted on. Score the facts injected that round by how they
+      // replied. ponytail: proxy is "prior read + injected facts + user has sent
+      // here" — noisy per-round, fine for a salience nudge and the future reranker.
+      const isNewImport = ordered.length > t.messages.length;
+      const prevRead = t.analyses?.[t.analyses.length - 1];
+      if (
+        isNewImport &&
+        t.personaId &&
+        prevRead &&
+        (t.injectedFactIds?.length ?? 0) > 0 &&
+        (t.sentReplies?.length ?? 0) > 0
+      ) {
+        const lastMatch = (msgs: TranscriptEntry[]) =>
+          [...msgs].reverse().find((m) => m.speaker === "match")?.text ?? "";
+        const delta = responseDelta(prevRead, response.sentiment, lastMatch(t.messages), lastMatch(ordered));
+        scoreFacts(t.personaId, t.injectedFactIds ?? [], delta);
+      }
+
       saveThread({
         ...t,
         messages: ordered,

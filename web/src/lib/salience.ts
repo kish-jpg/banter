@@ -60,17 +60,27 @@ export function noveltyWeight(fact: PersonaFact): number {
   return 1 / (1 + fact.timesUsed * fact.timesUsed);
 }
 
+/**
+ * Flywheel boost (R3 G): a fact's accumulated outcome score bends its salience.
+ * A fact that lands (positive) roughly doubles; one that flops (negative) sinks
+ * toward 40%. Bounded so no single round can bury or crown a fact outright.
+ */
+function boostFactor(score: number): number {
+  return 1 + Math.max(-0.6, Math.min(1, score / 3));
+}
+
 export function scoreFact(
   fact: PersonaFact,
   recentMessages: TranscriptEntry[],
   stage: Stage,
   now: number,
+  outcomeScore = 0,
 ): number {
   const stageW = STAGE_WEIGHTS[stage][fact.type] ?? 0.5;
   // Relevance floors at 0.15 so a fresh, stage-appropriate fact can still surface
   // when the current topic doesn't overlap it (that's how new threads get callbacks).
   const rel = Math.max(0.15, relevance(fact, recentMessages));
-  return rel * recencyWeight(fact, now) * noveltyWeight(fact) * stageW;
+  return rel * recencyWeight(fact, now) * noveltyWeight(fact) * stageW * boostFactor(outcomeScore);
 }
 
 /** Top-k facts for this turn, rendered for the engine's personaFacts field. */
@@ -80,9 +90,10 @@ export function selectFacts(
   stage: Stage,
   now: number,
   k = 4,
+  outcomeScores?: Map<string, number>,
 ): PersonaFact[] {
   return [...facts]
-    .map((f) => ({ f, s: scoreFact(f, recentMessages, stage, now) }))
+    .map((f) => ({ f, s: scoreFact(f, recentMessages, stage, now, outcomeScores?.get(f.id) ?? 0) }))
     .sort((a, b) => b.s - a.s)
     .slice(0, k)
     .filter(({ s }) => s > 0.05)

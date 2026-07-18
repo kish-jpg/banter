@@ -77,3 +77,17 @@ test("R3 buckets: open questions fuel the opening, fade by momentum", () => {
   assert.equal(opening[0].id, "oq");
   assert.equal(momentum[0].id, "log2");
 });
+
+test("flywheel boost: a landed fact outranks an equal one, a flopped fact sinks", () => {
+  const a = fact({ id: "a", text: "loves rock climbing on weekends", quote: "" });
+  const b = fact({ id: "b", text: "loves rock climbing on weekends", quote: "" });
+  const boosted = new Map([["a", 2]]); // a landed well before
+  const picked = selectFacts([a, b], msgs(["what are you into"]), "rapport", NOW, 1, boosted);
+  assert.equal(picked[0].id, "a");
+
+  const c = fact({ id: "c", text: "training for a half marathon", quote: "" });
+  const d = fact({ id: "d", text: "training for a half marathon", quote: "" });
+  const demoted = new Map([["c", -3]]); // c flopped repeatedly
+  const picked2 = selectFacts([c, d], msgs(["how's the running"]), "rapport", NOW, 1, demoted);
+  assert.equal(picked2[0].id, "d"); // the un-flopped one wins
+});

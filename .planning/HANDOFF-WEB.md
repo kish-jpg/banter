@@ -246,10 +246,50 @@ trusting dev-server verification of globals.css changes.
 - Test-stub note: sentiment stubs in Backend/tests now carry the two new
   fields; index.test.ts casts the JSON fixture (`as CoachingResponse["sentiment"]`).
 
+## R3 SESSION 3 SHIPPED (2026-07-19 — Practice Gym + outcome attribution, web only)
+
+**R3 COMPLETE.** No engine change this session (web-only per plan).
+
+- **Practice Gym** (`lib/gym.ts`, `/gym`): one drill a day from the user's OWN
+  history. weakestDim(dna) → a constraint for it → a real past match message
+  (collectMoments dedups + drops <16-char). Deterministic generation (rotates by
+  drills-done count, no Math.random) so it's pure and render-safe. Constraints
+  carry mechanical pre-checks (no-question → no "?"; few-words → ≤6) that reject
+  BEFORE a grade round-trip. Grade uses the standard `/api/coach` mode:"grade"
+  path (moment as a 1-message transcript). On success: recordGrade (feeds DNA +
+  practice streak, no threadId), recordDrill, gymXP (+8, ×1.5=12 at a 7-day
+  streak — below own-attempt XP so practice never outfarms real conversation),
+  daily cap via drillDoneToday. Entry card on `/you`.
+  - **Render gotcha (bit me, fixed):** first version generated the drill in a
+    `[]`-deps effect, which captured the HYDRATION-commit store snapshots
+    (empty) → permanent empty state. Fix: compute the pure drill in render from
+    live stores; defer ONLY the Date.now()-dependent doneToday/streak. Same
+    class as TRANSFER §6. If a store-derived value shows empty on a client page,
+    suspect a `[]`-deps effect capturing the hydration snapshot.
+- **Outcome attribution** (`lib/flywheel.ts`, `banter.flywheel`): after the user
+  sends and the match responds, responseDelta scores the round (~[-1,1]:
+  investment shift ×0.6 + length signal ×0.3 + asked-back +0.2). scoreFacts
+  applies it to that round's injectedFactIds (bounded ±3). Salience integration:
+  selectFacts gains an optional outcomeScores map; scoreFact multiplies by
+  boostFactor (landed ~2×, flopped ~0.4×, bounded). coaching.ts feeds
+  scoreMapFor into selectFacts. Attribution hook lives in the thread page
+  coach(): fires on a NEW import when there's a prior read + injected facts +
+  the user has sent (proxy, noisy per-round, commented — fine for a salience
+  nudge and the future reranker). Transparency: persona panel shows
+  "landed ↑ / hasn't landed ↓" per scored fact (nothing invisible shapes the
+  coaching).
+- Tests: 57 web (+12: gym, flywheel, salience-boost) · 61 Deno untouched-green ·
+  tsc/lint/build clean. Browser-verified full loop: drill targets naturalness
+  (weakest) → question pre-check rejects → valid attempt grades 3, records,
+  +8 XP, DNA 6→7, done-state; daily cap holds on reload; persona panel
+  "landed ↑" renders for a scored fact. Prod smoke: /gym, /you, grade path 200.
+
 ## Next phase (not yet built)
 
-- R3 Session 3 (R3-PLAN.md): Practice Gym v1 + outcome attribution
 - Phase F: paywall skeleton at value moments (PostHog wired, key pending)
+- R4 Accounts & revenue (PRD §9): Supabase auth + Postgres sync (all stores are
+  row-ready), Plus subscription, Deep Thread Review SKU, sharer-side referral XP
+- R5 Reach: PWA share-target, Friend/Reconnect mode, desktop extension spike
 - Shareable signal-read card (image export) - deferred from E
 - Supabase Postgres/auth sync for threads+XP+personas+grades (row-ready shapes)
 - Fact promotion loop: sentReplies ground truth exists; score fact ->

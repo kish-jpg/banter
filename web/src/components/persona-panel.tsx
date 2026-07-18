@@ -15,6 +15,7 @@ import {
   type FactType,
   type Persona,
 } from "@/lib/persona";
+import { landedLabel, scoreMapFor, useFlywheel } from "@/lib/flywheel";
 
 const CONTEXTS: ContextType[] = ["date", "friend", "business"];
 
@@ -109,6 +110,7 @@ const BUCKET_LABELS: Partial<Record<FactType, string>> = {
 export function PersonaPanel({ personaId }: { personaId: string }) {
   const personas = usePersonas();
   const persona = personas.find((p) => p.id === personaId);
+  const scores = scoreMapFor(useFlywheel(), personaId);
   const [open, setOpen] = useState(false);
   const [adding, setAdding] = useState("");
   const [addType, setAddType] = useState<FactType>("interest");
@@ -171,11 +173,25 @@ export function PersonaPanel({ personaId }: { personaId: string }) {
                           ×
                         </button>
                       </div>
-                      {f.type !== "open-question" && (
-                        <p className="mt-1 text-xs text-muted-foreground/70">
-                          {f.quote ? `they said: "${f.quote}"` : f.source === "manual" ? "added by you" : ""}
-                        </p>
-                      )}
+                      <div className="mt-1 flex items-center gap-2">
+                        {f.type !== "open-question" && (
+                          <p className="text-xs text-muted-foreground/70">
+                            {f.quote ? `they said: "${f.quote}"` : f.source === "manual" ? "added by you" : ""}
+                          </p>
+                        )}
+                        {(() => {
+                          const verdict = landedLabel(scores.get(f.id));
+                          if (!verdict) return null;
+                          return (
+                            <span
+                              className={`text-[11px] font-medium ${verdict === "landed" ? "text-signal" : "text-muted-foreground"}`}
+                              title="how they responded when this came up"
+                            >
+                              {verdict === "landed" ? "landed ↑" : "hasn't landed ↓"}
+                            </span>
+                          );
+                        })()}
+                      </div>
                     </div>
                   ))}
               </div>
