@@ -7,6 +7,9 @@ packages:
   RevenueCat:
     url: https://github.com/RevenueCat/purchases-ios.git
     from: "5.80.2"
+  PostHog:
+    url: https://github.com/PostHog/posthog-ios
+    from: "3.66.1"
 targets:
   BanterApp:
     type: application
@@ -18,6 +21,7 @@ targets:
       - package: BanterShared
       - package: RevenueCat
         product: RevenueCat
+      - package: PostHog
       # Embeds the .appex into the app bundle — without this the keyboard
       # never appears in Settings > Keyboards on any device (CR-02).
       - target: BanterKeyboard

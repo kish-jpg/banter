@@ -1,4 +1,5 @@
 import SwiftUI
+import PostHog
 
 /// Screen 4.1 — Onboarding Welcome (ONBD-01, 04-UI-SPEC.md). First screen a
 /// fresh install sees. Routes straight into the real screenshot -> confirm
@@ -27,6 +28,7 @@ struct WelcomeView: View {
                     .padding(.horizontal, Banter.Spacing.md)
 
                 Button {
+                    PostHogSDK.shared.capture("onboarding_started")
                     model.start()
                 } label: {
                     Text("Try It Now")

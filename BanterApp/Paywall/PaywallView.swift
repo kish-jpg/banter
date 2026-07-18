@@ -1,3 +1,4 @@
+import PostHog
 import SwiftUI
 import RevenueCat
 import BanterShared
@@ -67,6 +68,7 @@ struct PaywallView: View {
             }
         }
         .task {
+            PostHogSDK.shared.capture("paywall_viewed")
             await loadOffering()
         }
     }
@@ -211,6 +213,15 @@ struct PaywallView: View {
             let result = try await Purchases.shared.purchase(package: packageToPurchase)
             guard !result.userCancelled else { return }
             await entitlementManager.refresh()
+            // Identify the user with RevenueCat's stable customer ID so
+            // pre- and post-purchase events are tied to the same person.
+            PostHogSDK.shared.identify(result.customerInfo.originalAppUserId, userProperties: [
+                "is_premium": true
+            ])
+            PostHogSDK.shared.capture("subscription_started", properties: [
+                "trial_eligible": isTrialEligible,
+                "product_id": packageToPurchase.storeProduct.productIdentifier
+            ])
             showWelcomeToast = true
             Task {
                 try? await Task.sleep(for: .seconds(2))

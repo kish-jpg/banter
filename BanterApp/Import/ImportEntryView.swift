@@ -1,4 +1,5 @@
 import PhotosUI
+import PostHog
 import SwiftUI
 import UIKit
 
@@ -52,6 +53,7 @@ struct ImportEntryView: View {
                     .padding(.top, Banter.Spacing.md)
 
                     Button {
+                        PostHogSDK.shared.capture("paste_import_started")
                         withAnimation(reduceMotionAwareAnimation) {
                             isPasteModeActive = true
                         }
@@ -126,6 +128,7 @@ struct ImportEntryView: View {
                 withAnimation(reduceMotionAwareAnimation) { isPasteModeActive = true }
                 return
             }
+            PostHogSDK.shared.capture("screenshot_import_started")
             await model.importScreenshot(cgImage)
         } catch {
             withAnimation(reduceMotionAwareAnimation) { isPasteModeActive = true }
