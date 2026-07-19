@@ -183,7 +183,7 @@ export default function ThreadPage({ params }: { params: Promise<{ id: string }>
             const v = e.target.value.trim();
             if (v && v !== thread.label) renameThread(thread.id, v);
           }}
-          className="w-full truncate bg-transparent text-2xl font-semibold tracking-tight focus:outline-none"
+          className="w-full truncate bg-transparent font-serif text-[2rem] leading-none focus:outline-none"
         />
         <button
           aria-label="delete conversation"

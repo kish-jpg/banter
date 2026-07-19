@@ -1,11 +1,19 @@
 import type { Metadata, Viewport } from "next";
-import { Geist_Mono, Plus_Jakarta_Sans } from "next/font/google";
+import { Geist_Mono, Instrument_Serif, Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
 
-// Mono identity: Plus Jakarta Sans everywhere (kept on the legacy CSS var name
-// so the token layer doesn't change). Geist Mono stays registered for data labels.
+// Bloom identity: Plus Jakarta Sans for body (on the legacy --font-geist-sans var so
+// the token layer stays put), Instrument Serif for the display/editorial voice,
+// Geist Mono for data labels.
 const jakarta = Plus_Jakarta_Sans({
   variable: "--font-geist-sans",
+  subsets: ["latin"],
+});
+
+const instrumentSerif = Instrument_Serif({
+  weight: "400",
+  style: ["normal", "italic"],
+  variable: "--font-instrument-serif",
   subsets: ["latin"],
 });
 
@@ -21,10 +29,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#fcfcfc" },
-    { media: "(prefers-color-scheme: dark)", color: "#0f0f0f" },
-  ],
+  themeColor: "#f2ede2",
   width: "device-width",
   initialScale: 1,
   maximumScale: 1,
@@ -38,7 +43,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${jakarta.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${jakarta.variable} ${instrumentSerif.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">{children}</body>
     </html>

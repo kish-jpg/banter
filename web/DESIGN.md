@@ -1,69 +1,69 @@
-# Banter — Design System ("Mono", 2026-07-17 overhaul)
+# Banter — Design System ("Bloom", 2026-07-19)
 
-Kish rejected the warm-dark coral system outright (theme, color, typography).
-Direction he set: minimal, "white and blacks, one small accent". This file is the
-new source of truth; the old coral system is dead.
+Third identity. Mono (white/black + violet) is retired. Kish reviewed three warm
+directions generated in the claude.ai design canvas (Golden Hour, Bloom, Verdant)
+and chose **Bloom**: cream editorial, forest-green accent, hairline rules, a serif
+voice. Premium the way a beautiful book is.
 
 ## Theme
 
-**Both themes, system-following** (no forced dark class — Tailwind v4 media dark).
-Light: paper #fcfcfc, ink #141414. Dark: ground #0f0f0f, surface #1a1a1a,
-text #ececec. No hue tinting: true neutrals. The interface should read like a
-well-made notebook — the anti-RizzGPT (competitors are neon and loud; our users
-are the people repelled by that).
+**Committed single light world** (not system-following). The 11pm scene reframed as
+calm daylight paper: warm cream, low-glare, no harsh white. `color-scheme: light`.
+If a dark variant is ever wanted, derive it deliberately; do not auto-invert.
 
-## Color
+## Color (warm cream + ink + forest green)
 
-- Chrome is monochrome. CTAs are ink-filled: black on light, white on dark
-  (`--primary` = ink; never a colored button).
-- **The signal**: electric violet — #6d4aff light / #9b85ff dark (`--signal`,
-  `--signal-dim`; Tailwind `text-signal` / `bg-signal`). The blend of the social
-  spectrum (IG magenta + TikTok cyan/pink + Twitter blue → violet). It appears
-  ONLY when the app has something genuinely good to say:
-  - strong signal bands (dots, bars, band words)
-  - readiness "ready"
-  - rare resonance locks
-  - the wordmark's period
-  Warming/low states are ink at reduced opacity (foreground/45,
-  muted-foreground/40). Never violet on neutral or negative information.
-- Destructive stays semantic red, delete affordances only.
+- background: `#f2ede2` (cream paper)
+- card / popover: `#faf7ef` (soft raised paper)
+- foreground (ink): `#211c15`
+- muted-foreground: `#857c6c`
+- secondary / muted / accent (tints, avatars): `#e6e0d2`
+- border (hairline): `rgba(33,28,21,0.13)` — Bloom leans on hairline rules over filled cards
+- primary (ink CTA): `#211c15`, primary-foreground cream `#f2ede2`
+- **signal (forest green): `#4f7a52`**, signal-dim `rgba(79,122,82,0.13)`. Tailwind
+  `text-signal` / `bg-signal`. Appears ONLY on genuinely good news: strong bands,
+  readiness ready, rare resonance locks, wordmark period, "you met", "why this works",
+  "owned it", "due", the DNA radar, "landed ↑". Warming/low = ink at reduced opacity.
+- destructive: warm red, delete affordances only.
 
 ## Typography
 
-- **Plus Jakarta Sans** everywhere (loaded via next/font on the legacy
-  `--font-geist-sans` var so tokens didn't move). Friendly geometric; the face
-  carries the whole mono design.
-- Display: bold (700) with tracking-[-0.03em]. Screen h1: text-2xl semibold.
-  Body 15px. Labels lowercase 13px muted. Micro 11px.
-- Geist Mono remains registered for data labels if needed.
+- **Instrument Serif** (`--font-instrument-serif`, Tailwind `font-serif`) — the display
+  and editorial voice. Screen h1s, the wordmark `banter.`, person names, signal
+  sentences ("Warm and mutual"), and section subheads. 400 weight only (normal +
+  italic); at display size it reads as a serif headline, so drop bold on serif text.
+- Section labels use `.section-label` = `font-serif italic text-[15px] text-muted-foreground`
+  ("what you two share", "facts to cold memory", "what I'd send").
+- **Plus Jakarta Sans** — body, buttons, most UI text.
+- **Geist Mono** — data labels (band labels, "3 DUE", "where things stand", timestamps).
 
 ## Surfaces
 
-Same three levels as before (flat tint / card / interactive card), rounded-2xl,
-never nested borders. Cards are #ffffff on light (border rgba-ink-10%),
-#1a1a1a on dark.
+Cream cards (`#faf7ef`) with hairline borders, rounded-2xl; many sections use hairline
+top-rules instead of filled cards. Never a bordered card inside a bordered card. Read
+bars are thin (3px) hairline tracks with green (strong) or ink-40% (warming) fill,
+Geist Mono labels.
 
 ## Components
 
-.btn-primary (ink fill) / .btn-secondary / .chip / .chip-active / .card-tap in
-globals.css @layer components — unchanged API, retinted by tokens. All
-interactive states preserved; focus ring is ink.
+.btn-primary (ink fill, cream text) / .btn-secondary / .chip / .chip-active /
+.card-tap (hover border → signal green) / .section-label — in globals.css. Same API,
+retinted by tokens.
 
 ## Motion
 
-Unchanged rules: 150–250ms ease-out-quart, state changes only, skeletons in
-place, prefers-reduced-motion honored globally. No glows, no gradients — the
-landing hero is now type + the live demo in a plain border.
+Unchanged: 150–250ms ease-out, state changes only, skeletons, reduced-motion honored.
+No glows, no gradients. The serif + cream + hairlines carry the premium feel, not effects.
 
 ## Share cards (/api/card/*)
 
-Mono dark ground always (marketing surface): #0f0f0f, ink text, violet signal
-on strong bands / wordmark dot / ref pill. Font: Plus Jakarta woff from
-@fontsource (satori-compatible).
+Cream ground `#f2ede2`, ink text, forest-green signal, Instrument Serif for the big
+headline / archetype name / "we met." (loaded from @fontsource/instrument-serif woff),
+Plus Jakarta body. DNA radar fill/stroke green.
 
 ## Bans
 
 - Raw percentages for reads of a person (bands only) — unchanged.
-- Colored buttons; violet on anything that isn't good news.
-- Neon, gradients-as-decoration, glassmorphism, glows.
-- Identical card grids; thread list stays avatar rows.
+- Violet anything (retired). Green only on good news, never neutral/negative.
+- Neon, decorative gradients, glassmorphism, glows.
+- Identical card grids; the home is people rows with hairline rules.

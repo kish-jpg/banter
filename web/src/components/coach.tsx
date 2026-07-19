@@ -123,7 +123,7 @@ function ReadStrip({
     <section className="rounded-2xl border border-border bg-card">
       <button onClick={() => setOpen(!open)} className="flex w-full items-center gap-3 p-3.5 text-left">
         <div className="min-w-0 flex-1">
-          <p className="truncate text-sm">{sentiment.signal}</p>
+          <p className="truncate font-serif text-[16px]">{sentiment.signal}</p>
           <div className="mt-1.5 flex items-center gap-3">
             <span className="rounded-full bg-secondary px-2 py-0.5 text-[11px] text-muted-foreground">
               {STAGE_LABELS[stage]}
@@ -416,9 +416,7 @@ export function Coach({
       ) : (
         <>
           <div>
-            <h2 className="mb-3 text-[13px] font-medium lowercase text-muted-foreground">
-              what I&apos;d send
-            </h2>
+            <h2 className="mb-3 section-label">what I&apos;d send</h2>
             {loading ? (
               /* Skeletons in place while re-coaching - the shape of what's coming. */
               <div className="flex flex-col gap-3">

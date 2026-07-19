@@ -38,7 +38,7 @@ export default function YouPage() {
       <AppHeader backHref="/" />
 
       <div className="flex items-baseline justify-between">
-        <h1 className="text-2xl font-semibold tracking-tight">you</h1>
+        <h1 className="font-serif text-[2.75rem] leading-none">you</h1>
         <span className="text-sm text-muted-foreground">level {xp.level}</span>
       </div>
       <div className="mt-3 h-1.5 overflow-hidden rounded-full bg-secondary">
@@ -70,7 +70,7 @@ export default function YouPage() {
       </Link>
 
       <section className="mt-8">
-        <h2 className="text-[13px] font-medium lowercase text-muted-foreground">your texting dna</h2>
+        <h2 className="section-label">your texting dna</h2>
         {dna ? (
           <div className="mt-3 rounded-2xl border border-border bg-card p-4 pt-6">
             <DnaRadar values={dna} />
@@ -128,14 +128,14 @@ export default function YouPage() {
       )}
 
       <section className="mt-8">
-        <h2 className="text-[13px] font-medium lowercase text-muted-foreground">how you sound</h2>
+        <h2 className="section-label">how you sound</h2>
         <div className="mt-3">
           <ProfileCard persistent />
         </div>
       </section>
 
       <section className="mt-8">
-        <h2 className="text-[13px] font-medium lowercase text-muted-foreground">who you are in chat</h2>
+        <h2 className="section-label">who you are in chat</h2>
         <div className="mt-3">
           <SelfPanel personaId={null} />
         </div>
@@ -143,7 +143,7 @@ export default function YouPage() {
 
       {personas.length > 0 && (
         <section className="mt-8">
-          <h2 className="text-[13px] font-medium lowercase text-muted-foreground">people</h2>
+          <h2 className="section-label">people</h2>
           <div className="mt-3 flex flex-col gap-3">
             {personas.map((p) => (
               <PersonaPanel key={p.id} personaId={p.id} />

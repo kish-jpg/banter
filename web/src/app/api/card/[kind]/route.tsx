@@ -12,15 +12,16 @@ import path from "node:path";
 
 export const runtime = "nodejs";
 
-// Mono identity: near-black ground, ink text, one violet signal for the good news.
-const BG = "#0f0f0f";
-const SURFACE = "#1a1a1a";
-const TRACK = "#262626";
-const BORDER = "rgba(236,236,236,0.10)";
-const FG = "#ececec";
-const MUTED = "#9b9b9b";
-const CORAL = "#9b85ff"; // the signal violet (dark-ground variant)
-const CORAL_DIM = "rgba(155,133,255,0.14)";
+// Bloom identity: warm cream paper, ink text, one forest-green signal for good news.
+const BG = "#f2ede2";
+const SURFACE = "#faf7ef";
+const TRACK = "rgba(33,28,21,0.1)";
+const BORDER = "rgba(33,28,21,0.13)";
+const FG = "#211c15";
+const MUTED = "#857c6c";
+const CORAL = "#4f7a52"; // the signal forest green
+const CORAL_DIM = "rgba(79,122,82,0.14)";
+const WARM_FILL = "rgba(33,28,21,0.38)";
 
 const BAND_FILL: Record<string, number> = { low: 0.3, warming: 0.62, strong: 0.92 };
 
@@ -37,9 +38,22 @@ async function jakarta(weight: string) {
   );
 }
 
-function Wordmark({ size = 44 }: { size?: number }) {
+async function serif() {
+  return readFile(
+    path.join(
+      process.cwd(),
+      "node_modules",
+      "@fontsource",
+      "instrument-serif",
+      "files",
+      "instrument-serif-latin-400-normal.woff",
+    ),
+  );
+}
+
+function Wordmark({ size = 46 }: { size?: number }) {
   return (
-    <div style={{ display: "flex", fontSize: size, fontWeight: 600, color: FG }}>
+    <div style={{ display: "flex", fontFamily: "Serif", fontSize: size, color: FG }}>
       banter<span style={{ color: CORAL }}>.</span>
     </div>
   );
@@ -78,7 +92,7 @@ function BandRow({ label, band }: { label: string; band: string }) {
             display: "flex",
             width: `${fill * 100}%`,
             height: 18,
-            backgroundColor: band === "strong" ? CORAL : band === "warming" ? "#8a8a8a" : "#4a4a4a",
+            backgroundColor: band === "strong" ? CORAL : WARM_FILL,
             borderRadius: 999,
           }}
         />
@@ -133,11 +147,10 @@ function ReadCard(p: URLSearchParams, tall: boolean) {
         <div
           style={{
             display: "flex",
-            fontSize: tall ? 92 : 76,
-            fontWeight: 700,
+            fontFamily: "Serif",
+            fontSize: tall ? 108 : 88,
             color: FG,
-            lineHeight: 1.08,
-            letterSpacing: "-0.02em",
+            lineHeight: 1.02,
           }}
         >
           {p.get("sig") ?? "the read is in"}
@@ -226,7 +239,7 @@ function DnaCard(p: URLSearchParams, tall: boolean) {
           <line x1={c - R} y1={c} x2={c + R} y2={c} stroke={BORDER} strokeWidth={2} />
           <polygon
             points={radarPoints(dims, c, c, R)}
-            fill="rgba(255,92,122,0.22)"
+            fill="rgba(79,122,82,0.20)"
             stroke={CORAL}
             strokeWidth={5}
           />
@@ -250,10 +263,10 @@ function DnaCard(p: URLSearchParams, tall: boolean) {
         <div
           style={{
             display: "flex",
-            fontSize: tall ? 96 : 80,
-            fontWeight: 700,
+            fontFamily: "Serif",
+            fontSize: tall ? 108 : 90,
             color: FG,
-            letterSpacing: "-0.02em",
+            lineHeight: 1.02,
           }}
         >
           {p.get("a") ?? "The Slow Burner"}
@@ -312,10 +325,10 @@ function MetCard(p: URLSearchParams, tall: boolean) {
         <div
           style={{
             display: "flex",
-            fontSize: tall ? 150 : 120,
-            fontWeight: 700,
+            fontFamily: "Serif",
+            fontSize: tall ? 168 : 132,
             color: FG,
-            letterSpacing: "-0.02em",
+            lineHeight: 1,
           }}
         >
           we met<span style={{ color: CORAL }}>.</span>
@@ -356,10 +369,11 @@ export async function GET(req: Request, ctx: { params: Promise<{ kind: string }>
   else if (kind === "met") body = MetCard(p, tall);
   else return new Response("unknown card", { status: 404 });
 
-  const [regular, semibold, bold] = await Promise.all([
+  const [regular, semibold, bold, serifData] = await Promise.all([
     jakarta("400"),
     jakarta("600"),
     jakarta("700"),
+    serif(),
   ]);
 
   return new ImageResponse(body, {
@@ -369,6 +383,7 @@ export async function GET(req: Request, ctx: { params: Promise<{ kind: string }>
       { name: "Jakarta", data: regular, weight: 400, style: "normal" },
       { name: "Jakarta", data: semibold, weight: 600, style: "normal" },
       { name: "Jakarta", data: bold, weight: 700, style: "normal" },
+      { name: "Serif", data: serifData, weight: 400, style: "normal" },
     ],
   });
 }

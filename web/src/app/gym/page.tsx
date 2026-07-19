@@ -105,7 +105,7 @@ export default function GymPage() {
       <AppHeader backHref="/you" />
 
       <div className="flex items-baseline justify-between">
-        <h1 className="text-2xl font-semibold tracking-tight">the gym</h1>
+        <h1 className="font-serif text-[2.5rem] leading-none">the gym</h1>
         {streak > 1 && <span className="text-sm text-signal">{streak} day streak</span>}
       </div>
       <p className="mt-1 text-sm text-muted-foreground">
@@ -142,7 +142,7 @@ export default function GymPage() {
             today&apos;s drill · {DIM_HINT[drill.dim]}
           </p>
           <div className="mt-3 rounded-2xl border border-border bg-card p-4">
-            <p className="text-[11px] lowercase tracking-wide text-muted-foreground">they said</p>
+            <p className="font-mono text-[11px] text-muted-foreground">they said</p>
             <p className="mt-1 text-[15px]">{drill.momentText}</p>
             <div className="mt-4 rounded-xl bg-secondary/60 p-3">
               <p className="text-sm">

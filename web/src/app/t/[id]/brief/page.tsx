@@ -18,7 +18,7 @@ import { ResonancePanel } from "@/components/resonance-panel";
  */
 
 function SectionLabel({ children }: { children: React.ReactNode }) {
-  return <h2 className="text-[13px] font-medium lowercase text-muted-foreground">{children}</h2>;
+  return <h2 className="section-label">{children}</h2>;
 }
 
 /** Card front: enough to jog, not enough to read. First words only. */
@@ -156,7 +156,7 @@ export default function BriefPage({ params }: { params: Promise<{ id: string }> 
     <main className="mx-auto flex w-full max-w-lg flex-1 flex-col px-4 pb-10 pt-6">
       <AppHeader backHref={`/t/${thread.id}`} />
 
-      <h1 className="text-2xl font-semibold tracking-tight">meeting {persona.name}</h1>
+      <h1 className="font-serif text-[2.5rem] leading-none">meeting {persona.name}</h1>
 
       <section className="mt-4 rounded-2xl border border-border bg-card p-4">
         <div className="flex items-baseline justify-between">

@@ -9,7 +9,8 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
-  --font-heading: var(--font-sans);
+  --font-serif: var(--font-instrument-serif);
+  --font-heading: var(--font-instrument-serif);
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -51,30 +52,32 @@
 }
 
 :root {
-  /* Banter "Mono" (DESIGN.md): white and blacks, type does the work, ink-filled
-     CTAs. One signal color — electric violet, the blend of the social spectrum —
-     appears ONLY when the app has something genuinely good to say (strong bands,
-     readiness "ready", rare resonance locks, the win moments). Light theme. */
-  --background: #fcfcfc;
-  --foreground: #141414;
-  --card: #ffffff;
-  --card-foreground: #141414;
-  --popover: #ffffff;
-  --popover-foreground: #141414;
-  --primary: #141414;
-  --primary-foreground: #fcfcfc;
-  --secondary: #f1f1f1;
-  --secondary-foreground: #141414;
-  --muted: #f1f1f1;
-  --muted-foreground: #6f6f6f;
-  --accent: #f1f1f1;
-  --accent-foreground: #141414;
-  --destructive: oklch(0.577 0.245 27.325);
-  --border: rgba(20, 20, 20, 0.1);
-  --input: rgba(20, 20, 20, 0.14);
-  --ring: #141414;
-  --signal: #6d4aff;
-  --signal-dim: rgba(109, 74, 255, 0.1);
+  /* Banter "Bloom" (DESIGN.md): warm cream paper, deep forest-green ink accent,
+     hairline rules, a serif voice (Instrument Serif). Premium the way a beautiful
+     book is. The forest-green "signal" appears ONLY on genuinely good news — strong
+     bands, readiness ready, rare resonance locks, the win moments. A committed
+     single light world (the 11pm scene reframed as calm daylight paper). */
+  color-scheme: light;
+  --background: #f2ede2;
+  --foreground: #211c15;
+  --card: #faf7ef;
+  --card-foreground: #211c15;
+  --popover: #faf7ef;
+  --popover-foreground: #211c15;
+  --primary: #211c15;
+  --primary-foreground: #f2ede2;
+  --secondary: #e6e0d2;
+  --secondary-foreground: #211c15;
+  --muted: #e6e0d2;
+  --muted-foreground: #857c6c;
+  --accent: #e6e0d2;
+  --accent-foreground: #211c15;
+  --destructive: oklch(0.55 0.2 27);
+  --border: rgba(33, 28, 21, 0.13);
+  --input: rgba(33, 28, 21, 0.18);
+  --ring: #211c15;
+  --signal: #4f7a52;
+  --signal-dim: rgba(79, 122, 82, 0.13);
   --chart-1: oklch(0.87 0 0);
   --chart-2: oklch(0.556 0 0);
   --chart-3: oklch(0.439 0 0);
@@ -89,32 +92,6 @@
   --sidebar-accent-foreground: oklch(0.205 0 0);
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
-}
-
-/* Dark follows the system — same mono rules, ink CTA becomes white. */
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0f0f0f;
-    --foreground: #ececec;
-    --card: #1a1a1a;
-    --card-foreground: #ececec;
-    --popover: #1a1a1a;
-    --popover-foreground: #ececec;
-    --primary: #ececec;
-    --primary-foreground: #0f0f0f;
-    --secondary: #242424;
-    --secondary-foreground: #ececec;
-    --muted: #242424;
-    --muted-foreground: #9b9b9b;
-    --accent: #242424;
-    --accent-foreground: #ececec;
-    --destructive: oklch(0.704 0.191 22.216);
-    --border: rgba(236, 236, 236, 0.1);
-    --input: rgba(236, 236, 236, 0.14);
-    --ring: #ececec;
-    --signal: #9b85ff;
-    --signal-dim: rgba(155, 133, 255, 0.13);
-  }
 }
 
 @layer base {
@@ -161,7 +138,11 @@
   }
   /* Interactive card: tappable surfaces lift on hover, settle on press. */
   .card-tap {
-    @apply rounded-2xl border border-border bg-card transition-[border-color,transform] duration-150 ease-out hover:border-primary/40 active:scale-[0.995];
+    @apply rounded-2xl border border-border bg-card transition-[border-color,transform] duration-150 ease-out hover:border-signal/40 active:scale-[0.995];
+  }
+  /* Bloom section label: the serif-italic editorial subhead ("what you two share"). */
+  .section-label {
+    @apply font-serif text-[15px] italic text-muted-foreground;
   }
 }
 

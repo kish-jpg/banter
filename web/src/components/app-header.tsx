@@ -17,7 +17,7 @@ export function AppHeader({ backHref }: { backHref?: string }) {
             ←
           </Link>
         )}
-        <Link href="/" className="text-lg font-semibold tracking-tight">
+        <Link href="/" className="font-serif text-xl">
           banter<span className="text-signal">.</span>
         </Link>
       </div>

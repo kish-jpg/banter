@@ -23,15 +23,17 @@ import type { Sentiment } from "@/lib/types";
 function BandRow({ label, value }: { label: string; value: number }) {
   const b = band(value);
   return (
-    <div className="flex items-center gap-2.5 text-xs">
-      <span className="w-[70px] text-muted-foreground">{label}</span>
-      <span className="h-1.5 flex-1 overflow-hidden rounded-full bg-secondary">
+    <div className="flex items-center gap-2.5">
+      <span className="w-[74px] font-mono text-[11px] text-muted-foreground">{label}</span>
+      <span className="relative h-[3px] flex-1 bg-foreground/12">
         <span
-          className={`block h-full rounded-full ${b === "strong" ? "bg-signal" : "bg-foreground/40"}`}
+          className={`absolute left-0 top-0 h-[3px] ${b === "strong" ? "bg-signal" : "bg-foreground/40"}`}
           style={{ width: `${Math.round(value * 100)}%` }}
         />
       </span>
-      <span className={`w-[52px] text-right font-medium ${b === "strong" ? "text-signal" : ""}`}>{b}</span>
+      <span className={`w-[52px] text-right font-mono text-[11px] font-medium ${b === "strong" ? "text-signal" : "text-muted-foreground"}`}>
+        {b}
+      </span>
     </div>
   );
 }
@@ -76,7 +78,7 @@ export default function PersonHub({ params }: { params: Promise<{ id: string }> 
       <AppHeader backHref="/" />
 
       <div className="flex items-center gap-3">
-        <h1 className="text-2xl font-semibold tracking-tight">{persona?.name ?? thread.label}</h1>
+        <h1 className="font-serif text-[2.5rem] leading-none">{persona?.name ?? thread.label}</h1>
         {persona && <span className="chip px-2.5 py-1 text-xs">{persona.contextType}</span>}
         {thread.outcome === "met" && <span className="text-sm">🎉</span>}
       </div>
@@ -84,8 +86,8 @@ export default function PersonHub({ params }: { params: Promise<{ id: string }> 
 
       {read ? (
         <section className="mt-5 rounded-2xl border border-border bg-card p-4">
-          <p className="text-[11px] lowercase tracking-wide text-muted-foreground">where things stand</p>
-          <p className="mt-1 mb-3 text-sm font-medium">{read.signal}</p>
+          <p className="font-mono text-[11px] text-muted-foreground">where things stand</p>
+          <p className="mt-1.5 mb-4 font-serif text-[18px] leading-snug">{read.signal}</p>
           <div className="flex flex-col gap-2">
             <BandRow label="interest" value={read.factors.interest} />
             <BandRow label="warmth" value={read.factors.warmth} />
@@ -102,7 +104,7 @@ export default function PersonHub({ params }: { params: Promise<{ id: string }> 
       {persona && (
         <>
           <section className="mt-6">
-            <p className="mb-2 text-[13px] font-medium lowercase text-muted-foreground">what you two share</p>
+            <p className="mb-2 section-label">what you two share</p>
             <ResonancePanel personaId={persona.id} />
           </section>
 

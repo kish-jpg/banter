@@ -47,7 +47,7 @@ export default function Home() {
   if (!hydrated) {
     return (
       <main className="mx-auto flex w-full max-w-lg flex-1 flex-col px-4 pt-6">
-        <p className="text-lg font-semibold tracking-tight">
+        <p className="font-serif text-xl">
           banter<span className="text-signal">.</span>
         </p>
       </main>
@@ -57,11 +57,11 @@ export default function Home() {
   if (threads.length === 0) {
     return (
       <main className="relative mx-auto flex w-full max-w-lg flex-1 flex-col overflow-x-clip px-4 pb-10 pt-6">
-        <p className="text-lg font-semibold tracking-tight">
+        <p className="font-serif text-xl">
           banter<span className="text-signal">.</span>
         </p>
 
-        <h1 className="mt-9 text-[2.5rem] font-bold leading-[1.05] tracking-[-0.03em]">
+        <h1 className="mt-9 font-serif text-[3.25rem] leading-[1.02]">
           Know what
           <br />
           to say<span className="text-signal">.</span>
@@ -102,7 +102,8 @@ export default function Home() {
     <main className="mx-auto flex w-full max-w-lg flex-1 flex-col px-4 pb-10 pt-6">
       <AppHeader />
 
-      <h1 className="text-2xl font-semibold tracking-tight">your people</h1>
+      <h1 className="font-serif text-[2.75rem] leading-none">your people</h1>
+      <p className="mt-1 section-label">the light&rsquo;s good on one of these</p>
 
       {/* Avatar rows, not a card grid: each row is a person and where things stand. */}
       <div className="mt-3 flex flex-col divide-y divide-border/60">

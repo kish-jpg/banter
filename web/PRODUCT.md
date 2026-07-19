@@ -24,9 +24,11 @@ zero clutter, trustworthy; theme follows their system (mono light + mono dark).
 
 ## Brand and tone
 
-- Wordmark: lowercase "banter." with a violet period. Mono identity (2026-07-17):
-  white/blacks, ink-filled CTAs, one violet signal (#6d4aff / #9b85ff) reserved for
-  genuinely good news. Type: Plus Jakarta Sans.
+- Wordmark: lowercase "banter." (Instrument Serif) with a forest-green period.
+  Identity "Bloom" (2026-07-19): warm cream editorial, ink text, hairline rules,
+  one forest-green signal (#4f7a52) reserved for genuinely good news. Type:
+  Instrument Serif (display/voice) + Plus Jakarta Sans (body) + Geist Mono (data).
+  Committed light theme.
 - Voice: a warm, direct friend looking over your shoulder. Never robotic, never clinical,
   never bro-y. Lowercase-leaning UI labels.
 - Ethics are part of the brand: evidence-based psychology with citations, PUA tactics
