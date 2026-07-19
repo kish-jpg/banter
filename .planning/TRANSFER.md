@@ -112,8 +112,11 @@ rehearsal recording, LLM frame classifier, sharer-XP settlement → R3/R4). Summ
   Fluent graduation tier. (PRD §9.)
 - **R5 Reach:** PWA share-target, Friend/Reconnect mode, desktop extension spike.
 
-R2 + R1 shipped 2026-07-17. **Mono design overhaul + ALL of R3 (Sessions 1-3)
-shipped 2026-07-19.** New identity per web/DESIGN.md; buckets v2 + self-persona
+R2 + R1 shipped 2026-07-17. **DESIGN IS NOW "BLOOM"** (2026-07-19, commit f6ba5db,
+the current live identity — Mono/violet retired): cream editorial paper + forest-green
+signal #4f7a52 + Instrument Serif voice, committed light theme; see web/DESIGN.md.
+**Mono design overhaul (superseded by Bloom) + ALL of R3 (Sessions 1-3)
+shipped 2026-07-19.** Buckets v2 + self-persona
 + resonance; Framework Library v2 (10 verified-citation entries) + gate v2 +
 conversationType signal (engine deployed, 61 Deno tests); Practice Gym `/gym` +
 outcome-attribution flywheel with "landed ↑" transparency (57 web tests). R3 is
