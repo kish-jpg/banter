@@ -316,6 +316,39 @@ first (artifact, he picked option A = hub as its own screen), then built.
 - **Watch (PostHog live):** read_shown-per-session for whether the hub tap costs
   activation. Fallback if it drags: collapse hub into a pinned coach header.
 
+## THE MIRROR SHIPPED (2026-07-19 — anti-chatfishing, Kish's core-thesis feature)
+
+Kish's own request: a "personality meter" comparing the AI-conversation voice to
+the user's real voice, so they close the gap and don't chatfish before a date.
+Shaped + mocked first (artifact, he approved "looks right, go — call it the mirror").
+
+- **lib/voice.ts** (pure heuristic, no engine): `fingerprint(texts)` → 4 axes
+  0..1 — playful (emoji/laughter/exclaim), elaborate (avg words), declarative
+  (1 − question rate), polished (1 − informality markers). Cold-start guard
+  (< 3 msgs → null). `divergence` / `authenticity` (1 − dist) / `authenticityBand`
+  (not yet / getting there / this is you, cutoffs 0.5/0.78) / `gapNudge` (names the
+  widest axis + direction) / `reliance`. 8 tests.
+- **real-you** = the user's own graded attempts + gym reps → needed persisting the
+  attempt TEXT: `GradeRecord.text` (additive), passed by YourTurn (`attempt`) and
+  gym (`recordGrade(g, undefined, attempt)`). **chat-you** = the assisted replies
+  they sent (thread.sentReplies text). Both derived from stores on device — NO new
+  store.
+- **components/mirror.tsx**: `VoiceRadar` (two overlaid shapes — real green fill,
+  chat ink dashed, 4 axes), full `Mirror` (radar + authenticity band + gapNudge +
+  "% your own words"), compact `AuthenticityLine` (paired axis dots + band + nudge).
+  `/mirror` route + card on `/you`; "meeting as yourself" `AuthenticityLine` on each
+  person hub.
+- 65 web tests (+8), tsc/lint/build clean. Browser-verified on a seeded
+  casual-real / polished-chat corpus: mirror = "not yet", nudge correctly
+  "chat-you runs more polished and edited than the real you", 57% own-words; hub
+  line + 8 paired dots render. Prod smoke green. Commit 252ac61.
+- **Ceiling / next**: heuristic catches the main tells; an LLM voice-similarity
+  pass would deepen it (R4+). Could fold authenticity into the readiness/ready-to-
+  meet gate as a formal 3rd condition (currently surfaced alongside, not weighted in).
+- **Gotcha logged**: dev server had a STALE instance on :3000 while the new one ran
+  on :3001 — a new route 404'd on :3000. Check the dev-server log for the actual
+  port before browser-verifying a new route.
+
 ## Next phase (not yet built)
 
 - Phase F: paywall skeleton at value moments (PostHog wired, key LIVE)

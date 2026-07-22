@@ -115,8 +115,11 @@ rehearsal recording, LLM frame classifier, sharer-XP settlement → R3/R4). Summ
 R2 + R1 shipped 2026-07-17. **DESIGN IS NOW "BLOOM"** (2026-07-19, commit f6ba5db,
 the current live identity — Mono/violet retired): cream editorial paper + forest-green
 signal #4f7a52 + Instrument Serif voice, committed light theme; see web/DESIGN.md.
-**Mono design overhaul (superseded by Bloom) + ALL of R3 (Sessions 1-3)
-shipped 2026-07-19.** Buckets v2 + self-persona
+**THE MIRROR shipped 2026-07-19** (commit 252ac61) — Kish's anti-chatfishing
+core-thesis feature: chat-you vs real-you voice fingerprint (lib/voice.ts, 4
+personality axes), /mirror screen + per-person "meeting as yourself" on hubs;
+persists own-attempt text (GradeRecord.text). **Mono design overhaul (superseded
+by Bloom) + ALL of R3 (Sessions 1-3) shipped 2026-07-19.** Buckets v2 + self-persona
 + resonance; Framework Library v2 (10 verified-citation entries) + gate v2 +
 conversationType signal (engine deployed, 61 Deno tests); Practice Gym `/gym` +
 outcome-attribution flywheel with "landed ↑" transparency (57 web tests). R3 is
