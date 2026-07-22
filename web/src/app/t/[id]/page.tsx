@@ -5,6 +5,7 @@ import Link from "next/link";
 import { AppHeader } from "@/components/app-header";
 import { usePersonas, PersonaPanel } from "@/components/persona-panel";
 import { ResonancePanel } from "@/components/resonance-panel";
+import { AuthenticityLine } from "@/components/mirror";
 import { band, stageFor, STAGE_LABELS } from "@/lib/stage";
 import { useGrades } from "@/lib/grades";
 import { debtList, useLoops } from "@/lib/loops";
@@ -106,6 +107,10 @@ export default function PersonHub({ params }: { params: Promise<{ id: string }> 
           <section className="mt-6">
             <p className="mb-2 section-label">what you two share</p>
             <ResonancePanel personaId={persona.id} />
+          </section>
+
+          <section className="mt-6">
+            <AuthenticityLine threadId={thread.id} />
           </section>
 
           {readinessWord && (

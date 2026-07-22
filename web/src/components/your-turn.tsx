@@ -114,7 +114,7 @@ export function YourTurn({
       const points = attemptXP(g.overallScore, false);
       setGrade(g);
       setEarned(points);
-      recordGrade(g, conversationId);
+      recordGrade(g, conversationId, attempt);
       track("own_attempt_graded", { score: g.overallScore });
       onXP(points);
       onGraded();

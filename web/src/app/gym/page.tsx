@@ -85,7 +85,7 @@ export default function GymPage() {
       const data = await res.json();
       if (!res.ok) throw new Error(data.error ?? "grading failed");
       const g = data as GradeResponse;
-      recordGrade(g); // feeds DNA + practice streak (no threadId: not a thread)
+      recordGrade(g, undefined, attempt); // feeds DNA + practice streak + the mirror (no threadId: not a thread)
       recordDrill(drill.momentText, drill.constraint.id, drill.dim, g.overallScore);
       const streak = gymStreak([...drills, { id: "", at: Date.now(), momentText: "", constraintId: "", dim: drill.dim, grade: 0 }]);
       const points = gymXP(streak);

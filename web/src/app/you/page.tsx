@@ -69,6 +69,14 @@ export default function YouPage() {
         {gymDue && <span className="rounded-full bg-signal/12 px-2.5 py-0.5 text-xs font-medium text-signal">due</span>}
       </Link>
 
+      <Link href="/mirror" className="card-tap mt-3 flex items-center justify-between p-4">
+        <div>
+          <p className="text-sm font-medium">the mirror</p>
+          <p className="mt-0.5 text-xs text-muted-foreground">how close is chat-you to the real you?</p>
+        </div>
+        <span className="text-muted-foreground">›</span>
+      </Link>
+
       <section className="mt-8">
         <h2 className="section-label">your texting dna</h2>
         {dna ? (
