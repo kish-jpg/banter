@@ -342,9 +342,16 @@ Shaped + mocked first (artifact, he approved "looks right, go — call it the mi
   casual-real / polished-chat corpus: mirror = "not yet", nudge correctly
   "chat-you runs more polished and edited than the real you", 57% own-words; hub
   line + 8 paired dots render. Prod smoke green. Commit 252ac61.
-- **Ceiling / next**: heuristic catches the main tells; an LLM voice-similarity
-  pass would deepen it (R4+). Could fold authenticity into the readiness/ready-to-
-  meet gate as a formal 3rd condition (currently surfaced alongside, not weighted in).
+- **Follow-ups SHIPPED same day (commit ba5c1ee):** (1) authenticity is now a real
+  ready-to-meet GATE — readinessScore takes `authenticity` (not `independence`),
+  reweighted 0.35 facts / 0.3 stories / 0.35 authenticity, so knowing her cold while
+  chatfishing hard no longer reads "ready"; hub + brief feed it via
+  `voiceMatch(own, assisted) ?? 0.5`; brief shows the 3-condition copy + the
+  AuthenticityLine; `independenceRatio` removed. (2) **the deep read** —
+  `/api/voice-compare` (Gemini temp-0) returns similarity + one specific
+  voice-gap observation; `DeepRead` on /mirror mounts only when both voices
+  exist (no hydration trap), silent on failure. Prod-verified: similarity
+  0.1-0.25 with sharp observations on divergent voices.
 - **Gotcha logged**: dev server had a STALE instance on :3000 while the new one ran
   on :3001 — a new route 404'd on :3000. Check the dev-server log for the actual
   port before browser-verifying a new route.
