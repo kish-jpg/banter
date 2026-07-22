@@ -115,10 +115,16 @@ rehearsal recording, LLM frame classifier, sharer-XP settlement → R3/R4). Summ
 R2 + R1 shipped 2026-07-17. **DESIGN IS NOW "BLOOM"** (2026-07-19, commit f6ba5db,
 the current live identity — Mono/violet retired): cream editorial paper + forest-green
 signal #4f7a52 + Instrument Serif voice, committed light theme; see web/DESIGN.md.
-**THE MIRROR shipped 2026-07-19** (commit 252ac61) — Kish's anti-chatfishing
-core-thesis feature: chat-you vs real-you voice fingerprint (lib/voice.ts, 4
-personality axes), /mirror screen + per-person "meeting as yourself" on hubs;
-persists own-attempt text (GradeRecord.text). **Mono design overhaul (superseded
+**THE MIRROR shipped 2026-07-19** (commit 252ac61, follow-ups ba5c1ee) — Kish's
+anti-chatfishing core-thesis feature: chat-you vs real-you voice fingerprint
+(lib/voice.ts, 4 personality axes), /mirror screen + per-person "meeting as
+yourself" on hubs; persists own-attempt text (GradeRecord.text). Authenticity is
+now a real readiness GATE + an LLM /api/voice-compare "deep read".
+**`/demo` shipped** (commit c3ee216): shippable synthetic "Maya" sample
+(lib/demo.ts, fictional — safe on any device) — visit banter-tau.vercel.app/demo
+to populate the whole app for investor/tester demos. Kish's REAL Tamsyn seed
+stays a private console snippet at C:\KenLab\Temp Nalysis\banter-seed-tamsyn.js
+(never committed/deployed). **Mono design overhaul (superseded
 by Bloom) + ALL of R3 (Sessions 1-3) shipped 2026-07-19.** Buckets v2 + self-persona
 + resonance; Framework Library v2 (10 verified-citation entries) + gate v2 +
 conversationType signal (engine deployed, 61 Deno tests); Practice Gym `/gym` +
