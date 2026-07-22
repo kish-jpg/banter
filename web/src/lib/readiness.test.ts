@@ -1,7 +1,7 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 // @ts-expect-error node's test runner needs the .ts extension; Next's tsc config disallows it
-import { independenceRatio, readinessBand, readinessScore, storiesOwnedRatio } from "./readiness.ts";
+import { readinessBand, readinessScore, storiesOwnedRatio } from "./readiness.ts";
 
 function debt(status: "open" | "owned") {
   return {
@@ -23,26 +23,28 @@ test("stories owned: empty debt = 1, half owned = 0.5", () => {
   assert.equal(storiesOwnedRatio([debt("owned"), debt("open")]), 0.5);
 });
 
-test("independence: neutral 0.5 with no data, otherwise own share", () => {
-  assert.equal(independenceRatio(0, 0), 0.5);
-  assert.equal(independenceRatio(3, 1), 0.75);
-  assert.equal(independenceRatio(0, 5), 0);
-});
-
-test("readiness blends and bands with the shared cutoffs", () => {
-  const ready = readinessScore({ factsCold: 0.9, storiesOwned: 1, independence: 0.7 });
+test("readiness blends know-her + own-stories + authenticity, and bands", () => {
+  const ready = readinessScore({ factsCold: 0.9, storiesOwned: 1, authenticity: 0.8 });
   assert.equal(readinessBand(ready), "ready");
 
-  const cold = readinessScore({ factsCold: 0, storiesOwned: 0, independence: 0 });
+  const cold = readinessScore({ factsCold: 0, storiesOwned: 0, authenticity: 0 });
   assert.equal(cold, 0);
   assert.equal(readinessBand(cold), "not yet");
 
-  const mid = readinessScore({ factsCold: 0.5, storiesOwned: 0.5, independence: 0.5 });
+  const mid = readinessScore({ factsCold: 0.5, storiesOwned: 0.5, authenticity: 0.5 });
   assert.equal(readinessBand(mid), "getting there");
 });
 
+test("authenticity is a real gate: knowing her but chatfishing hard is not ready", () => {
+  // knows her cold + owns stories, but chat-you is nothing like real-you
+  const chatfishing = readinessScore({ factsCold: 1, storiesOwned: 1, authenticity: 0 });
+  assert.ok(chatfishing < 0.75, `authenticity should hold readiness back, got ${chatfishing}`);
+  assert.notEqual(readinessBand(chatfishing), "ready");
+});
+
 test("inputs are clamped to 0..1", () => {
-  assert.equal(readinessScore({ factsCold: 5, storiesOwned: 5, independence: 5 }), 1);
+  const full = readinessScore({ factsCold: 5, storiesOwned: 5, authenticity: 5 });
+  assert.ok(full <= 1 && full > 0.999);
 });
 
 test("fade series buckets assisted share over time, honest about thin data", async () => {

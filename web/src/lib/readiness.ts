@@ -12,8 +12,9 @@ export interface ReadinessInputs {
   factsCold: number;
   /** Fraction of the debt list marked owned (rehearsed, tellable cold). */
   storiesOwned: number;
-  /** Own attempts / (own attempts + assisted sends) for this thread. */
-  independence: number;
+  /** How closely chat-you matches real-you for this person (lib/voice voiceMatch).
+      Neutral 0.5 when it can't be read yet (cold start). */
+  authenticity: number;
 }
 
 /** owned / (open + owned) across the debt list; nothing owed = fully ready on this axis. */
@@ -22,19 +23,14 @@ export function storiesOwnedRatio(debt: LoopItem[]): number {
   return debt.filter((l) => l.status === "owned").length / debt.length;
 }
 
-/** No signal either way reads neutral, not failing — new threads shouldn't scare. */
-export function independenceRatio(ownAttempts: number, assistedSends: number): number {
-  if (ownAttempts + assistedSends === 0) return 0.5;
-  return ownAttempts / (ownAttempts + assistedSends);
-}
-
 /**
- * Weighted blend, 0..1. Facts weigh heaviest (they're the retrieval-under-anxiety
- * core), then owned stories, then independence (the fade curve's local reading).
+ * The ready-to-meet gate, 0..1 (PRD §7.5): you're ready when you know her cold,
+ * you own your stories, AND chat-you reads like the real you (the anti-chatfishing
+ * condition — a great chat becomes an awkward date when those two voices diverge).
  */
 export function readinessScore(r: ReadinessInputs): number {
   const clamp = (v: number) => Math.min(1, Math.max(0, v));
-  return clamp(0.4 * clamp(r.factsCold) + 0.35 * clamp(r.storiesOwned) + 0.25 * clamp(r.independence));
+  return clamp(0.35 * clamp(r.factsCold) + 0.3 * clamp(r.storiesOwned) + 0.35 * clamp(r.authenticity));
 }
 
 export type ReadinessBand = "not yet" | "getting there" | "ready";

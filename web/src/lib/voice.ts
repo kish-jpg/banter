@@ -120,3 +120,14 @@ export function reliance(ownCount: number, assistedCount: number): number {
   const total = ownCount + assistedCount;
   return total === 0 ? 0 : ownCount / total;
 }
+
+/**
+ * Convenience for the readiness gate: authenticity for one person from raw text
+ * sets. Null when either voice can't be read yet (cold start).
+ */
+export function voiceMatch(ownTexts: string[], assistedTexts: string[]): number | null {
+  const real = fingerprint(ownTexts);
+  const chat = fingerprint(assistedTexts);
+  if (!real || !chat) return null;
+  return authenticity(real, chat);
+}

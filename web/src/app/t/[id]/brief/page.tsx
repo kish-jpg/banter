@@ -7,9 +7,11 @@ import type { PersonaFact } from "@/lib/persona";
 import { useGrades } from "@/lib/grades";
 import { bitsAlive, debtList, openLoops, setLoopStatus, useLoops, type LoopItem } from "@/lib/loops";
 import { dueCards, quizMastery, recordAnswer, useQuizStates } from "@/lib/quiz";
-import { independenceRatio, readinessBand, readinessScore, storiesOwnedRatio } from "@/lib/readiness";
+import { readinessBand, readinessScore, storiesOwnedRatio } from "@/lib/readiness";
+import { voiceMatch } from "@/lib/voice";
 import { getThreadsServerSnapshot, getThreadsSnapshot, subscribeThreads } from "@/lib/threads";
 import { ResonancePanel } from "@/components/resonance-panel";
+import { AuthenticityLine } from "@/components/mirror";
 
 /**
  * The date brief (PRD §7.5): one screen, 30 seconds, the night before or in the uber.
@@ -143,12 +145,12 @@ export default function BriefPage({ params }: { params: Promise<{ id: string }> 
   const boundaries = persona.facts.filter((f) => f.type === "boundary");
   const logistics = persona.facts.filter((f) => f.type === "logistics");
 
-  const ownAttempts = grades.filter((g) => g.threadId === thread.id).length;
-  const assistedSends = thread.sentReplies?.length ?? 0;
+  const ownTexts = grades.filter((g) => g.threadId === thread.id).map((g) => g.text).filter((t): t is string => Boolean(t));
+  const assistedTexts = (thread.sentReplies ?? []).map((r) => r.text);
   const score = readinessScore({
     factsCold: quizMastery(persona.facts, states.filter((s) => s.personaId === persona.id)),
     storiesOwned: storiesOwnedRatio(debt),
-    independence: independenceRatio(ownAttempts, assistedSends),
+    authenticity: voiceMatch(ownTexts, assistedTexts) ?? 0.5,
   });
   const bandWord = readinessBand(score);
 
@@ -170,6 +172,14 @@ export default function BriefPage({ params }: { params: Promise<{ id: string }> 
           />
         </div>
         <p className="mt-2 text-xs text-muted-foreground">{BAND_COPY[bandWord]}</p>
+        <p className="mt-3 text-xs text-muted-foreground">
+          Ready to meet means three things: you know her cold, you own your stories, and
+          chat-you reads like the real you.
+        </p>
+      </section>
+
+      <section className="mt-7">
+        <AuthenticityLine threadId={thread.id} />
       </section>
 
       <section className="mt-7">

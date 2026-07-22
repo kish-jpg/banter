@@ -1,6 +1,6 @@
 "use client";
 
-import { useSyncExternalStore } from "react";
+import { useEffect, useState, useSyncExternalStore } from "react";
 import { useGrades } from "@/lib/grades";
 import {
   getThreadsServerSnapshot,
@@ -119,6 +119,42 @@ const EMPTY = (
   </div>
 );
 
+/**
+ * The deep read (progressive enhancement over the heuristic): an LLM names the
+ * voice gap in a sentence. Only mounted when both voices exist, so its one-shot
+ * fetch runs with real data. Silent on any failure (no key, network) — the
+ * heuristic meter stands alone.
+ */
+function DeepRead({ own, assisted }: { own: string[]; assisted: string[] }) {
+  const [observation, setObservation] = useState<string | null>(null);
+
+  useEffect(() => {
+    let live = true;
+    fetch("/api/voice-compare", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ own, assisted }),
+    })
+      .then((r) => (r.ok ? r.json() : null))
+      .then((d) => {
+        if (live && d?.observation) setObservation(d.observation);
+      })
+      .catch(() => {});
+    return () => {
+      live = false;
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  if (!observation) return null;
+  return (
+    <p className="rounded-xl border border-border bg-card p-3.5 text-sm leading-relaxed text-muted-foreground animate-in fade-in">
+      <span className="font-mono text-[10.5px] uppercase tracking-wide text-signal">the deep read · </span>
+      {observation}
+    </p>
+  );
+}
+
 /** Full global mirror — lives on its own /mirror screen. */
 export function Mirror() {
   const { own, assisted } = useVoiceTexts(null);
@@ -163,6 +199,8 @@ export function Mirror() {
           Chat-you and real-you read like the same person. Whoever you meet will recognise you.
         </p>
       ) : null}
+
+      {chat && <DeepRead own={own} assisted={assisted} />}
 
       <div className="border-t border-border pt-3">
         <p className="font-mono text-[10.5px] uppercase tracking-wide text-muted-foreground/70">your own words</p>

@@ -10,7 +10,8 @@ import { band, stageFor, STAGE_LABELS } from "@/lib/stage";
 import { useGrades } from "@/lib/grades";
 import { debtList, useLoops } from "@/lib/loops";
 import { quizMastery, useQuizStates } from "@/lib/quiz";
-import { independenceRatio, readinessBand, readinessScore, storiesOwnedRatio } from "@/lib/readiness";
+import { readinessBand, readinessScore, storiesOwnedRatio } from "@/lib/readiness";
+import { voiceMatch } from "@/lib/voice";
 import { getThreadsServerSnapshot, getThreadsSnapshot, subscribeThreads } from "@/lib/threads";
 import type { Sentiment } from "@/lib/types";
 
@@ -65,11 +66,12 @@ export default function PersonHub({ params }: { params: Promise<{ id: string }> 
   let readinessWord: string | null = null;
   if (persona) {
     const debt = debtList(loops, persona.id);
-    const ownAttempts = grades.filter((g) => g.threadId === thread.id).length;
+    const ownTexts = grades.filter((g) => g.threadId === thread.id).map((g) => g.text).filter((t): t is string => Boolean(t));
+    const assistedTexts = (thread.sentReplies ?? []).map((r) => r.text);
     const score = readinessScore({
       factsCold: quizMastery(persona.facts, states.filter((s) => s.personaId === persona.id)),
       storiesOwned: storiesOwnedRatio(debt),
-      independence: independenceRatio(ownAttempts, thread.sentReplies?.length ?? 0),
+      authenticity: voiceMatch(ownTexts, assistedTexts) ?? 0.5,
     });
     readinessWord = readinessBand(score);
   }
